@@ -125,7 +125,6 @@ def run_lif_simulation(spikes, indices):
         # Only update GUI periodically to avoid lag
         if len(output_spike_list_x) % 10 == 0 or is_paused:
             dpg.set_value("out_spikes_series", [output_spike_list_x, output_spike_list_y])
-
             # Update the dynamic texture
             scaled_out_img = scale_image(output_image, int(256/OUTPUT_SHAPE[0]))
             h, w = scaled_out_img.shape

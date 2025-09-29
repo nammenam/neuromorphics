@@ -50,7 +50,6 @@ def location_wise_wta(list_of_spike_time_grids):
         combined_min_times = np.fmin(combined_min_times, list_of_spike_time_grids[i])
     return combined_min_times
 
-
 def create_on_off_filters(center_weight=8, surround_weight=-1):
     on_filter = np.full((3, 3), surround_weight, dtype=float)
     on_filter[1, 1] = center_weight
@@ -78,3 +77,10 @@ def calculate_first_layer_conv(image, on_filter, off_filter, T_max=100, T_min=0)
                 scaled_potential = min(off_potential / max_potential, 1.0)
                 off_spike_times[y, x] = T_max - (T_max - T_min) * scaled_potential
     return on_spike_times, off_spike_times
+
+def generate_brain_signal(t, base_freq=10.0):
+    y1 = 1.0 * sin(2 * pi * base_freq * t)
+    y2 = 0.5 * sin(2 * pi * (base_freq * 1.8) * t + 0.5)
+    y3 = 0.8 * sin(2 * pi * (base_freq * 0.4) * t + 1.2)
+    noise = (random.random() - 0.5) * 0.8
+    return (y1 + y2 + y3) / 2.3 + noise

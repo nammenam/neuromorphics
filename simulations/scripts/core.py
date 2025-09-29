@@ -4,6 +4,9 @@ from numba import jit, prange
 def intensity_to_delay_encoding(image, T_max=100, T_min=0):
     normalized_image = image.astype(float) / 255.0
     spike_times = T_max - (T_max - T_min) * normalized_image
+    # print(spike_times.shape)
+    # data = spike_times[(spike_times < 100)]
+    # print(data.shape)
     return spike_times
 
 def negative_image_encoding(image, T_max=100, T_min=0):
@@ -86,11 +89,6 @@ def get_postsynaptic_events(
     return np.array(arrival_times), np.array(target_indices), np.array(weights)
 
 def create_conv_connections(input_shape, output_shape):
-    """
-    Generates a connection map for a 3x3 center-surround filter with binary weights.
-    - Excitatory connections have a weight of +1.
-    - Inhibitory connections have a weight of -1.
-    """
     input_h, input_w = input_shape
     output_h, output_w = output_shape
     connections = {}

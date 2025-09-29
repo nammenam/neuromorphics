@@ -12,9 +12,9 @@ from theme import create_global_theme, create_line_series_theme, load_font, scat
 from core import intensity_to_delay_encoding,create_conv_connections, get_postsynaptic_events
 
 MAX_POINTS = 2000
-TIME_STEP = 0.01
+TIME_STEP = 0.05
 INPUT_SHAPE = (28, 28)
-OUTPUT_SHAPE = (28, 28)
+OUTPUT_SHAPE = (26, 26)
 # INPUT_SHAPE = (16, 16)
 # OUTPUT_SHAPE = (14, 14)
 OUTPUT_WIDTH = OUTPUT_SHAPE[1]
@@ -26,8 +26,6 @@ V_THRESH = 1.0        # Firing threshold
 V_REST = 0.0          # Resting potential
 W_LATERAL_INH = -0.5  # Weight of lateral inhibition
 LATERAL_DELAY = 1.0   # Delay for lateral inhibition spike (ms)
-TARGET_Y = 3
-TARGET_X = 3
 
 is_paused = False
 step_event = threading.Event()
@@ -36,6 +34,7 @@ simulation_time = 0.0
 start_time = -(MAX_POINTS - 1) * TIME_STEP
 initial_time_data = np.linspace(start_time, 0.0, num=MAX_POINTS)
 time_data = collections.deque(initial_time_data, maxlen=MAX_POINTS)
+# y_data = collections.deque([0.0] * MAX_POINTS, maxlen=MAX_POINTS)
 # incoming_spikes = collections.deque([0,0] * MAX_POINTS, maxlen=MAX_POINTS)
 simulation_time = 0
 
@@ -51,20 +50,16 @@ def key_press_handler(sender, app_data):
         step_event.set()
 
 def scale_image(image: np.ndarray, factor: int) -> np.ndarray:
-    return np.repeat(np.repeat(image, factor, axis=0), factor, axis=1)
-
-def rgba_image(image: np.ndarray):
-    h, w = image.shape
+    scaled_image = np.repeat(np.repeat(image, factor, axis=0), factor, axis=1)
+    h, w = scaled_image.shape
     rgba_image = np.zeros((h, w, 4), dtype=np.float32)
-    rgba_image[..., :3] = image[..., np.newaxis]
+    rgba_image[..., :3] = scaled_image[..., np.newaxis]
     rgba_image[..., 3] = 1.0
-    return rgba_image
+    return rgba_image.flatten(), scaled_image.shape
 
-def update_text():
-    global simulation_time
+def update_frame_counter():
     while True:
         dpg.set_value("frame_text", f"Frame: {dpg.get_frame_count()}")
-        dpg.set_value("time_text", f"Time: {simulation_time}")
         time.sleep(0.1)
 
 def update_series_data(spikes, indices):
@@ -79,6 +74,9 @@ def update_series_data(spikes, indices):
         connections=connection_map
     )
 
+    # TARGET_Y = 3
+    # TARGET_X = 3
+    # OUTPUT_WIDTH = 14
     # target_neuron_idx = (OUTPUT_WIDTH * OUTPUT_WIDTH) + (TARGET_Y * OUTPUT_WIDTH + TARGET_X)
     # print(f"🔬 Monitoring Neuron Index: {target_neuron_idx}")
     # mask = (target_indices == target_neuron_idx)
@@ -86,95 +84,93 @@ def update_series_data(spikes, indices):
     # neuron_input_weights = weights[mask]
     # print(f"✅ Neuron {target_neuron_idx} received {len(neuron_input_times)} synaptic inputs.")
 
-    event_queue = []
-    for t, target, w in zip(arrival_times, target_indices, weights):
-        event_queue.append((t, 'FF', {'target': target, 'weight': w}))
-    event_queue.sort(key=lambda x: x[0])
+    # event_queue = []
+    # for t, target, w in zip(arrival_times, target_indices, weights):
+    #     event_queue.append((t, 'FF', {'target': target, 'weight': w}))
+    # event_queue.sort(key=lambda x: x[0])
     # membrane_potentials = np.full(TOTAL_NEURONS, V_REST, dtype=float)
-    last_update_times = np.zeros(TOTAL_NEURONS, dtype=float)
-    output_spike_times = np.full(TOTAL_NEURONS, np.nan, dtype=float)
-    output_image = np.zeros(OUTPUT_SHAPE, dtype=np.float32)
-    out_img = rgba_image(output_image)
-    output_spike_list_x, output_spike_list_y, output_spike_list_idx = [], [], []
+    # last_update_times = np.zeros(TOTAL_NEURONS, dtype=float)
+    # output_spike_times = np.full(TOTAL_NEURONS, np.nan, dtype=float)
+    # output_image = np.zeros(OUTPUT_SHAPE, dtype=np.float32)
+    # output_spike_list_x, output_spike_list_y, output_spike_list_idx = [], [], []
 
     while True:
         if is_paused:
             step_event.wait()
             step_event.clear()
+        w_exc = dpg.get_value("w_exc_slider")
+        w_inh = dpg.get_value("w_inh_slider")
 
-        event_time, event_type, data = event_queue.pop(0)
-        now_time = event_time
-        out_img = out_img * 0.999
-        if now_time < simulation_time:
+        time_data.append(simulation_time)
 
-            target_idx = data['target']
-            weight = data['weight']
+        # event_time, event_type, data = event_queue.pop(0)
+        # simulation_time = event_time
+        # target_idx = data['target']
+        # weight = data['weight']
 
-            if not np.isnan(output_spike_times[target_idx]):
-                continue
+        # if not np.isnan(output_spike_times[target_idx]):
+            # continue
 
-            time_delta = event_time - last_update_times[target_idx]
-            # if time_delta > 0:
-                # membrane_potentials[target_idx] *= exp(-time_delta / TAU_M)
+        # time_delta = event_time - last_update_times[target_idx]
+        # if time_delta > 0:
+            # membrane_potentials[target_idx] *= exp(-time_delta / TAU_M)
         
-            # membrane_potentials[target_idx] += weight
-            last_update_times[target_idx] = event_time
+        # membrane_potentials[target_idx] += weight
+        # last_update_times[target_idx] = event_time
 
-            # if membrane_potentials[target_idx] >= V_THRESH:
-            output_spike_times[target_idx] = event_time
-            #     membrane_potentials[target_idx] = V_REST
-            output_spike_list_x.append(event_time)
-            output_spike_list_y.append(target_idx)
-            map_offset = 0
-            if target_idx >= NUM_NEURONS_PER_MAP:
-                map_offset = NUM_NEURONS_PER_MAP
+        # if membrane_potentials[target_idx] >= V_THRESH:
+        #     output_spike_times[target_idx] = event_time
+        #     membrane_potentials[target_idx] = V_REST
+        #     output_spike_list_x.append(event_time)
+        #     output_spike_list_y.append(target_idx)
+        #     map_offset = 0
+        #     if target_idx >= NUM_NEURONS_PER_MAP:
+        #         map_offset = NUM_NEURONS_PER_MAP
                 
-            neuron_2d_idx = target_idx - map_offset
-            y = neuron_2d_idx // OUTPUT_WIDTH
-            x = neuron_2d_idx % OUTPUT_WIDTH
-            max_time = spikes[-1] if len(spikes) > 0 else 1.0
-            brightness = max(0.01, 1.0 - (event_time / max_time))
-            out_img[y,x,0] = brightness
-            out_img[y,x,1] = brightness
-            out_img[y,x,2] = brightness * weight
-            out_img[y,x,3] = 1
-            # LATERAL INHIBITION
-            #     neighbors = [target_idx - 1, target_idx + 1]
-            #     for neighbor_idx in neighbors:
-            #         if 0 <= neighbor_idx < TOTAL_NEURONS and (neighbor_idx // OUTPUT_WIDTH) == (target_idx // OUTPUT_WIDTH):
-            #             inhib_event = (event_time + LATERAL_DELAY, 'LI', {'target': neighbor_idx, 'weight': W_LATERAL_INH})
-            #             bisect.insort(event_queue, inhib_event, key=lambda x: x[0])
+        #     neuron_2d_idx = target_idx - map_offset
+        #     y = neuron_2d_idx // OUTPUT_WIDTH
+        #     x = neuron_2d_idx % OUTPUT_WIDTH
+        #     max_time = spikes[-1] if len(spikes) > 0 else 1.0
+        #     brightness = max(0.1, 1.0 - (event_time / max_time))
+        #     output_image[y, x] = brightness
+        #     neighbors = [target_idx - 1, target_idx + 1]
+        #     for neighbor_idx in neighbors:
+        #         if 0 <= neighbor_idx < TOTAL_NEURONS and (neighbor_idx // OUTPUT_WIDTH) == (target_idx // OUTPUT_WIDTH):
+        #             inhib_event = (event_time + LATERAL_DELAY, 'LI', {'target': neighbor_idx, 'weight': W_LATERAL_INH})
+        #             bisect.insort(event_queue, inhib_event, key=lambda x: x[0])
 
 
-            # exc_mask = weights > 0
-            # exc_times = arrival_times[exc_mask]
-            # exc_indices = target_indices[exc_mask]
-            # inh_mask = weights < 0
-            # inh_times = arrival_times[inh_mask]
-            # inh_indices = target_indices[inh_mask]
+        exc_mask = weights > 0
+        exc_times = arrival_times[exc_mask]
+        exc_indices = target_indices[exc_mask]
+        inh_mask = weights < 0
+        inh_times = arrival_times[inh_mask]
+        inh_indices = target_indices[inh_mask]
 
-            # spike_times_exc = [s[0] for s in incoming_spikes if s[1] == 1 and time_data[0] <= s[0] <= time_data[-1]]
-            # spike_times_inh = [s[0] for s in incoming_spikes if s[1] == -1 and time_data[0] <= s[0] <= time_data[-1]]
-            # spike_times_out = [s[0] for s in incoming_spikes if s[1] == 2 and time_data[0] <= s[0] <= time_data[-1]]
+        # spike_times_exc = [s[0] for s in incoming_spikes if s[1] == 1 and time_data[0] <= s[0] <= time_data[-1]]
+        # spike_times_inh = [s[0] for s in incoming_spikes if s[1] == -1 and time_data[0] <= s[0] <= time_data[-1]]
+        # spike_times_out = [s[0] for s in incoming_spikes if s[1] == 2 and time_data[0] <= s[0] <= time_data[-1]]
 
         # Only update GUI periodically to avoid lag
         # if len(output_spike_list_x) % 10 == 0 or is_paused:
             # dpg.set_value("out_spikes_series", [output_spike_list_x, output_spike_list_y])
-        scaled_img = scale_image(out_img, int(256/OUTPUT_SHAPE[0]))
-        dpg.set_value("neurons1",scaled_img.flatten() )
+            # scaled_out_img, _ = scale_image(output_image, int(256/OUTPUT_SHAPE[0]))
+            # dpg.set_value("output_image",scaled_out_img )
             # dpg.set_value('exc_spikes_series', [list(neuron_input_times), list(neuron_input_weights)])
-        # dpg.set_value('exc_spikes_series', [list(exc_times), list(exc_indices)])
-        # dpg.set_value('inh_spikes_series', [list(inh_times), list(inh_indices)])
+        dpg.set_value('exc_spikes_series', [list(exc_times), list(exc_indices)])
+        dpg.set_value('inh_spikes_series', [list(inh_times), list(inh_indices)])
+        dpg.set_axis_limits("x_axis", time_data[0], time_data[-1])
         simulation_time += TIME_STEP
-        time_data.append(simulation_time)
         time.sleep(0.01)
 
 def reset_simulation():
-    global simulation_time
+    global simulation_time, incoming_spikes
     simulation_time = 0.0
     # incoming_spikes.clear()
     time_data.clear()
+    # y_data.clear()
     time_data.extend(initial_time_data)
+    # y_data.extend([0.0] * MAX_POINTS)
     print("Simulation Reset")
 
 def inject_excitatory_spike():
@@ -194,12 +190,16 @@ def run_gui(input_image):
     y_coords, x_coords = np.where(~np.isnan(spikes))
     times = spikes[y_coords, x_coords]
     neuron_indices = y_coords * width + x_coords
+
     sorted_indices = np.argsort(times)
     spikes = times[sorted_indices]
     indices = neuron_indices[sorted_indices]
     dpg.create_context()
 
     load_font(dpg)
+    plot_theme = create_line_series_theme(dpg)
+    green = scatter_green(dpg)
+    orange = scatter_orange(dpg)
 
     with dpg.handler_registry():
         dpg.add_key_press_handler(callback=key_press_handler)
@@ -215,46 +215,18 @@ def run_gui(input_image):
                     no_title_bar=True):
         with dpg.group(horizontal=True):
             with dpg.child_window(width=VIEWPORT_WIDTH * 0.7):
-                
-                SCALE_FACTOR_OUT = int(256 / OUTPUT_SHAPE[0])
-                default_value = np.ones(OUTPUT_SHAPE, dtype=np.float32)
-                default_image = scale_image(default_value, SCALE_FACTOR_OUT)
-                default_image_rbga = rgba_image(default_image).flatten()
-                with dpg.texture_registry(show=True):
-                    dpg.add_dynamic_texture(
-                        width=default_image.shape[1],
-                        height=default_image.shape[0],
-                        default_value=default_image_rbga,
-                        tag="neurons0"
-                    )
-                    dpg.add_dynamic_texture(
-                        width=default_image.shape[1],
-                        height=default_image.shape[0],
-                        default_value = default_image_rbga,
-                        tag="neurons1"
-                    )
-
-                with dpg.group(horizontal=True):
-                    dpg.add_image("neurons0")
-                    dpg.add_image("neurons1")
-                dpg.add_separator()
-
-                with dpg.texture_registry(show=True):
-                    dpg.add_dynamic_texture(
-                        width=default_image.shape[1],
-                        height=default_image.shape[0],
-                        default_value=default_image_rbga,
-                        tag="weights0"
-                    )
-                    dpg.add_dynamic_texture(
-                        width=default_image.shape[1],
-                        height=default_image.shape[0],
-                        default_value = default_image_rbga,
-                        tag="weights1"
-                    )
-                with dpg.group(horizontal=True):
-                    dpg.add_image("weights0")
-                    dpg.add_image("weights1")
+                with dpg.plot(label="Neuron Membrane Potential", height=VIEWPORT_HEIGHT - 40, width=-1):
+                    dpg.add_plot_legend()
+                    dpg.add_plot_axis(dpg.mvXAxis, label="Time (s)", tag="x_axis")
+                    dpg.add_plot_axis(dpg.mvYAxis, label="Displacement", tag="y_axis")
+                    dpg.set_axis_limits("y_axis", 0, TOTAL_NEURONS)
+                    # dpg.set_axis_limits("y_axis", -1.2, 1.2)
+                    dpg.add_scatter_series(x=[], y=[], label="Inhibitory Spike", parent="y_axis", tag="inh_spikes_series")
+                    dpg.add_scatter_series(x=[], y=[], label="Excitatory Spike", parent="y_axis", tag="exc_spikes_series")
+                    dpg.add_scatter_series(x=[], y=[], label="Output Spike", parent="y_axis", tag="out_spikes_series")
+                    dpg.bind_item_theme("inh_spikes_series", orange)
+                    dpg.bind_item_theme("out_spikes_series", orange)
+                    dpg.bind_item_theme("exc_spikes_series", green)
 
             with dpg.child_window(width=-1):
                 dpg.add_text("Neuron Controls")
@@ -281,27 +253,37 @@ def run_gui(input_image):
                 dpg.add_separator()
 
                 SCALE_FACTOR = int(256 / INPUT_SHAPE[0])
+                SCALE_FACTOR_OUT = int(256 / INPUT_SHAPE[0])
                 normalized_image = input_image.astype(np.float32) / 255.0
-                scaled_image = scale_image(normalized_image, SCALE_FACTOR)
-                scaled_image_rgba = rgba_image(scaled_image)
+                scaled_image, scaled_image_shape = scale_image(normalized_image, SCALE_FACTOR)
+                default_value = np.ones(OUTPUT_SHAPE, dtype=np.float32)
+                default_image, default_image_shape = scale_image(default_value, SCALE_FACTOR)
 
                 with dpg.texture_registry(show=True):
                     dpg.add_static_texture(
-                        width=scaled_image.shape[1],
-                        height=scaled_image.shape[0],
-                        default_value=scaled_image_rgba,
+                        width=scaled_image_shape[1],
+                        height=scaled_image_shape[0],
+                        default_value=scaled_image,
                         tag="input_image"
                     )
-                dpg.add_image("input_image")
+                    dpg.add_dynamic_texture(
+                        width=default_image_shape[1],
+                        height=default_image_shape[0],
+                        default_value = default_image,
+                        tag="output_image"
+                    )
+
+                with dpg.group(horizontal=True):
+                    dpg.add_image("input_image")
+                    dpg.add_image("output_image")
                 dpg.add_separator()
                 dpg.add_text(f"Frame: {dpg.get_frame_count()}", tag="frame_text")
-                dpg.add_text(f"Time:  {simulation_time}", tag="time_text")
 
     dpg.create_viewport(title='Neuron Simulation', width=VIEWPORT_WIDTH, height=VIEWPORT_HEIGHT)
     dpg.set_viewport_vsync(True)
     dpg.setup_dearpygui()
     update_thread = threading.Thread(target=update_series_data, args=(spikes, indices), daemon=True)
-    frame_thread = threading.Thread(target=update_text, daemon=True)
+    frame_thread = threading.Thread(target=update_frame_counter, daemon=True)
     update_thread.start()
     frame_thread.start()
     dpg.show_viewport()
