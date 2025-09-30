@@ -336,6 +336,7 @@ biologically plausible framework for computation than traditional MLPs.
 = Methodology
 
 #figure(caption:"spike train")[#image("figures/spiketrain.svg")]
+#figure(caption:"yurr")[#include("figures/architecture.typ")]
 // Step: explore learning algorithms
 // experiment 1 set up random pattern across 1 dimension, inject a repeating pattern
 // for the network to learn
