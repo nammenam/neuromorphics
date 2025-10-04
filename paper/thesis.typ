@@ -146,25 +146,29 @@ _Discussions_. blabla bla future work bla bla
 
 // TODO: add explanation and ilustrations
 #box(
-width: 50%,
+width: 37%,
 serif-text()[
 The term Aritifical Inteligence forms an umbrella over many different techniques that make use
 of machines to do some intelligent task. The most promising way to acheive AI to day is trough
 deep neural networks. The neural networks of today are almost exclusivly based on the simple
 perceptron neuron model. It is a fairly old idea based on a simple model on how the brain processes
-information. The model of the neuron that the is based on has synapses just like the biological one,
+information. The model of the neuron that the is based on has synapses just like the biological
 ])
 #box(
-width: 48%,
-baseline: -2pt,
-inset: 4pt,
+width: 62%,
+height: 7.5cm,
+// stroke: 1pt,
+inset: 1em,
 
 figure(
   include("figures/perceptron.typ"),
-  caption: [perceptron]
+  caption: [
+  The perceptron---a simple model of how a neuron operates. Inputs gets multiplied by weights and
+  summed, if the sum surpasses a threshold known as the bias, the neuron fires.
+  ]
 ))
 #serif-text()[
-the synapses functions as inputs which when firing will exite the reciving neuron more or less
+one, the synapses functions as inputs which when firing will exite the reciving neuron more or less
 depending on the strenth of the connection. If the reciving neuron get exited above a threshold
 it will fire and pass the signal downstream to another reciving neuron. Which is conceptually
 similar to how real neurons operate. This simple model is called a perceptron, which introduced a
@@ -359,7 +363,7 @@ biologically plausible framework for computation than traditional MLPs.
 #figure(
   include("figures/architecture.typ"),
   caption: [Proposed simplifed layout of a SNN. The neurons are connected with hirearcical busses
-  that allow for the network to be configured as a *small world network*]
+  that allow for the network to be configured as a _small world network_]
 )
 // Step: explore learning algorithms
 // experiment 1 set up random pattern across 1 dimension, inject a repeating pattern

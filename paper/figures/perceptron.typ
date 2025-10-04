@@ -1,24 +1,92 @@
-// From https://forum.typst.app/t/how-to-best-draw-a-3d-torus/4744/4
-// Note: current settings use about 2 GiB of RAM and 20 s of compilation time.
-#import "@preview/cetz:0.4.0"
-
+#import "@preview/cetz:0.4.2"
+#show math.equation : set text(font:"TeX Gyre Schola Math", size: 10.5pt)
 // #set page(width: auto, height: auto, margin: 0.6pt)
 
-#let perceptron(
-  fill: black,
-  stroke: auto,
-) = {
-  cetz.draw.line((0,0),(7,0),(8,3))
-  cetz.draw.line((0,1),(6.5,1),(8,3))
-  cetz.draw.line((0,2),(6,2),(8,3))
-  cetz.draw.line((0,3),(6,3),(8,3))
-  cetz.draw.line((0,4),(6,4),(8,3))
-  cetz.draw.line((0,5),(6.5,5),(8,3))
-  cetz.draw.line((0,6),(7,6),(8,3))
-  cetz.draw.circle((8,3), fill:white)
-}
-
-#cetz.canvas(length:.8cm,{
+#cetz.canvas({
   import cetz.draw: *
-  perceptron()
+  set-style(
+    stroke:(thickness:2pt)
+  )
+
+  let radius = 1.5
+  let point_size = 2pt
+  let xprev = 0
+  let yprev = 0
+  let x = 0
+  let y = 0
+  let xc = 0
+  let yc = 0
+  for i in range(7) {
+    // Calculate the angle for each point.
+    // 360deg / 6 points = 60deg per point.
+    let angle = i * 60deg
+    x = radius * calc.cos(angle)
+    y = radius * calc.sin(angle)
+    let anglec = i * 60deg - 30deg
+    xc = radius * calc.cos(anglec) * 0.5
+    yc = radius * calc.sin(anglec) * 0.5
+    // Place a solid black circle at the (x, y) position.
+    // circle((x,y),radius:.1)
+    // circle((xprev,yprev),radius:.1, fill:blue)
+    // circle((xc,yc),radius:.1)
+    if i > 0 {
+      bezier((x,y),(xprev,yprev),(xc,yc))
+    }
+    xprev = x
+    yprev = y
+      // circle(radius: point_size, fill: black)
+  }
+  circle((0,0),radius:.5)
+  let startx = radius * calc.cos(180deg)
+  let startx2 = radius * calc.cos(0deg)
+  let end = (startx,0)
+  let end2 = (startx2,0)
+
+  let i = (-3,1.5)
+  let j = (-3,.5)
+  let k = (-3,0)
+  let l = (-3,-.5)
+  let m = (-3,-1.5)
+  let n = (-4,1.5)
+  let o = (-4,.5)
+  let p = (-4,0)
+  let q = (-4,-.5)
+  let r = (-4,-1.5)
+  let i2 = (3,1.5)
+  let j2 = (3,.5)
+  let k2 = (3,0)
+  let l2 = (3,-.5)
+  let m2 = (3,-1.5)
+  let n2 = (4,1.5)
+  let o2 = (4,.5)
+  let p2 = (4,0)
+  let q2 = (4,-.5)
+  let r2 = (4,-1.5)
+  // line((startx,0),end)
+  line((startx2,0),end2)
+  bezier(end, n, k, i)
+  bezier(end, o, k, j)
+  bezier(end, q, k, l)
+  bezier(end, r, k, m)
+  content((0,2.5),[$
+    y = cases(
+      1 "if" sum_(i=0)^n x_i w_i >= b,
+      0 "if" sum_(i=0)^n x_i w_i < b
+    )
+  $])
+  content((v => cetz.vector.add(v,(-.5,0)),n), [$x_0$])
+  content((v => cetz.vector.add(v,(-.5,0)),o), [$x_1$])
+  content((v => cetz.vector.add(v,(-.5,0)),p), [$dots.v$])
+  content((v => cetz.vector.add(v,(-.5,0)),q), [$x_(n-1)$])
+  content((v => cetz.vector.add(v,(-.5,0)),r), [$x_n$])
+  content((v => cetz.vector.add(v,(.5,0)),n2), [$y$])
+  content((v => cetz.vector.add(v,(.5,0)),o2), [$y$])
+  content((v => cetz.vector.add(v,(.5,0)),p2), [$dots.v$])
+  content((v => cetz.vector.add(v,(.5,0)),q2), [$y$])
+  content((v => cetz.vector.add(v,(.5,0)),r2), [$y$])
+  bezier(end2, n2, k2, i2)
+  bezier(end2, o2, k2, j2)
+  bezier(end2, q2, k2, l2)
+  bezier(end2, r2, k2, m2)
+
 })
