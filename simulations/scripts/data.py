@@ -52,3 +52,13 @@ def one_to_three_channel(gray_1_channel: np.ndarray) -> np.ndarray:
     if gray_1_channel.ndim != 2:
         raise ValueError("Input must be a 1-channel image with shape (height, width).")
     return np.stack([gray_1_channel] * 3, axis=-1)
+
+def scale_image(image: np.ndarray, factor: int) -> np.ndarray:
+    return np.repeat(np.repeat(image, factor, axis=0), factor, axis=1)
+
+def rgba_image(image: np.ndarray):
+    h, w = image.shape
+    rgba_image = np.zeros((h, w, 4), dtype=np.float32)
+    rgba_image[..., :3] = image[..., np.newaxis]
+    rgba_image[..., 3] = 1.0
+    return rgba_image

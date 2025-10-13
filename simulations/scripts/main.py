@@ -16,8 +16,11 @@ if __name__ == "__main__":
     max_dim = 28
     low_res_image_pil = grayscale_image.resize((max_dim, max_dim), Image.Resampling.LANCZOS)
     random_image = create_random_image_one_channel(8,8)
+    random_image1 = create_random_image_one_channel(8,8)
+    random_image2 = create_random_image_one_channel(8,8)
     # input_image = np.array(low_res_image_pil)
     # input_image = generate_checkerboard(size=max_dim, block_size=int(max_dim/7))
     input_image = MNIST[24]
     # visualize_image(input_image)
-    run_gui(random_image)
+    data = np.array([random_image,random_image1,random_image2])
+    run_gui(data)

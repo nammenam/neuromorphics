@@ -419,7 +419,7 @@ mono-text(pseudocode-list(hooks:.5em, indentation:1em, booktabs:true)[
 + *if* a post-synaptic neuron fires *then*
   + strengthen all connections to pre-synaptic neruons that fired before
   + wither all connections to pre-synaptic neurons that did not fire, or fired after
-- 🛈 a neuron can be both pre-synaptic and post-synaptic
+- 🛈  a neuron can be both pre-synaptic and post-synaptic
 ]))
 
 #figure(
