@@ -37,7 +37,11 @@ start_time = -(MAX_POINTS - 1) * TIME_STEP
 initial_time_data = np.linspace(start_time, 0.0, num=MAX_POINTS)
 time_data = collections.deque(initial_time_data, maxlen=MAX_POINTS)
 simulation_time = 0
-connections = {}
+neurons_viz = None
+connections_viz = None
+
+# NETWORK STATE
+connections = {} # key: neuron index, val: (neuron indices, weights)
 potentials = np.full(TOTAL_NEURONS, V_REST, dtype=float)
 
 def key_press_handler(sender, app_data):
@@ -51,7 +55,6 @@ def key_press_handler(sender, app_data):
     elif key == 559 and is_paused:
         step_event.set()
 
-
 def update_text():
     global simulation_time
     while True:
@@ -59,20 +62,13 @@ def update_text():
         dpg.set_value("time_text", f"Time: {simulation_time}")
         time.sleep(0.1)
 
-# def update_img():
-#     global simulation_time
-#     while True:
-#         dpg.set_value("input_image", in_img")
-#         dpg.set_value("neurons0", f"Time: {simulation_time}")
-#         time.sleep(0.1)
-
 def fill_event_queue(event_queue, arrival_times, target_indices):
     for t, target in zip(arrival_times, target_indices):
         event_queue.append((t, 'FF', {'target': target }))
     event_queue.sort(key=lambda x: x[0])
 
 def update_series_data(data:np.ndarray):
-    global simulation_time
+    global simulation_time, neurons_viz, connections_viz, potentials, connections
 
     for iteration in range(3):
         input_image = data[iteration]
@@ -104,56 +100,58 @@ def update_series_data(data:np.ndarray):
         in_img = rgba_image(in_img)
         output_spike_list_x, output_spike_list_y, output_spike_list_idx = [], [], []
 
+        event_time, event_type, event_data = event_queue.pop(0)
+        now_time = event_time
+
         while len(event_queue) > 0:
             if is_paused:
                 step_event.wait()
                 step_event.clear()
 
-            event_time, event_type, event_data = event_queue.pop(0)
-            now_time = event_time
-            while True:
-                simulation_time += TIME_STEP
-                time_data.append(simulation_time)
-                time.sleep(0.001)
-                in_img[:,:,0:3] *= 0.996
-                out_img[:,:,0:3] *= 0.996
-                scaled_img = scale_image(in_img, SCALE_FACTOR_1)
-                scaled_img_out = scale_image(out_img, SCALE_FACTOR_2)
-                dpg.set_value("neurons0",scaled_img.flatten())
-                dpg.set_value("neurons1",scaled_img_out.flatten())
-                if (now_time < simulation_time):
-                    break
+            while now_time < simulation_time:
+                target_idx = event_data['target']
+                # weight = event_data['weight']
 
-            target_idx = event_data['target']
-            # weight = event_data['weight']
+                # if not np.isnan(output_spike_times[target_idx]):
+                #     continue
 
-            # if not np.isnan(output_spike_times[target_idx]):
-            #     continue
+                time_delta = event_time - last_update_times[target_idx]
+                # if time_delta > 0:
+                  # potentials[target_idx] *= exp(-time_delta / TAU_M)
 
-            time_delta = event_time - last_update_times[target_idx]
-            # if time_delta > 0:
-              # potentials[target_idx] *= exp(-time_delta / TAU_M)
-    
-            # potentials[target_idx] += weight
-            last_update_times[target_idx] = event_time
+                # potentials[target_idx] += weight
+                last_update_times[target_idx] = event_time
 
-            # if potentials[target_idx] >= V_THRESH:
-                # output_spike_times[target_idx] = event_time
-                # potentials[target_idx] = V_REST
-            # output_spike_list_x.append(event_time)
-            # output_spike_list_y.append(target_idx)
-            # map_offset = 0
-            # if target_idx >= NUM_NEURONS_PER_MAP:
-                # map_offset = NUM_NEURONS_PER_MAP
-            
-            neuron_2d_idx = target_idx
-            y = neuron_2d_idx // INPUT_WIDTH
-            x = neuron_2d_idx % INPUT_WIDTH
-            brightness = 1
-            in_img[y,x,0] = brightness
-            in_img[y,x,1] = brightness
-            in_img[y,x,2] = brightness
-            in_img[y,x,3] = 1
+                # if potentials[target_idx] >= V_THRESH:
+                    # output_spike_times[target_idx] = event_time
+                    # potentials[target_idx] = V_REST
+                # output_spike_list_x.append(event_time)
+                # output_spike_list_y.append(target_idx)
+                # map_offset = 0
+                # if target_idx >= NUM_NEURONS_PER_MAP:
+                    # map_offset = NUM_NEURONS_PER_MAP
+        
+                neuron_2d_idx = target_idx
+                y = neuron_2d_idx // INPUT_WIDTH
+                x = neuron_2d_idx % INPUT_WIDTH
+                brightness = 1
+                in_img[y,x,0] = brightness
+                in_img[y,x,1] = brightness
+                in_img[y,x,2] = brightness
+                in_img[y,x,3] = 1
+                event_time, event_type, event_data = event_queue.pop(0)
+                now_time = event_time
+
+            simulation_time += TIME_STEP
+            time_data.append(simulation_time)
+            time.sleep(0.001)
+            in_img[:,:,0:3] *= 0.996
+            out_img[:,:,0:3] *= 0.996
+            scaled_img = scale_image(in_img, SCALE_FACTOR_1)
+            scaled_img_out = scale_image(out_img, SCALE_FACTOR_2)
+            dpg.set_value("neurons0",scaled_img.flatten())
+            dpg.set_value("neurons1",scaled_img_out.flatten())
+            dpg.configure_item(item=neurons_viz, points=potentials)
 
 def reset_simulation():
     global simulation_time
@@ -190,38 +188,39 @@ def run_gui(data:np.ndarray):
                     no_collapse=True,
                     no_title_bar=True):
         with dpg.group(horizontal=True):
-            with dpg.child_window(width=VIEWPORT_WIDTH * 0.7):
+            with dpg.group(horizontal=False):
+                with dpg.child_window(width=VIEWPORT_WIDTH * 0.7, height=VIEWPORT_HEIGHT*0.21):
                 
-                default_value1 = np.zeros(INPUT_SHAPE, dtype=np.float32)
-                default_value = np.zeros(OUTPUT_SHAPE, dtype=np.float32)
-                default_image1 = scale_image(default_value1, SCALE_FACTOR_1)
-                default_image = scale_image(default_value, SCALE_FACTOR_2)
-                default_image_rgba = rgba_image(default_image).flatten()
-                default_image1_rgba = rgba_image(default_image1).flatten()
-                with dpg.texture_registry(show=True):
-                    dpg.add_dynamic_texture(
-                        width=default_image1.shape[1],
-                        height=default_image1.shape[0],
-                        default_value=default_image1_rgba,
-                        tag="neurons0"
-                    )
-                    dpg.add_dynamic_texture(
-                        width=default_image.shape[1],
-                        height=default_image.shape[0],
-                        default_value = default_image_rgba,
-                        tag="neurons1"
-                    )
+                    default_value1 = np.zeros(INPUT_SHAPE, dtype=np.float32)
+                    default_value = np.zeros(OUTPUT_SHAPE, dtype=np.float32)
+                    default_image1 = scale_image(default_value1, SCALE_FACTOR_1)
+                    default_image = scale_image(default_value, SCALE_FACTOR_2)
+                    default_image_rgba = rgba_image(default_image).flatten()
+                    default_image1_rgba = rgba_image(default_image1).flatten()
+                    with dpg.texture_registry(show=True):
+                        dpg.add_dynamic_texture(
+                            width=default_image1.shape[1],
+                            height=default_image1.shape[0],
+                            default_value=default_image1_rgba,
+                            tag="neurons0"
+                        )
+                        dpg.add_dynamic_texture(
+                            width=default_image.shape[1],
+                            height=default_image.shape[0],
+                            default_value = default_image_rgba,
+                            tag="neurons1"
+                        )
 
-                with dpg.group(horizontal=True):
-                    dpg.add_image("neurons0")
-                    dpg.add_image("neurons1")
-                dpg.add_separator()
+                    with dpg.group(horizontal=True):
+                        dpg.add_image("neurons0")
+                        dpg.add_image("neurons1")
 
-                with dpg.drawlist(width=300, height=1980):
-                    for i in range(INPUT_SHAPE[0] * INPUT_SHAPE[1]):
-                        dpg.draw_circle((5,i*8 + 15),3, fill=(255,255,255))
-                    for i in range(OUTPUT_SHAPE[0] * OUTPUT_SHAPE[1]):
-                        dpg.draw_circle((200,i*8 + 115),3, fill=(255,255,255))
+                with dpg.child_window(width=VIEWPORT_WIDTH * 0.7, height=VIEWPORT_HEIGHT*0.77):
+                    with dpg.drawlist(width=300, height=1980):
+                        for i in range(INPUT_SHAPE[0] * INPUT_SHAPE[1]):
+                            dpg.draw_circle((5,i*8 + 15),3, fill=(255,255,255))
+                        for i in range(OUTPUT_SHAPE[0] * OUTPUT_SHAPE[1]):
+                            dpg.draw_circle((200,i*8 + 115),3, fill=(255,255,255))
 
             with dpg.child_window(width=-1):
                 dpg.add_button(label="Reset Simulation", callback=reset_simulation, width=-1, height=40)

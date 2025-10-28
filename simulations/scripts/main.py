@@ -3,7 +3,7 @@ from data import generate_checkerboard, generate_spatiotemporal_stimuli, create_
 import numpy as np
 from visualize import visualize_image
 from experiments import pipeline
-from gui import run_gui
+from gui2 import run_gui
 # from gui2 import run_gui
 from MNIST import parse_MNIST, MNIST_train_images_path, MNIST_test_images_path
 
