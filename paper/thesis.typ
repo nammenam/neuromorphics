@@ -142,6 +142,9 @@ In the succeeding sections we will lay down the theoretical foundations that we 
 
 = Background
 
+== the neuron in 1970
+
+
 == Established Artificial Intelligence <intro1.1>
 
 // TODO: add explanation and ilustrations
