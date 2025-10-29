@@ -10,16 +10,12 @@
 #show heading: set text(font:"Geist",weight: "bold", style:"italic")
 #show heading.where( level: 1 ): it => block(width: 100%)[
   #set align(left + horizon); #set text(20pt)
-  #grid(columns: 2, column-gutter: .8em)[
-  #line(end:(0em,1.8em),stroke: 2pt + gray)][
-  #upper(it)]
+  #upper(it)
   #v(.8em)
 ]
 #show heading.where( level: 2 ): it => block(width: 100%)[
   #set align(left + horizon); #set text(16pt)
-  #grid(columns: 2, column-gutter: .8em)[
-  #line(end:(0em,1.6em),stroke: 2pt + gray)][
-  #upper(it)]
+  #upper(it)
   #v(.8em)
 ]
 #show heading.where( level: 3 ): it => block(width: 100%)[
@@ -39,6 +35,7 @@
 
 #let serif-text(body) = {
   set text(font: "Source Serif 4 18pt", size: 11pt)
+  // set text(font: "Geist", size: 11pt)
   body
 }
 
@@ -121,13 +118,14 @@ Despite these triumphs, a significant gap persists between artificial systems an
 In this thesis we explore new approaches that first and foremost might solve the critical limitations of scalability and energy efficiency in artificial intelligence. But also hopefully lay the foundation for systems that might eventually unlock true AGI. This likely requires moving beyond current mainstream ANN architectures. We will explore the potential of incorporating more sophisticated biological principles into AI design. This involves investigating alternative computational paradigms, inspired by mechanisms such as sparse, event-driven processing observed in Spiking Neural Networks (SNNs), the role of temporal dynamics in neural coding, or the potential computational advantages of systems operating near critical states. The central challenge lies in identifying and abstracting the truly essential biological mechanisms for intelligence and efficiency, distinguishing core principles from intricate biological details that may not be necessary for artificial implementation. Concretly this thesis wants to
 ]
 
-#serif-text()[
+// #serif-text()[
 #block(stroke:(thickness:1.5pt, paint:luma(50)), inset: 10pt, radius: 0pt,
   width: 100%, [
-  - _Explore how information-flow based on sparse events might be implemented in a network_
-  - _Explore learning algorithms suitable for such a network_
+  - Explore how information-flow based on sparse events might be implemented in a network
+  - Explore learning algorithms suitable for such a network
   ]
-)]
+)
+// ]
 
 #serif-text()[
 In the succeeding sections we will lay down the theoretical foundations that we base our methods on
