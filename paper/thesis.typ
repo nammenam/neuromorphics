@@ -108,9 +108,10 @@ rgb("FF5013"),
 
 // BODY
 
-= Introduction And Theory
+= Introduction <intro>
 
 #serif-text()[
+Making machines more capable and intelligent is an ongoing perpetual struggle
 The concept of intelligence, how it arises and what needs to be in place for it to occur, is probably been some of the longest standing questions in human history. How and if it can be reproduced artificially is a particuarly hot topic today. Getting answers to these questions will not only help us understand our own minds but also brings the promise of unlocking new technology discovering new drugs or materials, it may be the last invention humans ever need to make. In recent years we have crept ever closer to answer some of these questions. New state of the art artificial inteligence systems have achieved remarkable success like the sophisticated language capabilities of GPT models and the protein-folding predictions of AlphaFold.
 
 Despite these triumphs, a significant gap persists between artificial systems and their biological counterparts. Evidently, these AI systems might posses superhuman capabilities in one or a few domains but none of them surpass humans in all, what we call Artificial General Inteligence (AGI). Also more relevant to this thesis is that current state-of-the-art ANNs, require vast amount of data, computatuon and energy resources. This demand stands in stark contrast to the biological brain---an extraordinarily complex and efficient organ estimated to operate on merely 20-30 Watts while also sitting comfortably in the AGI category. This profound difference in efficiency and capability suggests that contemporary ANN paradigms, might be missing or oversimplifying fundamental principles crucial for truly intelligent and scalable computation.
@@ -137,6 +138,9 @@ In the succeeding sections we will lay down the theoretical foundations that we 
 @results3[results] blabla bla bla\
 @discussion4[discussion] blabla bla future work bla bla\
 ]
+
+
+= Background
 
 == Established Artificial Intelligence <intro1.1>
 
