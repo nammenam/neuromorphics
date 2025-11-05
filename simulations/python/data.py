@@ -62,3 +62,6 @@ def rgba_image(image: np.ndarray):
     rgba_image[..., :3] = image[..., np.newaxis]
     rgba_image[..., 3] = 1.0
     return rgba_image
+
+def inject_pattern(image, rows, cols, value):
+    image[rows, cols] = value
