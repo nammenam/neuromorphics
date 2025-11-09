@@ -1,7 +1,10 @@
 #import "@preview/droplet:0.3.1": dropcap
+#import "@preview/wordometer:0.1.5": word-count, total-words
 #import "@preview/lovelace:0.3.0": pseudocode-list
 
+
 // CONFIG
+#show: word-count
 #set text(font: "Geist", size: 10pt)
 #show math.equation : set text(font:"TeX Gyre Schola Math", size: 10.5pt)
 #show raw : set text(font:"GeistMono NF", weight: "medium", size:9pt)
@@ -78,6 +81,7 @@ context { counter(page).display("1") })))
     #lorem(80)
   ]]
 ]]
+
 #pagebreak()
 
 #{
@@ -85,12 +89,19 @@ context { counter(page).display("1") })))
   outline(depth:3, indent: auto)
 }
 
+#v(.5em)
+#text(size: 9pt, weight: "medium")[
+Wordcount: #total-words
+]
+
+#pagebreak()
+
 #v(2em)
 #heading(outlined: false, numbering: none, level: 1)[GLOSSARY]
 #{
   set text(font: "Geist", weight: "medium", size: 10pt)
   table(stroke:(thickness:0pt),
-  [LIF --- Leaky Integrate And Fire],
+  [LIF --- Leaky Integrate And Fire --- 1, 14, 30],
   [ANN --- Artificial Neural Network],
   [SNN --- Spiking Neural Network],
   [AI --- Artificial Intelligence]
@@ -135,7 +146,7 @@ In the succeeding sections I will try to lay the foundations for neuromorphic en
 
 
 #serif-text()[
-The success of modern artificial intelligence is shadowed by an unsustainable efficiency crisis. This power wall is not an accident, but the direct consequence of a decades-long divergence between mainstream AI and its original biological inspiration. To fully understand the solution proposed in this thesis—neuromorphic computing—we must first trace this history. This chapter tells the story of the two "schools" of AI that emerged from a single, shared ancestor.
+The success of modern artificial intelligence is shadowed by an unsustainable efficiency crisis. This power wall is not an accident, but the direct consequence of a decades-long divergence between mainstream AI and its original biological inspiration. To fully understand the solution proposed in this thesis—neuromorphic computing—we must first trace this history. This chapter tells the story of the two "schools of AI that emerged from a single, shared ancestor.
 
 We will begin at that shared origin point, a time when computer science and neuroscience were one and the same. We will then follow the "mainstream" path of deep learning to understand why it is so powerful but also how it became so inefficient. Finally, we will explore the "neuromorphic path," the modern neuroscience it is built upon, and the specific, unsolved challenges that this thesis confronts. We begin at the very beginning: the first formal attempt to mathematically model a biological neuron.
 ]
@@ -159,12 +170,13 @@ Their model was a radical simplification, but its genius was in that simplicity.
 By combining these simple units, McCulloch and Pitts demonstrated that they could construct any logical operation (AND, OR, NOT). This was a profound revelation: the brain's fundamental components could be modeled as simple logic gates. The M-P neuron was the common ancestor of both artificial intelligence and computational neuroscience. However, the M-P neuron was static; its connections were fixed. The next critical question was learning. In 1949, psychologist Donald Hebb provided the theoretical answer in his book The Organization of Behavior. He proposed a mechanism for how learning could occur in the brain, now famously summarized as "Hebb's Rule" or "Hebbian learning."
 
 The principle states:
-
+]
 #block(stroke:(thickness:0pt, paint:luma(0)), inset: 10pt, radius: 0pt, fill: colors.gray.light,
   width: 100%)[#text(weight:"medium")[
 "When an axon of cell A is near enough to excite a cell B and repeatedly or persistently takes part in firing it, some growth process or metabolic change takes place in one or both cells such that A's efficiency, as one of the cells firing B, is increased." @Placeholder
 ]]
 
+#serif-text()[
 In simpler terms: neurons that fire together, wire together. This was a local and decentralized learning rule. A synapse didn't need a "teacher" or a global error signal; it only needed to know if it successfully contributed to its post-synaptic neuron's firing. At this midpoint in the 20th century, the fields of artificial intelligence and neuroscience were one and the same. The pioneers were neuroscientists, logicians, and psychologists all working on a single problem: reverse-engineering the brain to understand, and eventually replicate, intelligence.
 ]
 
@@ -238,17 +250,16 @@ Now, you introduce your field as the "other path"—the one that stuck with the 
 
 While one branch of AI was abstracting the neuron into a mathematical function to be simulated on digital sequential processors (the von Neumann architecture), Caltech's Carver Mead saw a fundamental inefficiency. He observed that the digital simulation of neural processes was incredibly power-hungry, whereas the brain itself runs complex computations on just a few watts.
 
-In the 1980s, Mead proposed neuromorphic engineering. The core idea was not to *simulate* the logic of a neuron, but to *emulate* its physics. He championed using VLSI (Very-Large-Scale Integration) analog circuits to build artificial neurons and synapses directly in silicon.
+In the 1980s, Mead proposed neuromorphic engineering. The core idea was not to simulate the logic of a neuron, but to emulate its physics. He championed using VLSI (Very-Large-Scale Integration) analog circuits to build artificial neurons and synapses directly in silicon.
 
 His key insight was to operate transistors in their "sub-threshold" regime—an analog, low-power state where their behavior (the relationship between current and voltage) is governed by the same exponential physics that dictates the flow of ions through a neuron's membrane.
 
 This approach offered several revolutionary advantages:
-* Co-location of Memory and Processing: In a von Neumann computer, data is constantly shuttled between the CPU and memory (the "von Neumann bottleneck"). In Mead's silicon neurons, the "memory" (the synaptic weight) is physically part of the same circuit as the "processor" (the neuron body), just as it is in the brain.
-* Massive Parallelism: Each silicon neuron and synapse operates in parallel, just like their biological counterparts.
-* Power Efficiency: By emulating the analog physics directly, these circuits could be thousands or even millions of times more power-efficient than a digital simulation of the same process.
-* Event-Driven: Like real neurons, these circuits were designed to be "event-driven," meaning they only consume power when a "spike" (an electrical pulse) actually occurs.
+Co-location of Memory and Processing: In a von Neumann computer, data is constantly shuttled between the CPU and memory (the "von Neumann bottleneck"). In Mead's silicon neurons, the "memory" (the synaptic weight) is physically part of the same circuit as the "processor" (the neuron body), just as it is in the brain.
+Massive Parallelism: Each silicon neuron and synapse operates in parallel, just like their biological counterparts.
+Power Efficiency: By emulating the analog physics directly, these circuits could be thousands or even millions of times more power-efficient than a digital simulation of the same process. Event-Driven: Like real neurons, these circuits were designed to be event-driven, meaning they only consume power when a spike (an electrical pulse) actually occurs.
 
-Mead's early work, like the silicon retina, proved the concept. It was a chip that didn't just capture pixels, but processed visual information (like edge detection and motion) directly on the sensor in an analog, brain-inspired way. This marked the birth of a field dedicated to building hardware that *is* the network, rather than hardware that just *runs* a simulation of one.
+Mead's early work, like the silicon retina, proved the concept. It was a chip that didn't just capture pixels, but processed visual information (like edge detection and motion) directly on the sensor in an analog, brain-inspired way. This marked the birth of a field dedicated to building hardware that is the network, rather than hardware that just runs a simulation of one.
 ]
 
 #v(2em)
@@ -264,11 +275,11 @@ The "other path" of neuromorphic computing is deeply intertwined with modern neu
 The artificial neurons used in most deep learning models (like ReLU or sigmoid units) are static. They compute a weighted sum of their inputs, apply an activation function, and output a single, continuous value (like 0.83 or 5.2). This value is assumed to represent the neuron's "firing rate."
 
 Biological neurons don't work this way. They are spiking neurons, and their computation is:
-- Temporal: They integrate inputs over *time*. A neuron's internal state (its membrane potential) rises and falls based on when inputs arrive.
+- Temporal: They integrate inputs over time. A neuron's internal state (its membrane potential) rises and falls based on when inputs arrive.
 - Event-Driven: They do not communicate with continuous values. They communicate using discrete, all-or-nothing electrical pulses called action potentials, or "spikes." A neuron only fires a spike when its internal potential crosses a specific threshold. 
 - Efficient: Because they are event-driven, they are sparse. A neuron spends most of its time silent, only consuming energy when it receives or sends a spike.
 
-In this model, information is not just in *how many* spikes there are (a rate code), but *when* they occur (a temporal code). A spike arriving a few milliseconds earlier or later can completely change the computational outcome.
+In this model, information is not just in how many spikes there are (a rate code), but when they occur (a temporal code). A spike arriving a few milliseconds earlier or later can completely change the computational outcome.
 
 #v(1em)
 === Biological Learning: Spike-Timing-Dependent Plasticity (STDP)
@@ -276,17 +287,21 @@ This different model of computation requires a different model of learning. Deep
 
 Instead, the brain appears to use local learning rules. The most famous is Hebb's rule: "Neurons that fire together, wire together."
 
-A modern, measurable version of this principle is Spike-Timing-Dependent Plasticity (STDP). STDP is a learning rule that adjusts the strength (the "weight") of a synapse based purely on the *relative timing* of spikes between the pre-synaptic neuron (the sender) and the post-synaptic neuron (the receiver). 
+A modern, measurable version of this principle is Spike-Timing-Dependent Plasticity (STDP). STDP is a learning rule that adjusts the strength (the "weight") of a synapse based purely on the relative timing of spikes between the pre-synaptic neuron (the sender) and the post-synaptic neuron (the receiver). 
 
 The rule is simple and local:
-- LTP (Long-Term Potentiation): If the pre-synaptic neuron fires *just before* the post-synaptic neuron (meaning it likely *contributed* to the firing), the connection between them is strengthened.
-- LTD (Long-Term Depression): If the pre-synaptic neuron fires *just after* the post-synaptic neuron (meaning it fired too late and did *not* contribute), the connection is weakened.
+- LTP (Long-Term Potentiation): If the pre-synaptic neuron fires just before the post-synaptic neuron (meaning it likely contributed to the firing), the connection between them is strengthened.
+- LTD (Long-Term Depression): If the pre-synaptic neuron fires just after the post-synaptic neuron (meaning it fired too late and did not contribute), the connection is weakened.
 
 This mechanism allows the network to learn correlations, causal relationships, and temporal patterns directly from the stream of incoming spikes, without any "supervisor" or global error signal. It is the biological alternative to backpropagation and a cornerstone of modern neuromorphic learning.
 ]
 
 #v(1em)
 === Neuron Models
+
+#serif-text()[
+Write about dynamical models and hoph bifucations, write about modes of firing depending on bifurcations
+]
 
 #serif-text()[
 The biological neuron is the fundamental building block of the brain. The biological neuron consists of a cell body also called the soma, which contains all of the core machinery that other cells have, like the nucleus and mitochondria. However, it also has distinct structures:
@@ -299,7 +314,7 @@ When pre-synaptic neurons fire, they release neurotransmitters (like glutamate o
 Although the perceptron captures the basic idea of "integrating inputs to make a decision," a lot is left on the table. A lot of progress and new ideas have surfaced since its invention. The neuron, once thought to be a simple switch, turns out to be a complex computational device.
 
 This forces us to rethink everything:
-- Information Encoding: How is information represented? Is it in the *rate* of spikes, the *precise timing* of the first spike, or in correlations between *patterns* of spikes? This is a key research topic not explored by older models.
+- Information Encoding: How is information represented? Is it in the rate of spikes, the precise timing of the first spike, or in correlations between patterns of spikes? This is a key research topic not explored by older models.
 - Learning Rules: How does the brain learn? It is entirely different from what deep learning uses. The brain's learning is local (like STDP) and continuous.
 - Network Architecture: The brain isn't a simple feed-forward stack of layers. It is a deeply recurrent, complex, and fully asynchronous graph where signals propagate at their own speed.
 
@@ -356,13 +371,44 @@ Furthermore, neural systems exhibit complex dynamics beyond simple feedforward p
 This path (Neuromorphic) is the one that directly addresses the efficiency problem by using event-driven, spiking, and local learning rules, just like the brain.
 ]
 
+Here is the filled-in section, detailing the current landscape and creating a clear opening for your thesis work.
+
 #v(2em)
-== Neuromorphic State Of The Art\ & Research Gaps
+== Neuromorphic State Of The Art & Research Gaps
 
 #serif-text()[
 "Where we are now." Briefly cover the hardware (Loihi, TrueNorth) and simulators (Brian, Nengo) that implement the ideas from 2.4. End the chapter by perfectly setting up your own work: "While these systems exist, they still struggle with [the specific problem your thesis solves]... This thesis proposes a method to..."
-]
 
+The principles of neuromorphic computing, born from Carver Mead's vision and informed by modern neuroscience, have matured from theoretical concepts into a vibrant field of applied research. This progress is best seen in two key areas: the development of specialized, brain-inspired hardware and the creation of sophisticated software frameworks for simulating and deploying spiking neural networks (SNNs).
+
+=== Neuromorphic Hardware
+The primary goal of neuromorphic hardware is to escape the von Neumann bottleneck and emulate the power efficiency and massive parallelism of the brain. Two landmark systems define the state of the art:
+
+IBM TrueNorth: A prominent early example, TrueNorth is a fully digital, real-time, event-driven chip. It consists of 4,096 "neurosynaptic cores," collectively housing one million digital neurons and 256 million synapses. Its architecture is explicitly non-von Neumann; processing and memory are tightly integrated within each core. TrueNorth's key achievement is its staggering power efficiency: it can perform complex SNN inference tasks (like real-time video object detection) while consuming only tens of milliwatts—orders of magnitude less than a CPU or GPU performing a similar task. However, its architecture is largely fixed, making it a powerful "inference engine" but less flexible for researching novel, on-chip learning rules.
+
+Intel Loihi (and Loihi 2): Intel's line of neuromorphic research chips, starting with Loihi in 2017, represents a significant step towards flexible, on-chip learning. Like TrueNorth, Loihi is an asynchronous, event-driven digital chip, but with a key difference: it features programmable "learning engines" within each of its 128 neuromorphic cores. This allows researchers to implement and test dynamic learning rules, such as STDP and its variants, directly on the hardware in real-time. The second generation, Loihi 2, further refines this with greater scalability, improved performance, and more advanced, programmable neuron models, positioning it as a leading platform for cutting-edge neuromorphic algorithm research. 
+
+=== Simulation and Software Frameworks
+Before algorithms can be deployed on specialized hardware, they must be designed, tested, and validated. This is the role of SNN simulators, which function as the "TensorFlow" or "PyTorch" of the neuromorphic world.
+
+Brian: A highly flexible and popular SNN simulator used extensively in the computational neuroscience community. Its strength lies in its intuitive syntax, which allows researchers to define neuron models and network rules directly as a set of mathematical equations (e.g., the differential equations of a Leaky Integrate-and-Fire neuron). This makes it an ideal tool for exploring the detailed dynamics of biologically realistic models.
+
+Nengo: A powerful, high-level framework that functions as a "neural compiler." Nengo is built on a strong theoretical foundation (the Neural Engineering Framework) that allows users to define complex computations and dynamical systems in high-level Python code. Nengo then "compiles" this functional description into an equivalent SNN. Its key advantage is its backend-agnostic nature; the same Nengo-defined network can be run on a standard CPU, a GPU, or deployed directly to neuromorphic hardware like Intel's Loihi.
+
+=== The Research Gap: The Learning Problem
+Despite this immense progress in hardware and software, a fundamental challenge remains, creating a critical research gap: the training problem.
+
+Mainstream deep learning has a powerful, universal tool: backpropagation. Neuromorphic computing does not yet have a clear equivalent. While these systems exist, they still struggle with finding an efficient, scalable, and powerful learning algorithm that is both biologically plausible and computationally effective.
+
+This gap manifests in several ways:
+1.  Limited Supervised Learning: "Local" rules like STDP are fundamentally unsupervised. They are excellent for finding patterns and correlations but struggle with complex, task-driven "supervised" problems (e.g., "classify this audio signal into one of ten specific words").
+2.  The "Conversion" Compromise: A popular workaround is to first train a conventional, non-spiking ANN using backpropagation, and then "convert" its weights to an SNN for efficient inference. This method, while practical, is a compromise. It discards the rich temporal dynamics SNNs are capable of and does not represent true "neuromorphic learning."
+3.  The "Surrogate Gradient" Challenge: The "firing" of a spiking neuron is a non-differentiable event, which makes it incompatible with standard backpropagation. New methods, like "surrogate gradient" learning, attempt to approximate this spike event with a smooth function to enable gradient-based learning, but this is an area of intense and ongoing research.
+
+This thesis confronts this central challenge: How to effectively and efficiently train spiking neural networks for complex, real-world temporal tasks. While hardware like Loihi provides the platform for on-chip learning, it still requires a robust and scalable algorithm. The existing approaches of ANN-to-SNN conversion or simple Hebbian rules are insufficient.
+
+This thesis proposes a method to bridge this gap by... (...for example: "...developing a novel, event-driven surrogate gradient algorithm capable of training deep SNNs directly in the temporal domain," or "...introducing a hybrid learning rule that combines the efficiency of STDP with the task-driven power of error-based feedback," or "...proposing a new architecture for temporal credit assignment that is both hardware-friendly and scalable.")
+]
 
 #pagebreak()
 
@@ -403,6 +449,12 @@ A learning scheme where inputs have to occur in the same episode repeatedly two 
 
 If the post neuron fires then we should strengthen the weights
 
+#figure(
+  include("figures/spiketrain.typ"),
+  caption: [Proposed simplifed layout of a SNN. The neurons are connected with hirearcical busses
+  that allow for the network to be configured as a _small world network_]
+)
+
 Footnote digression for longer patterns
 Longer patterns require a latched state such as neurons entering repeated firing like a state machine
 
@@ -428,6 +480,10 @@ The problem with this decoding is for strong stimuli we would ideally make the n
 
 #serif-text()[
 Leaky integrate and fire models seem the best bet, however complex dynamics like exponential decay and analog weights and potentials seem excessive, we might do without. Binary weights 1 for excitatory and and 0 for inhibitory. Stronger weights can be modeled with multiple parallel synapses
+]
+
+#serif-text()[
+Another way which is also based on relative firing order of single spikes could be a passcode encoding. Such an encoding could work by having neurons only react to a sequence. It has an internal state machine of sorts and will only advance to the next state if recives the correct input in the correct order. This encoding does only care about relative order not relative timings.
 ]
 
 #v(2em)
@@ -456,12 +512,6 @@ A second problem is how to decode order. When do we start the decreasing timer, 
 #pagebreak()
 
 = Proof of Concept Method <method>
-
-
-#figure(
-  image("figures/spiketrain.svg"),
-  caption: [Spike train]
-)
 
 #figure(
 caption: [Unsupervised local learning rule for induvidual neurons. Based on STDP],
