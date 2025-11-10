@@ -8,7 +8,7 @@
 #set text(font: "Geist", size: 10pt)
 #show math.equation : set text(font:"TeX Gyre Schola Math", size: 10.5pt)
 #show raw : set text(font:"GeistMono NF", weight: "medium", size:9pt)
-#set list(marker: sym.square.filled.small, indent: 1em)
+#set list(marker: sym.bullet, indent: 1em)
 #show heading: set text(font:"Geist",weight: "bold", style:"normal")
 #show heading.where( level: 1 ): it => block(width: 100%)[
   #set align(left + horizon); #set text(24pt)
@@ -33,7 +33,8 @@
   it
 }
 
-#set heading(numbering: "1.1 \u{00B7}")
+// #set heading(numbering: "1.1 \u{00B7}")
+#set heading(numbering: "1.1 \u{2022}")
 
 #let serif-text(body) = {
   set text(font: "Source Serif 4 18pt", size: 11pt)
@@ -101,7 +102,7 @@ Wordcount: #total-words
 #{
   set text(font: "Geist", weight: "medium", size: 10pt)
   table(stroke:(thickness:0pt),
-  [LIF --- Leaky Integrate And Fire --- 1, 14, 30],
+  [LIF #sym.bullet Leaky Integrate And Fire #sym.bullet 1, 14, 30],
   [ANN --- Artificial Neural Network],
   [SNN --- Spiking Neural Network],
   [AI --- Artificial Intelligence]
@@ -112,19 +113,14 @@ Wordcount: #total-words
 
 = Introduction <intro>
 
-// THE HOOK: Start broad. The AI revolution, its impact.
 #serif-text()[
-Making intelligent machines is an ongoing perpetual struggle. The concept of intelligence,how it arises and what needs to be in place for it to occur, is probably been some of the longest standing questions in human history. How and if it can be reproduced artificially is a particuarly hot topic today. Getting answers to these questions will not only help us understand our own minds but also brings the promise of unlocking new technology discovering new drugs or materials, it may be the last invention humans ever need to make. In recent years we have crept ever closer to answer some of these questions. Artificial intelligence (AI) is in the midst of a revolution. Deep Learning, a computational approach based on multi-layered artificial neural networks, has achieved superhuman performance in domains ranging from protein folding and medical diagnostics to natural language translation. This success is bringing a lot of attention to AI, and cementing it's place as a transformative tool, but it has also revealed a fundamental and unsustainable flaw.
+Making intelligent machines has been a long standing goal for many. The concept of intelligence,how it arises and what needs to be in place for it to occur, is probably been some of the longest standing questions in human history. How and if it can be reproduced artificially is a particuarly hot topic today. Getting answers to these questions will not only help us understand our own minds but also brings the promise of unlocking new technology discovering new drugs or materials, it may be the last invention humans ever need to make. In recent years we have crept ever closer to answer some of these questions. Artificial intelligence (AI) is in the midst of a revolution. Deep Learning, a computational approach based on multi-layered artificial neural networks, has achieved superhuman performance in domains ranging from protein folding and medical diagnostics to natural language translation. This success is bringing a lot of attention to AI, and cementing it's place as a transformative tool, but it has also revealed a fundamental and unsustainable flaw.
 
-The sucess of modern deep learning comes at a staggering computational cost. The training of a single state-of-the-art language model can consume megawatts of power @Placeholder, emitting a carbon footprint equivalent to the lifetime of several cars. This "power wall" is a direct consequence of the architectural mismatch at the heart of modern AI: we are running brain-inspired algorithms on hardware that is not brain-like.
+The sucess of modern deep learning comes at a staggering computational cost. The training of a single state-of-the-art language model can consume megawatts of power @Placeholder, emitting a carbon footprint equivalent to the lifetime of several cars. Furthermore It needs a lot of data ... New evidence suggests that deep learing is at intellignet as first thought ... This hunger for power and data as well as limited learning should be a wake up call to rethink the architectural decisions at the heart of modern AI. In stark contrast, the human brain—the "gold standard" of efficient intelligence—performs the same complex tasks on a mere 20 watts of power, seamlessly integrating computation and memory at the synaptic level. This vast disparity proves that while our models are powerful, our paradigm is inefficient. We are building supercomputers to simulate intelligence rather than building efficient, intelligent machines. We are running brain-inspired algorithms on hardware that is not brain-like. Suggests that contemporary ANN paradigms, might be missing or oversimplifying fundamental principles crucial for truly intelligent and scalable computation.
 
-It needs a lot of data
+Today's systems are built on the 80-year-old von Neumann architecture, which creates a "memory bottleneck by physically separating processing and memory ...
 
-New evidence suggests that deep learing is at intellignet as first thought.
-
-Today's systems are built on the 80-year-old von Neumann architecture, which creates a "memory bottleneck by physically separating processing and memory. In stark contrast, the human brain—the "gold standard" of efficient intelligence—performs the same complex tasks on a mere 20 watts of power, seamlessly integrating computation and memory at the synaptic level. This vast disparity proves that while our models are powerful, our paradigm is inefficient. We are building supercomputers to simulate intelligence rather than building efficient, intelligent machines.
-
-Despite these triumphs, a significant gap persists between artificial systems and their biological counterparts. Evidently, these AI systems posses superhuman capabilities in one or a few domains but none of them surpass humans in all, what we call Artificial General Inteligence (AGI). Also more relevant to this thesis is that current state-of-the-art ANNs, require vast amount of data, computatuon and energy resources. This demand stands in stark contrast to the biological brain---an extraordinarily complex and efficient organ estimated to operate on merely 20-30 Watts while also sitting comfortably in the AGI category. This profound difference in efficiency and capability suggests that contemporary ANN paradigms, might be missing or oversimplifying fundamental principles crucial for truly intelligent and scalable computation.
+Next generation of AI should mimic the brain more and the hardware should bake in these computations directly ...
 
 In this thesis we explore new approaches that first and foremost might solve the critical limitations of scalability and energy efficiency in artificial intelligence. But also hopefully lay the foundation for systems that might eventually unlock true AGI. This likely requires moving beyond current mainstream ANN architectures. We will explore the potential of incorporating more sophisticated biological principles into AI design. This involves investigating alternative computational paradigms, inspired by mechanisms such as sparse, event-driven processing observed in Spiking Neural Networks (SNNs), the role of temporal dynamics in neural coding, or the potential computational advantages of systems operating near critical states. The central challenge lies in identifying and abstracting the truly essential biological mechanisms for intelligence and efficiency, distinguishing core principles from intricate biological details that may not be necessary for artificial implementation. Concretly this thesis wants to
 ]
@@ -180,11 +176,21 @@ The principle states:
 In simpler terms: neurons that fire together, wire together. This was a local and decentralized learning rule. A synapse didn't need a "teacher" or a global error signal; it only needed to know if it successfully contributed to its post-synaptic neuron's firing. At this midpoint in the 20th century, the fields of artificial intelligence and neuroscience were one and the same. The pioneers were neuroscientists, logicians, and psychologists all working on a single problem: reverse-engineering the brain to understand, and eventually replicate, intelligence.
 ]
 
-#v(2em)
-== The Perceptron
+#v(1em)
+=== The Perceptron
 
-#serif-text()[ Now, you show the first engineering attempt to build a machine based on these ideas. Introduce Rosenblatt's Perceptron. Explain it as a direct hardware implementation of the McCulloch-Pitts neuron with a Hebbian-style learning rule. The "First Winter": Briefly explain its limitations (the "XOR problem" identified by Minsky & Papert). This is crucial because it creates the problem that the next generation of AI researchers had to solve. ] #box( width: 49%, serif-text()[ The term Artificial Intelligence forms an umbrella over many different techniques that make use of machines to do some intelligent task. The most promising way to achieve AI today is through deep neural networks. The neural networks of today are almost exclusively based on the simple perceptron neuron model. It is a fairly old idea based on a simple model of how the brain processes information. The model of the neuron that it is based on has "synapses" just like the biological one. The synapses function as inputs, each with a "weight" (strength). When inputs are active, they excite the receiving neuron more or less depending on the strength of this connection. ]) #h(2%) #box( width: 48%, height: 7cm, figure(   include("figures/perceptron.typ"),   caption: [   The perceptron---a simple model of how a neuron operates. Inputs xi​ get multiplied by weights wi​ and   summed. If the sum ∑wi​xi​ surpasses a threshold (or "bias" b), the neuron fires.   ] )) #serif-text()[ In 1957, psychologist Frank Rosenblatt took these theoretical ideas and created the first practical, engineered neural network: The Perceptron. It was a direct hardware implementation (the "Mark I Perceptron") of the McCulloch-Pitts neuron, but with one crucial addition: a trainable learning rule based on Hebb's ideas.
+#serif-text()[ Now, you show the first engineering attempt to build a machine based on these ideas. Introduce Rosenblatt's Perceptron. Explain it as a direct hardware implementation of the McCulloch-Pitts neuron with a Hebbian-style learning rule. The "First Winter": Briefly explain its limitations (the "XOR problem" identified by Minsky & Papert). This is crucial because it creates the problem that the next generation of AI researchers had to solve.
+]
+#box(width: 49%)[#serif-text()[
+The term Artificial Intelligence forms an umbrella over many different techniques that make use of machines to do some intelligent task. The most promising way to achieve AI today is through deep neural networks. The neural networks of today are almost exclusively based on the simple perceptron neuron model. It is a fairly old idea based on a simple model of how the brain processes information. The model of the neuron that it is based on has "synapses" just like the biological one. The synapses function as inputs, each with a "weight" (strength). When inputs are active, they excite the receiving neuron more or less depending on the strength of this connection
+]]
+#h(2%)
+#box(width: 48%, height: 7cm)[
+#figure(include("figures/perceptron.typ"),caption:[The perceptron---a simple model of how a neuron operates. Inputs $x_i$ get multiplied by weights $w_i$ and summed. If the sum $∑ w_i x_i$ surpasses a threshold (or "bias" $b$), the neuron fires.
+])]
 
+#serif-text()[
+In 1957, psychologist Frank Rosenblatt took these theoretical ideas and created the first practical, engineered neural network: The Perceptron. It was a direct hardware implementation (the "Mark I Perceptron") of the McCulloch-Pitts neuron, but with one crucial addition: a trainable learning rule based on Hebb's ideas.
 As your text describes, this simple model sums its weighted inputs, and if the sum surpasses a threshold, it will fire and pass the signal downstream. Rosenblatt's key contribution was the perceptron learning rule, an algorithm that could automatically adjust the "weights" to learn. The machine was shown a pattern (e.g., a letter) and it would guess a classification. If the guess was wrong, the algorithm would slightly increase the weights of connections that "should" have fired and decrease the weights of those that fired incorrectly.
 
 The Perceptron was capable of classifying linearly separable patterns, and its creation sparked immense optimism. It was hailed as the first "thinking machine." However, this excitement was brought to an abrupt halt.
@@ -199,30 +205,16 @@ The critical breakthrough that solved this problem was the independent developme
 
 This combination—multiple layers of interconnected units (MLPs) trained via backpropagation—defines the architecture that became the foundation for the deep learning revolution. The neural networks of today, from the Convolutional Neural Networks (CNNs) that process images to the Transformers (like GPT) that handle language, all descend from this "mainstream" path. They are all, at their core, vast, multi-layer networks of simple perceptron-like units, trained with a variation of backpropagation. ]
 
-#v(2em)
-== The Perceptron
-
 #serif-text()[
 Now, you show the first engineering attempt to build a machine based on these ideas. Introduce Rosenblatt's Perceptron. Explain it as a direct hardware implementation of the McCulloch-Pitts neuron with a Hebbian-style learning rule. The "First Winter": Briefly explain its limitations (the "XOR problem" identified by Minsky & Papert). This is crucial because it creates the problem that the next generation of AI researchers had to solve.
 ]
-#box(
-width: 49%,
-serif-text()[
+#serif-text()[
 The term Aritifical Inteligence forms an umbrella over many different techniques that make use of machines to do some intelligent task. The most promising way to acheive AI to day is trough deep neural networks. The neural networks of today are almost exclusivly based on the simple perceptron neuron model. It is a fairly old idea based on a simple model on how the brain processes information. The model of the neuron that the is based on has synapses just like the biological one, the synapses functions as inputs which when firing will exite the reciving neuron more or less depending on the strenth of the connection. If the reciving neuron get exited
-])
-#h(2%)
-#box( width: 48%, height: 7cm,
-figure(
-  include("figures/perceptron.typ"),
-  caption: [
-  The perceptron---a simple model of how a neuron operates. Inputs gets multiplied by weights and
-  summed, if the sum surpasses a threshold known as the bias, the neuron fires.
-  ]
-))
+]
 #serif-text()[
 above a threshold it will fire and pass the signal downstream to another reciving neuron. Which is conceptually similar to how real neurons operate. This simple model is called a perceptron, which introduced a learning rule for a single computational neuron capable of classifying linearly separable patterns. However, to the MLP was the understanding that stacking multiple layers of these perceptron-like units could overcome these limitations by creating more complex decision boundaries. The critical breakthrough enabling the practical use of MLPs was the independent development and subsequent popularization of the backpropagation algorithm. Backpropagation provided an efficient method to calculate the gradient of the error function with respect to the network's weights, allowing for effective training of these deeper, multi-layered architectures. This combination---multiple layers of interconnected units
 #footnote[
-  While often conceptualized in layers (e.g., layers of the neocortex), the brain's connectivity is vastly more complex than typical feedforward ANNs, featuring extensive recurrent connections, feedback loops, and long-range projections that make a simple 'unrolling' into discrete layers an oversimplification
+While often conceptualized in layers (e.g., layers of the neocortex), the brain's connectivity is vastly more complex than typical feedforward ANNs, featuring extensive recurrent connections, feedback loops, and long-range projections that make a simple 'unrolling' into discrete layers an oversimplification
 ],
 typically using non-linear activation functions, trained via backpropagation---defines the MLP, which became a foundational architecture for neural networks and paved the way for the deep learning revolution. GPT, alphafold, etc. all use these fundamentals with differetn variations of architechtures which boils down to how many layers how large layers how dense layers and how they should be connected (attention, RNN, CNN, resnet )
 ]
@@ -374,7 +366,7 @@ This path (Neuromorphic) is the one that directly addresses the efficiency probl
 Here is the filled-in section, detailing the current landscape and creating a clear opening for your thesis work.
 
 #v(2em)
-== Neuromorphic State Of The Art & Research Gaps
+== Neuromorphic State Of The Art\ & Research Gaps
 
 #serif-text()[
 "Where we are now." Briefly cover the hardware (Loihi, TrueNorth) and simulators (Brian, Nengo) that implement the ideas from 2.4. End the chapter by perfectly setting up your own work: "While these systems exist, they still struggle with [the specific problem your thesis solves]... This thesis proposes a method to..."
