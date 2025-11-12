@@ -260,7 +260,7 @@ Section intro ...
 ]
 
 #v(1em)
-=== Neuron Models And Dynamics
+=== Spiking Neurons
 #serif-text()[
 The artificial neurons used in most deep learning models (like ReLU or sigmoid units) are static. They compute a weighted sum of their inputs, apply an activation function, and output a single, continuous value (like 0.83 or 5.2). This value is assumed to represent the neuron's firing rate. Biological neurons don't work this way. They are spiking neurons, and their computation is:
 ]
@@ -272,6 +272,53 @@ The artificial neurons used in most deep learning models (like ReLU or sigmoid u
 #serif-text()[
 In this model, information is not just in how many spikes there are (a rate code), but when they occur (a temporal code). A spike arriving a few milliseconds earlier or later can completely change the computational outcome.
 ]
+
+
+#v(1em)
+=== Generalized Leaky Integrate And Fire
+
+#figure(
+kind: "eq",
+supplement: [Equation],
+caption: [Generalized leaky integrate and fire differential equation gouvering the dynamics of a neurons membrane potential],
+[
+$ tau_m (dif u)/(dif t) = -(u - u_"rest") + R(u) I(t) $
+#serif-text()[
+Considering all input currents to be uniform packets (spikes), the dirac delta function fits well into the mathematical framework
+]
+$ tau_m (dif u)/(dif t) = -(u - u_"rest") + R(u) q delta(t) $
+]
+) <glif>
+#serif-text()[
+solving the equation
+]
+#figure(
+kind: "eq",
+supplement: [Equation],
+caption: [Generalized leaky integrate and fire differential equation gouvering the dynamics of a neurons membrane potential],
+[
+$ u(t) = u_"rest" + sum_f (u_r - phi) exp(- (t-t(f))/tau_m) + R/tau_m integral_0^infinity exp(-s/tau_m) I(t-s) dif s $
+#serif-text()[
+Considering all input currents to be uniform packets (spikes), the dirac delta function fits well into the mathematical framework
+]
+$ tau_m (dif u)/(dif t) = -(u - u_"rest") + R(u) q delta(t) $
+]
+) <glif>
+
+
+#v(1em)
+=== Neuron Dynamics
+
+#box-text()[
+Attractor network\
+Point attractors – memory, pattern completion, categorizing, noise reduction\
+Line attractors – neural integration: oculomotor control\
+Ring attractors – neural integration: spatial orientation\
+Plane attractors – neural integration: (higher dimension of oculomotor control)\
+Cyclic attractors – central pattern generators\
+Chaotic attractors – recognition of odors and chaos is often mistaken for random noise.\
+]
+
 #figure(include("figures/neurondynamics.typ"),caption:[Neuron dynamics])
 #serif-text()[
 Write about dynamical models and hoph bifucations, write about modes of firing depending on bifurcations ...
@@ -405,6 +452,11 @@ By doing this, you've already "banked" a major contribution before you even show
 
 #v(2em)
 == Neurons And Encoding
+
+#serif-text()[
+encoding where the inputs get increasingly smaller as the treshold increases can encode order of the elements, evidence for bio-plauibility can be found from eq 1 where the R(u) is dependent on the membrane potential
+]
+
 #serif-text()[
 A neuron should have the following charecteristcs
 ]
@@ -445,9 +497,16 @@ An important point is to declare whether a mechanism is bio plausible. An engine
 Some neurons have other properties like bursting modes or continuous firing once the threshold has been reached.
 
 Inhibition should make a neuron not fire
+]
 
+#figure(
+kind: "eq",
+supplement: [Equation],
+caption: [Weigthed sum],
 $ T = sum w/t $
+)
 
+#serif-text()[
 In a time to first spike scheme of we care about the order (the relative values since information is stored in time and order) we have to use weights and a neuron model that distinguish between inputs arriving earlier than others. I present a scheme where the first neuron that arrives starts a linear count where the slope of the counter is the weight additional inputs will increase or decrease the slope according to their weight. We can see that neurons arriving earlier will get more time to increase the counter and thus will carry a higher value. If the counter reaches a threshold the neuron will fire. The astute will notice that in this scheme the neuron will fire even for the smallest stimulus since the counter will count up a non zero value and eventually reach the threshold, to mitigate this we can simply say that if the counter is too slow the neuron will not fire we will see later that this scheme satisfies the criteria above.
 
 The problem with this decoding is for strong stimuli we would ideally make the neuron respond immediately and fire, but it has to wait until the counter has reached the threshold to fix this we can also add the weight of the input directly to the potential while also starting a counter. Now if early strong inputs arrive they will fill up the potential and make the neuron fire almost immediately. Small inputs wil take some time 
@@ -496,6 +555,7 @@ A second problem is how to decode order. When do we start the decreasing timer, 
 = Proof of Concept Method <method>
 
 #figure(
+kind:"algorithm",
 caption: [Unsupervised local learning rule for induvidual neurons. Based on STDP],
 supplement: [Algorithm],
 mono-text(pseudocode-list(hooks:.5em, indentation:1em, booktabs:true)[
@@ -509,6 +569,7 @@ mono-text(pseudocode-list(hooks:.5em, indentation:1em, booktabs:true)[
 ]))
 
 #figure(
+kind:"algorithm",
 caption: [Growing rules for synapses],
 supplement: [Algorithm],
 mono-text(pseudocode-list(hooks:.5em, indentation:1em, booktabs:true)[
