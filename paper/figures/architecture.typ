@@ -11,14 +11,18 @@
     stroke: (paint: rgb("101010")),
     fill: rgb("D0D0D0"),
   )
-  rect((4,8.5),(rel:(.8,.8)),radius:15%, name:"r")
-  content((v => cetz.vector.add(v, (2, 0)), "r.east"), "= interconnect")
+  compound-path({
+  rect((2.4,0),(rel:(.4,5.2)),radius:0%)
+  rect((0,2.4),(rel:(5.2,.4)),radius:0%)
+  }, stroke: (paint: rgb("101010")))
+  rect((2.8,5.5),(rel:(.4,.4)),radius:15%, name:"r")
+  content((v => cetz.vector.add(v, (1.5, 0)), "r.east"), "= interconnect")
   set-style(
     stroke: (paint: rgb("101010")),
     fill: rgb("909090"),
   )
 
-  rect((0,8.5),(rel:(.8,.8)),radius:15%, name:"r")
+  rect((0,5.5),(rel:(.4,.4)),radius:15%, name:"r")
   content((v => cetz.vector.add(v, (1, 0)), "r.east"), "= neuron")
   
   let pos_x = 0
@@ -26,16 +30,15 @@
   for i in range(8) {
     pos_y = 0
     if (calc.rem(i, 4) == 0 and (i > 0)) {
-      pos_x += 0.2
+      pos_x += 0.6
     }
     for j in range(8) {
       if (calc.rem(j, 4) == 0 and (j > 0)) {
-        pos_y += 0.2
+        pos_y += 0.6
       }
-      rect((pos_x,pos_y),(rel:(.8,.8)),radius:15%, name:"r")
-      pos_y += 1.0
+      rect((pos_x,pos_y),(rel:(.4,.4)),radius:15%, name:"r")
+      pos_y += 0.6
     }
-    pos_x += 1.0
+    pos_x += 0.6
   }
-
 })
