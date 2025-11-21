@@ -637,6 +637,13 @@ The nwtwork architecthure should be paralizeable allowing for each neuron to ope
 #v(2em)
 == Simulator
 
+#serif-text()[
+#lorem(100)
+#lorem(100)
+
+#lorem(100)
+]
+
 #pagebreak()
 
 = Results <results>

@@ -1,148 +1,85 @@
-#import "@preview/lilaq:0.5.0" as lq
-#import "@preview/zero:0.4.0": set-num
-#set-num(math: false)
+#import "@preview/cetz:0.4.2"
+#import "@preview/cetz-plot:0.1.3": plot, chart
 
 #set text(font: "GeistMono NF", weight: "medium", size: 9pt)
-#let sans-text(body) = {
-  set text(font: "Geist", size: 10pt, weight: "regular")
-  body
-}
 
-// --- AdEx Model Parameters (Tonic Spiking) ---
-// C dV/dt = -gL(V - EL) + gL*DeltaT*exp((V-VT)/DeltaT) - w + I
-// tau_w dw/dt = a(V - EL) - w
-//
-// Reset: If V > V_peak: V -> V_reset, w -> w + b
+// --- AdEx Parameters ---
+#let C = 281.0
+#let gL = 30.0
+#let EL = -70.6
+#let VT = -50.4
+#let DeltaT = 2.0
+#let a = 4.0
+#let tau_w = 144.0
+#let b = 80.5
+#let I = 800.0 // High current for spiking
 
-#let C = 281.0        // Membrane Capacitance (pF)
-#let gL = 30.0        // Leak Conductance (nS)
-#let EL = -70.6       // Leak Reversal Potential (mV)
-#let VT = -50.4       // Threshold Potential (mV)
-#let DeltaT = 2.0     // Slope Factor (mV)
-#let a = 4.0          // Subthreshold Adaptation (nS)
-#let tau_w = 144.0    // Adaptation Time Constant (ms)
-#let b = 80.5         // Spike-triggered Adaptation (pA)
-#let I = 800.0        // Injected Current (pA)
+// Nullclines
+#let v-null(v) = -gL * (v - EL) + gL * DeltaT * calc.exp((v - VT) / DeltaT) + I
+#let w-null(v) = a * (v - EL)
 
-#let V_reset = -70.6  // Reset Potential (mV)
-#let V_peak = -30.0   // Spike Cutoff (mV) - Artificial threshold for plotting
-
-// --- 1. Nullclines Equations ---
-
-// V-Nullcline: w = -gL(V - EL) + gL*DeltaT*exp((V-VT)/DeltaT) + I
-#let v-nullcline(v) = {
-  -gL * (v - EL) + gL * DeltaT * calc.exp((v - VT) / DeltaT) + I
-}
-
-// w-Nullcline: w = a(V - EL)
-#let w-nullcline(v) = {
-  a * (v - EL)
-}
-
-// --- 2. Simulation (Euler Method with Reset) ---
+// Simulation (Euler)
 #let solve-adex(steps, dt, v0, w0) = {
-  let path_v = (v0,)
-  let path_w = (w0,)
-  let resets = () // Store pairs of (start, end) points for reset lines
-
+  let pts = ((v0, w0),)
   let v = v0
   let w = w0
-  
+  let resets = () 
+
   for i in range(steps) {
-    // Calculate derivatives
     let exp_term = gL * DeltaT * calc.exp((v - VT) / DeltaT)
     let dv = (-gL * (v - EL) + exp_term - w + I) / C
     let dw = (a * (v - EL) - w) / tau_w
     
-    // Update state
     v = v + dv * dt
     w = w + dw * dt
     
-    // Check Reset Condition
-    if v >= V_peak {
-      let v_prev = v
-      let w_prev = w
-      
-      // Apply Reset
-      v = V_reset
+    if v >= -30 { // Peak
+      let v_old = v
+      let w_old = w
+      v = -70.6 // Reset
       w = w + b
-      
-      // Record the jump for plotting
-      resets.push( ((v_prev, w_prev), (v, w)) )
-      
-      // Start new segment (optional in simple plot, but good for data continuity)
-      path_v.push(v_prev) // To draw up to peak
-      path_w.push(w_prev)
-      path_v.push(v)      // Jump to reset
-      path_w.push(w)
+      resets.push(((v_old, w_old), (v, w)))
+      pts.push((v_old, w_old))
+      pts.push((v, w))
     } else {
-      path_v.push(v)
-      path_w.push(w)
+      pts.push((v, w))
     }
   }
-  (path_v, path_w, resets)
+  (pts, resets)
 }
 
-// Generate Data
-#let range-v = lq.arange(-80, -30, step: 0.5)
-#let nc_v_y = range-v.map(v => v-nullcline(v))
-#let nc_w_y = range-v.map(v => w-nullcline(v))
+#let (traj, resets) = solve-adex(3000, 0.05, -70.6, 0.0)
 
-// Run Simulation
-#let (traj_v, traj_w, resets) = solve-adex(2000, 0.1, -70.0, 0.0)
+// Data for Nullcline Curves
+#let v_range = range(-80, -28).map(x => x * 1.0)
+#let v_nc_pts = v_range.map(v => (v, v-null(v)))
+#let w_nc_pts = v_range.map(v => (v, w-null(v)))
 
-// --- Diagram ---
-#lq.diagram(
-  title: sans-text([AdEx State Space (Tonic Spiking)]),
-  xlabel: [$V$ (Membrane Potential mV)],
-  ylabel: [$w$ (Adaptation Current pA)],
-  width: 12cm,
-  height: 8cm,
-  xlim: (-80, -30),
-  ylim: (-50, 400),
+// Close the shape for filling (V-nullcline area)
+#let fill_shape = v_nc_pts + ((-30, -100), (-80, -100))
 
-  // 1. Vector Field
-  lq.quiver(
-    lq.arange(-80, -30, step: 4),
-    lq.arange(-50, 400, step: 30),
-    (v, w) => {
-       let exp_term = gL * DeltaT * calc.exp((v - VT) / DeltaT)
-       let dv = (-gL * (v - EL) + exp_term - w + I) / C
-       let dw = (a * (v - EL) - w) / tau_w
-       
-       // Heavily normalize because exponential term explodes
-       let mag = calc.sqrt(dv*dv + dw*dw)
-       if mag != 0 { (dv/mag, dw/mag) } else { (0,0) }
-    },
-    scale: 1.5, // Scale up normalized arrows
-    stroke: (paint: gray.lighten(60%), thickness: 0.5pt)
-  ),
+#cetz.canvas(length: .8cm, {
+  import cetz.draw: *
 
-  // 2. Nullclines
-  lq.plot(
-    range-v, nc_v_y, 
-    stroke: (paint: blue.lighten(20%), thickness: 2pt),
-    label: sans-text("V-Nullcline")
-  ),
-  lq.plot(
-    range-v, nc_w_y, 
-    stroke: (paint: red.lighten(20%), thickness: 2pt),
-    label: sans-text("w-Nullcline")
-  ),
+  plot.plot(
+    size: (10, 8), 
+    x-tick-step: 10, 
+    y-tick-step: 50, 
+    x-min: -85, x-max: -25,
+    y-min: -50, y-max: 500,
+    axis-style: "school-book", 
+    name: "phase", 
+    {    
+    // plot.add(
+      // fill_shape,
+      // fill: blue.lighten(90%),
+      // stroke: none,
+      // label: none,
+    // )
 
-  // 3. Trajectory
-  lq.plot(
-    traj_v, traj_w, 
-    stroke: (paint: black, thickness: 1.2pt),
-    label: sans-text("Limit Cycle")
-  ),
+    plot.add(v_nc_pts, style: (stroke: (paint: gray, thickness: 2pt)), label: "V-Nullcline")
+    plot.add(w_nc_pts, style: (stroke: (paint: gray, thickness: 2pt)), label: "w-Nullcline")
+  })
   
-  // 4. Manually draw Reset Lines (The "Jump")
-  ..resets.map(pair => 
-    lq.plot(
-      (pair.at(0).at(0), pair.at(1).at(0)), 
-      (pair.at(0).at(1), pair.at(1).at(1)),
-      stroke: (paint: red, dash: "dashed", thickness: 1pt)
-    )
-  )
-)
+  content("phase.north", text(weight: "bold", "AdEx Phase Portrait (Colored Regions)"), anchor: "south", padding: .2)
+})

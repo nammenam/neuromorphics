@@ -1,12 +1,7 @@
-#import "@preview/lilaq:0.5.0" as lq
-#import "@preview/zero:0.4.0": set-num
+#import "@preview/cetz:0.4.2"
+#import "@preview/cetz-plot:0.1.3": plot, chart
 
-#set-num(math: false)
 #set text(font: "GeistMono NF", weight: "medium", size: 9pt)
-#let sans-text(body) = {
-  set text(font: "Geist", size: 10pt, weight: "regular")
-  body
-}
 
 // --- AdEx Parameters ---
 #let C = 281.0
@@ -48,54 +43,61 @@
     }
   }
   
-  // Return min and max values
   (min_v, max_v)
 }
 
 // --- Generate Data ---
 #let i_vals = range(400, 1000, step: 20)
-#let v_min_arr = ()
-#let v_max_arr = ()
+#let data_min = ()
+#let data_max = ()
 
-#for i in i_vals {
-  let (mn, mx) = get-bounds(i)
-  v_min_arr.push(mn)
-  // If fixed point (diff is small), push min again to keep lines clean
-  // If spiking, push max
+#for i_val in i_vals {
+  let (mn, mx) = get-bounds(i_val)
+  
+  // Push (x, y) tuples for Cetz
+  data_min.push((i_val, mn))
+  
+  // If difference is small, it's a fixed point
   if (mx - mn) < 0.5 {
-    v_max_arr.push(mn) 
+    data_max.push((i_val, mn)) 
   } else {
-    v_max_arr.push(mx)
+    data_max.push((i_val, mx))
   }
 }
 
 // --- Diagram ---
-#lq.diagram(
-  title: sans-text([AdEx Bifurcation Diagram]),
-  xlabel: [$I_"ext"$ (pA)],
-  ylabel: [$V$ (Voltage mV)],
-  width: 12cm,
-  height: 7cm,
+#cetz.canvas(length: 1cm, {
+  import cetz.draw: *
   
-  // 1. Minimum Voltage Branch (Fixed Point)
-  lq.plot(
-    i_vals, 
-    v_min_arr,
-    stroke: (paint: blue, thickness: 1.5pt),
-    label: sans-text("Stable Fixed Point / Min Voltage")
-  ),
+  plot.plot(size: (10, 6), x-tick-step: 100, y-tick-step: 10, axis-style: "school-book", name: "bifurcation", {
+    
+    // 1. Minimum Voltage Branch (Fixed Point)
+    plot.add(
+      data_min, 
+      style: (stroke: (paint: gray, thickness: 1.5pt)),
+      label: "Stable Fixed Point / Min Voltage"
+    )
 
-  // 2. Maximum Voltage Branch (Spiking Peak)
-  lq.plot(
-    i_vals, 
-    v_max_arr,
-    stroke: (paint: red, thickness: 1.5pt),
-    label: sans-text("Spiking Peak")
-  ),
+    // 2. Maximum Voltage Branch (Spiking Peak)
+    plot.add(
+      data_max, 
+      style: (stroke: (paint: gray, thickness: 1.5pt)),
+      label: "Spiking Peak"
+    )
+    
+    // 3. Vertical Line for Bifurcation (Manual Add)
+    plot.add(
+       ((500, -75), (500, -40)),
+       style: (stroke: (paint: gray, dash: "dotted")),
+       label: none
+    )
+  })
+
+  content("bifurcation.north", text(weight: "bold", "AdEx Bifurcation Diagram"), anchor: "south", padding: .5)
   
-  // 3. Annotation for Bifurcation
-  lq.plot(
-     (500, 500), (-75, -40), // Vertical dashed line at bifurcation approx
-     stroke: (paint: gray, dash: "dotted")
-  )
-)
+  // Annotate the Bifurcation Point
+  // We use canvas coordinates relative to the plot anchor if needed, 
+  // or just plot-relative if sticking inside plot.add, but manual annotation here looks nice.
+  // Since we are outside the plot block, we'd need the plot anchor.
+  // To keep it simple, I put the line inside plot.add above.
+})

@@ -1,9 +1,6 @@
-#import "@preview/lilaq:0.5.0" as lq
-#import "@preview/cetz-plot:0.1.3"
-#import "@preview/zero:0.4.0": set-num
 #import "@preview/cetz:0.4.2"
+#import "@preview/cetz-plot:0.1.3": plot, chart
 
-#set-num(math: false)
 #set text(font: "GeistMono NF", weight: "medium", size: 9pt)
 
 // --- Data Preparation ---
@@ -16,29 +13,17 @@
   (6.0, -71), (7.0, -70.5), (8.0, -70)
 )
 
-// Lilaq expects separate arrays for x and y
-#let t = data.map(p => p.at(0))
-#let v = data.map(p => p.at(1))
-
-#let threshold_t = (0, 8)
-#let threshold_v = (-55, -55)
-
 #cetz.canvas(length: 1cm, {
   import cetz.draw: *
-    content((5, -2), anchor: "south", [
-    #lq.diagram(
-      width: 8cm, 
-      height: 4cm,
-      xlabel: [Time (ms)], 
-      ylabel: [Voltage (mV)],
-      
-      // The Action Potential Curve (Lilac)
-      lq.plot(t, v, stroke: (paint: green, thickness: 2pt)),
-      
-      // The Threshold Line (Dashed)
-      lq.plot(threshold_t, threshold_v, stroke: (paint: gray, dash: "dashed"))
-    )
-  ])
+  plot.plot(
+    size: (10, 8), 
+    x-tick-step: 10, 
+    y-tick-step: 50, 
+    axis-style: "school-book", 
+    name: "phase", 
+    {    
+    plot.add(data, style: (stroke: (paint: gray, thickness: 2pt)), label: "potential")
+  })
   // 1. Title and Annotations (Relative to Canvas)
   content((5, 5.5), text(size: 11pt, weight: "bold", "Action Potential Recording"))
 
