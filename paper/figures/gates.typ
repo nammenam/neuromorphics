@@ -2,7 +2,7 @@
 #import "@preview/cetz:0.4.2"
 
 // Font and text settings as requested
-#set text(font: "GeistMono NF", weight: "medium", size: 9pt)
+// #set text(font: "GeistMono NF", weight: "medium", size: 9pt)
 
 #cetz.canvas(length: 1cm, {
   import cetz.draw: *

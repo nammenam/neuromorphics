@@ -9,8 +9,8 @@
 #show: make-glossary
 #show: word-count
 
-#set text(font: "Geist", size: 10pt)
-#show math.equation : set text(font:"TeX Gyre Schola Math", size: 10.5pt)
+#set text(font: "Geist", size: 10pt, weight: "medium", top-edge:.68em)
+#show math.equation : set text(font:"TeX Gyre Schola Math", size: 11pt)
 #show raw : set text(font:"GeistMono NF", weight: "medium", size:9pt)
 #set list(marker: sym.bullet, indent: 1em)
 #show heading: set text(font:"Geist",weight: "bold", style:"normal")
@@ -41,7 +41,8 @@
 #set heading(numbering: "1.1 \u{2022}")
 
 #let serif-text(body) = {
-  set text(font: "Source Serif 4 18pt", size: 11pt)
+  set text(font: "Source Serif 4 18pt", size: 11pt, weight: "medium", top-edge:.68em)
+  // set text(font: "Source Serif 4 18pt", size: 11pt, weight: "medium")
   body
 }
 
@@ -52,7 +53,7 @@
 
 #let box-text(body) = {
 block(stroke:(thickness:0pt, paint:luma(0)), inset: 10pt, radius: 0pt, fill: colors.gray.light,
-  width: 100%)[#text(weight:"medium", font:"Geist", size:10pt,body)]
+  width: 100%)[#body]
 }
 
 // FRONTPAGE
@@ -170,6 +171,7 @@ We will begin at that shared origin point, a time when @ai research and and neur
 This foundation---that the brain is made of discrete units called neurons---led to the development of the first models of neurons, describing their high-level function. In 1943, neurophysiologist Warren McCulloch and logician Walter Pitts published their seminal paper, _A Logical Calculus of the Ideas Immanent in Nervous Activity_. They proposed the McCulloch-Pitts (M-P) neuron @Placeholder, the first mathematical model of the neuron.
 
 Their model was simple; it abstracted the neuron into a binary decision device with inputs and outputs:
+]
 
 #box-text()[
 - The neuron receives multiple binary inputs.
@@ -179,6 +181,7 @@ Their model was simple; it abstracted the neuron into a binary decision device w
 - If the sum does not meet the threshold, it outputs a 0 (it remains silent)
 ]
 
+#serif-text()[
 By combining these simple units, McCulloch and Pitts demonstrated that they could construct any logical operation (AND, OR, NOT) @Placeholder. This invention marked the beginning of computational neuroscience. The brain's fundamental components could be modeled as simple logic gates, and these neurons could be relaized arificially using electronics. The M-P neuron was the common ancestor of both artificial intelligence and computational neuroscience.
 
 Altough the M-P neuron was a large step forward it had some obvious drawbacks: its connections were fixed, limiting the learing, circuits created with the M-P neuron had to be handcrafted. Binary weights makes all connections eqaul importance. It cannot capture real inputs
@@ -199,72 +202,131 @@ With this framework in place, and the pionering work by McCulloh and Pitts the s
 == The Perceptron
 
 #box(width: 48%)[#serif-text()[
-In 1957, psychologist Frank Rosenblatt took these theoretical ideas and created the first practical, engineered neural network: The Perceptron. It was a direct hardware implementation (the "Mark I Perceptron") of the McCulloch-Pitts neuron, but with one crucial addition: a trainable learning rule based on Hebb's ideas. Rosenblatt's key contribution was the perceptron learning rule, an algorithm that could automatically adjust the weights to learn. The machine was shown a pattern (e.g., a letter) and it would guess a classification. If the guess was wrong, the algorithm would slightly increase the weights of connections that should have fired and decrease the weights of those that fired incorrectly. The Perceptron was capable of classifying #h(1fr) linearly #h(1fr) separable #h(1fr) patterns, #h(1fr) and
-]]
+In 1957, psychologist Frank Rosenblatt took these theoretical ideas and created the first practical, engineered neural network: The Perceptron. It was a direct hardware implementation (the "Mark I Perceptron") of the McCulloch-Pitts neuron, but with one crucial addition: a trainable learning rule based on Hebb's ideas. Rosenblatt's key contribution was the perceptron learning rule, an algorithm that could automatically adjust the weights to learn. The machine was shown a pattern (e.g., a letter) and it would guess a classification. If the guess was wrong, the algorithm would slightly increase the weights of connections that should have fired and decrease the weights of those that fired incorrectly. The Perceptron was capable of classifying linearly #h(1fr) separable #h(1fr) patterns, #h(1fr) and #h(1fr) its #h(1fr) creation #h(1fr) sparked]]
 #h(2%)
 #box(width: 48%, height: 8cm)[
 #figure(include("figures/perceptron.typ"),caption:[The perceptron---a simple model of how a neuron operates. Inputs $x_i$ get multiplied by weights $w_i$ and summed. If the sum $∑ w_i x_i$ surpasses a threshold (or "bias" $b$), the neuron fires.
 ])]
 #serif-text()[
-its creation sparked immense optimism. It was hailed as the first "thinking machine" @Placeholder. However, this excitement was brought to an abrupt halt. In 1969, @ai pioneers Marvin Minsky and Seymour Papert published their book Perceptrons, a rigorous mathematical analysis of the model's limitations. Their most famous critique was the "XOR problem." They proved that a single-layer perceptron could learn simple logic functions like AND or OR, but it was fundamentally incapable of learning the @xor function. The problem is that
+immense optimism. It was hailed as the first "thinking machine" @Placeholder. However, this excitement was brought to an abrupt halt. In 1969, @ai pioneers Marvin Minsky and Seymour Papert published their book Perceptrons, a rigorous mathematical analysis of the model's limitations. Their most famous critique was the "XOR problem." They proved that a single-layer perceptron could learn simple logic functions like AND or OR, but it was fundamentally incapable of learning the @xor function. The problem is that the true and false cases for XOR cannot be separated by a single straight line, and a single perceptron is only capable of drawing a single line. This critique was devastating. It demonstrated that this simple model was a dead end for solving more complex, real-world problems.
 ]
 
-#figure(include("figures/gates.typ"),caption:[XOR linear separable #lorem(10).])
+#figure(include("figures/gates.typ"),caption:[XOR linear separable #lorem(20).])
 
 #serif-text()[
-the true and false cases for XOR cannot be separated by a single straight line, and a single perceptron is only capable of drawing a single line. This critique was devastating. It demonstrated that this simple model was a dead end for solving more complex, real-world problems. The book's impact led to a near-total collapse in neural network funding, an era now known as the First @ai Winter. This failure, however, created the very problem that the next generation of @ai researchers had to solve, and it marks the beginning of the great divergence. Minsky and Papert themselves noted that a @mlp, stacking multiple layers of these units---could theoretically solve the XOR problem by creating more complex decision boundaries. The challenge was that no one knew how to train it. Rosenblatt's rule only worked for a single layer.
+The book's impact led to a near-total collapse in neural network funding, an era now known as the First @ai Winter. Even though Minsky and Papert had exposed a devastating flaw in the perceptron algorithm they themselves noted that a @mlp, stacking multiple layers of these units---could theoretically solve the XOR problem by creating more complex decision boundaries. The challenge was that no one knew how to train it. Rosenblatt's rule only worked for a single layer. If the next generation of @ai researchers could figure out how to train a @mlp they should be able to make machines that can make descitions on data that are not linearly separable.
 ]
 
-#v(2em)
 == The Deep Learning Path
 
 #serif-text()[
-Already with the invention of the perceptron a pragmatic approcuh to computational neuroscience and @ai was taken researchers and scientists now begin to take a more pragmatic approch, fixated on solving MLP's
-The critical breakthrough that solved this problem was the independent development and subsequent popularization of the backpropagation algorithm in the 1970s and 1980s. Backpropagation provided an efficient method to calculate the gradient of the error function with respect to all of the network's weights, even in deep layers, allowing for effective training.
+The critique by Minsky and Papert froze funding, but it did not kill the theoretical ambition. It was generally understood that if a single perceptron could not solve the XOR problem, a network of them—a Multi-Layer Perceptron (@mlp)—could. By stacking neurons into layers, the network could theoretically warp the input space to create complex, non-linear decision boundaries. The hardware was not the issue; the problem was the learning algorithm.
 
-This combination---multiple layers of interconnected units @mlp:pl trained via backpropagation---defines the architecture that became the foundation for the deep learning revolution. The neural networks of today, from the @cnn that process images to the Transformers (like GPT) that handle language, all descend from this "mainstream" path. They are all, at their core, vast, multi-layer networks of simple perceptron-like units, trained with a variation of backpropagation.
+In a single-layer perceptron, the error is obvious: if the output is wrong, the weights directly connected to that output are "to blame." But in a multi-layer network, how do you determine which neuron in the middle "hidden" layers contributed to an error at the end? This was the "Credit Assignment Problem," and it remained an insurmountable wall for over a decade.
 ]
 
-#figure(include("figures/network.typ"),caption:[Neural network])
+#figure(include("figures/network.typ"),caption:[A Multi-Layer Perceptron (MLP). By adding "hidden layers" between input and output, the network can solve non-linear problems like XOR. The challenge was discovering how to train these middle layers.])
+
+=== Backpropagation
 
 #serif-text()[
-above a threshold it will fire and pass the signal downstream to another reciving neuron. Which is conceptually similar to how real neurons operate. This simple model is called a perceptron, which introduced a learning rule for a single computational neuron capable of classifying linearly separable patterns. However, to the MLP was the understanding that stacking multiple layers of these perceptron-like units could overcome these limitations by creating more complex decision boundaries. The critical breakthrough enabling the practical use of MLPs was the independent development and subsequent popularization of the backpropagation algorithm. Backpropagation provided an efficient method to calculate the gradient of the error function with respect to the network's weights, allowing for effective training of these deeper, multi-layered architectures. This combination---multiple layers of interconnected units
-typically using non-linear activation functions, trained via backpropagation---defines the MLP, which became a foundational architecture for neural networks and paved the way for the deep learning revolution. GPT, alphafold, etc. all use these fundamentals with differetn variations of architechtures which boils down to how many layers how large layers how dense layers and how they should be connected (attention, RNN, CNN, resnet )
+The thaw of the AI Winter arrived not through a biological discovery, but a mathematical one. In the 1970s and 1980s, researchers (including Rumelhart, Hinton, and Williams) popularized the Backpropagation algorithm. It was a definitive solution to the Credit Assignment Problem.
+
+Backpropagation treats the neural network not just as a model of the brain, but as a massive, differentiable mathematical function. It uses the chain rule of calculus to compute the gradient of the error function with respect to every single weight in the network. Conceptually, the algorithm calculates the error at the output and propagates it backward through the layers. It precisely assigns "blame" to every neuron in the chain, calculating exactly how much each connection contributed to the final error and adjusting the weights (Δw) to minimize it.
+
+This unlocked the ability to train deep networks. Suddenly, MLPs were no longer theoretical curiosities; they were powerful function approximators capable of learning complex, non-linear mappings from data.
 ]
 
+=== Achievements
 
 #serif-text()[
-This section explains how mainstream @ai solved the Perceptron's problem by abandoning biological realism, The Solution: Backpropagation (1980s): Introduce backpropagation as a powerful, mathematical solution for training multi-layer perceptrons. The Divergence: This is your key argument. Explicitly state why backpropagation is not biologically plausible: Non-local learning: A neuron at the beginning of the network needs an "error signal" from the very end. The brain doesn't do this. Weight Transport Problem: It requires the exact same connection weights to be used for the forward pass (signal) and the backward pass (error), which is not how synapses work. The Result: This path led to modern Deep Learning (ANNs, CNNs, Transformers) on GPUs. The Problem (Revisited): This is where you circle back to your intro. This "engineering" path works, but it led us back to the power and efficiency crisis (von Neumann bottleneck, megawatt models) that you mentioned in Chapter 1.
+With the training mechanism solved, the field exploded. The combination of Backpropagation, massive datasets, and GPU hardware led to a "Cambrian Explosion" of neural architectures, each solving domains previously thought impossible for computers.
 
-The term Artificial Intelligence forms an umbrella over many different techniques that make use of machines to do some intelligent task. The most promising way to achieve @ai today is through deep neural networks. The neural networks of today are almost exclusively based on the simple perceptron neuron model. It is a fairly old idea based on a simple model of how the brain processes information. The model of the neuron that it is based on has "synapses" just like the biological one. The synapses function as inputs, each with a "weight" (strength). When inputs are active, they excite the receiving neuron more or less depending on the strength of this connection
+The revolution began in earnest with computer vision. Convolutional Neural Networks (@cnn), such as AlexNet (2012) and later ResNet, introduced the idea of learning hierarchical features—detecting edges, then shapes, then objects—much like the human visual cortex. This allowed machines to classify images with superhuman accuracy.
+
+Soon after, the focus shifted to sequence data. Recurrent Neural Networks (RNNs) and LSTMs gave machines a short-term memory, enabling breakthroughs in speech recognition and machine translation. However, the true paradigm shift occurred with the introduction of the Transformer architecture in 2017. By utilizing an "attention mechanism" to parallelize the processing of language, Transformers allowed for the training of massive Large Language Models (LLMs) like GPT.
+
+These techniques have even transcended media generation. Deep Learning has solved fundamental scientific problems; notably, DeepMind's AlphaFold utilized these architectures to predict the 3D structure of proteins from their amino acid sequences, a 50-year-old grand challenge in biology.
 ]
 
+=== Shortcomings
 
-#v(1em)
-=== Problems With Mainstream Deep Learning
+#serif-text()[ The "engineering path" was undeniably successful. By ignoring biological constraints, we created models that could master Go, fold proteins, and generate human-like text. However, this success was achieved through brute force. By effectively simulating neural networks on hardware that was never designed for them, we have run into a new set of fundamental walls. The very divergence that allowed Deep Learning to thrive—separating the software from the hardware—has now become its greatest liability.
 
-#serif-text()[
-It was mentioned in the introduction that the deep learning technique is ineficient compared to the brain. The reason why is not clear, from a hardware standpoint the brain simply has better hardware much more connections per area and the computation is baked into the hardware. From an algorithmic standpoint there may also be room for imporovement, In order to compute with deep learning and perceptron networks we need to compute all the entries even tho they might not contribute or are zero. Take an image for example, the human visual system is really good at ignoring unimportant details and we only have a tiny area of focus. even then we dont porcess much unless something interesting happens like movement. In deep learning we have to process the entire image. The status quo needs global synchronization, every previous layer need to finish computing before the next can start, this can be hard to scale for large systems where multiple proccesors need to talk to eachother. The same applies to backpropagation it requires freezing the entire network and separates computation and learning into two separate stages, local connectetions that should be independent of eachother have to wait extreme quantization models (1bit) also highlight the ineficiency
+1. The Von Neumann Bottleneck
+
+The brain is a "compute-in-memory" architecture; synapses store memory and perform processing in the exact same physical location. Modern computers, however, are built on the Von Neumann architecture, which physically separates the Processing Unit (CPU/GPU) from the Memory (RAM). For Deep Learning, this is catastrophic. A neural network is essentially a massive collection of weights (memory) that must be multiplied by inputs (compute). To run a modern LLM, the hardware must constantly shuttle billions of weights back and forth between the memory chips and the processor cores for every single token generated.
+
+2. The Energy Crisis
+
+The bottleneck is not just about speed; it is about energy. In modern silicon, the act of moving data is far more expensive than processing it. Fetching a single byte of data from off-chip memory consumes roughly 1,000 times more energy than performing a floating-point operation on that data. This has led to the era of "Megawatt Models." While the human brain operates on ≈20 watts (roughly the power of a dim lightbulb), our artificial equivalents require entire power plants.
+
+3. Data Inefficiency and Opacity
+
+Finally, Backpropagation is incredibly sample-inefficient compared to biology. Deep Learning models often require millions of examples to learn concepts that a human child can grasp from a single observation ("one-shot learning"). Furthermore, the resulting models are opaque "Black Boxes." We know that they work, but due to the distributed nature of their representations, we often cannot explain how or why specific decisions are made.
+]
+
+=== Engineering vs. Biology: The Great Divergence
+
+#serif-text()[ This brings us to the root cause of these shortcomings. While the Perceptron was born from a desire to mimic the brain, the success of Backpropagation drove the field toward mathematical pragmatism and away from biological realism. To solve the training problem, mainstream AI accepted mechanisms that are fundamentally impossible in biological tissue.
+
+The two most significant violations are:
+
+The Non-Locality of Data: In backpropagation, a synapse in the first layer changes its strength based on an error calculation that occurred at the very end of the network. In the brain, learning is widely believed to be local (Hebbian plasticity)—synapses change based only on the immediate activity of the two neurons they connect, not a global error signal.
+
+The Weight Transport Problem: To calculate the error gradient backward, the algorithm requires the backward pass to use the exact same synaptic weights as the forward pass. In the brain, synapses are unidirectional chemical bridges; there is no known biological mechanism that allows a neuron to "read" the strength of a downstream synapse to calculate an error derivative.
+
+This divergence created a paradox: we achieved Artificial Intelligence, but at the cost of efficiency and explainability. We built software that behaves somewhat like a brain, but forced it to run on hardware that functions nothing like one.
+
+To break through the energy and efficiency walls, researchers are now asking a new question: What if we stop forcing neural networks into the Von Neumann architecture? What if, instead of ignoring the biological constraints that Minsky and Papert critiqued, we embraced them? This line of thinking points toward a return to the original inspiration: Neuromorphic Computing.
 ]
 
 #v(2em)
-== Birth Of Neuromorphic Computing
+== The Birth of Neuromorphic Computing
+
+#serif-text()[ While the artificial intelligence community was struggling through the AI Winter, debating the merits of symbolic logic versus connectionism, a parallel revolution was brewing in the field of hardware physics. In the late 1980s at Caltech, physicist and engineer Carver Mead—already a legend for pioneering VLSI (Very Large Scale Integration) chip design—began to question the fundamental trajectory of digital computing.
+
+Mead observed that while digital computers were becoming exponentially faster (following Moore's Law), they were also becoming exponentially less efficient in terms of energy per operation. He realized that the prevailing method of building computers—using transistors as rigid, high-power "on/off" switches to perform boolean logic—was incredibly wasteful compared to the biological brains they were trying to emulate.
+
+In 1990, Mead published his seminal paper, Neuromorphic Electronic Systems, coining the term "neuromorphic" (combining neuro for nerve and morph for form). His thesis was radical: rather than writing software to simulate the equations of a neuron on a digital computer, we should build physical hardware that relies on the same laws of physics as the biological nervous system. ]
+
+#v(1em)
+=== The Subthreshold Insight
 
 #serif-text()[
+The core insight that launched the field was a physical analogy between silicon and biology. In standard digital electronics, transistors are operated in "strong inversion." They are driven with high voltages to act as binary switches—either fully open (1) or fully closed (0). This ignores the complex physics that happens in between those states.
 
-While one branch of @ai was abstracting the neuron into a mathematical function to be simulated on digital sequential processors (the von Neumann architecture), Caltech's Carver Mead saw a fundamental inefficiency. He observed that the digital simulation of neural processes was incredibly power-hungry, whereas the brain itself runs complex computations on just a few watts.
+Mead, however, looked at the transistor in the "subthreshold" (or weak inversion) region—the tiny trickle of current that flows when the transistor is technically "off." He discovered that in this low-power regime, the current flowing through a transistor $I_"ds"$ is an exponential function of the gate voltage $V_"gs"$
+$ I_"ds" prop "e" kai V_"gs" / U T $​
+Crucially, this is the exact same Boltzmann-distribution physics that governs the flow of ions through protein channels in a biological neuronal membrane.
 
-In the 1980s, Mead proposed neuromorphic engineering. The core idea was not to simulate the logic of a neuron, but to emulate its physics. He championed using VLSI (Very-Large-Scale Integration) analog circuits to build artificial neurons and synapses directly in silicon.
-
-His key insight was to operate transistors in their "sub-threshold" regime---an analog, low-power state where their behavior (the relationship between current and voltage) is governed by the same exponential physics that dictates the flow of ions through a neuron's membrane.
-
-This approach offered several revolutionary advantages:
-Co-location of Memory and Processing: In a von Neumann computer, data is constantly shuttled between the CPU and memory (the "von Neumann bottleneck"). In Mead's silicon neurons, the "memory" (the synaptic weight) is physically part of the same circuit as the "processor" (the neuron body), just as it is in the brain.
-Massive Parallelism: Each silicon neuron and synapse operates in parallel, just like their biological counterparts.
-Power Efficiency: By emulating the analog physics directly, these circuits could be thousands or even millions of times more power-efficient than a digital simulation of the same process. Event-Driven: Like real neurons, these circuits were designed to be event-driven, meaning they only consume power when a spike (an electrical pulse) actually occurs.
-
-Mead's early work, like the silicon retina, proved the concept. It was a chip that didn't just capture pixels, but processed visual information (like edge detection and motion) directly on the sensor in an analog, brain-inspired way. This marked the birth of a field dedicated to building hardware that is the network, rather than hardware that just runs a simulation of one.
+This realization was profound. It meant that a single transistor, operating in its natural subthreshold state, could physically compute the same exponential, non-linear functions that biological neurons use, but at a distinct speed advantage and with microscopic power consumption. We did not need thousands of logic gates to simulate a synapse; a synapse could be implemented by a single transistor.
 ]
+
+#v(1em)
+=== The Silicon Retina
+
+#serif-text()[ To prove this concept, Mead and his doctoral student Misha Mahowald developed the Silicon Retina in 1991. It was the first true neuromorphic system.
+
+Unlike a standard camera, which takes a snapshot of the entire world frame-by-frame (creating a massive stream of redundant data), the Silicon Retina mimicked the human eye. It used analog circuits to compute spatial and temporal derivatives directly on the chip. It did not output "frames"; it output asynchronous "events" only when the light intensity changed at a specific pixel.
+
+If the retina stared at a static wall, it transmitted zero data and consumed almost zero energy. This mimicked the efficiency of biology and solved the redundancy problem inherent in digital sampling. It demonstrated that by "listening to the silicon"—by letting the physics of the device perform the computation—machines could process sensory information with a fraction of the power of a digital computer. ]
+
+=== The Three Pillars of Neuromorphic Engineering
+
+#serif-text()[ From this foundation, the field of Neuromorphic Engineering was established on three core principles that directly oppose the Von Neumann architecture:
+
+    Analog Computation: Using the continuous physics of the device (voltage and current) to represent information, rather than binary abstraction.
+
+Asynchronous Communication: Removing the global clock. Parts of the chip only operate when there is data to process, eliminating the massive power drain of "clock distribution" seen in modern CPUs.
+
+Co-location of Memory and Compute: Eliminating the separation between the processor and the RAM. In a neuromorphic chip, the "weight" of a neural connection is stored physically within the circuit that does the processing, effectively destroying the Von Neumann bottleneck. ]
+
+#serif-text()[ Why did it not take off immediately?
+
+Despite the brilliance of Mead's insight, neuromorphic computing remained a niche academic curiosity for decades. The reason was economic: Moore's Law. For thirty years, it was simply cheaper and easier to simulate neural networks on rapidly improving, general-purpose digital CPUs than it was to design difficult, noisy, custom analog hardware.
+
+However, as discussed in the previous chapter, Moore's Law is now slowing, and the energy demands of Deep Learning are exploding. The "free lunch" of digital scaling is over. This has forced the AI community to look back at Mead's original vision. We are now seeing a renaissance of these ideas, evolving from purely analog circuits to modern Spiking Neural Networks (@snn) implemented on digital-neuromorphic hybrids like Intel's Loihi and IBM's TrueNorth. ]
 
 #v(2em)
 == Modern Neuroscience
@@ -280,9 +342,11 @@ The basic building block of the brain used to form many types of neural circutry
 
 Action potentials are in general uniform and look the same for every neuron every time they spike,
 Graded potentials are primarily generated by sensory input
+]
 
 #figure(include("figures/actionpotential.typ"),caption:[Neuron dynamics])
 
+#serif-text()[
 The artificial neurons used in most deep learning models (like ReLU or sigmoid units) are static. They compute a weighted sum of their inputs, apply an activation function, and output a single, continuous value (like 0.83 or 5.2). This value is assumed to represent the neuron's firing rate. Biological neurons don't work this way. They are spiking neurons, and their computation is:
 ]
 #box-text()[
@@ -304,9 +368,15 @@ supplement: [Equation],
 caption: [Generalized leaky integrate and fire differential equation gouvering the dynamics of a neurons membrane potential],
 [
 $ tau_m (dif u)/(dif t) = -(u - u_"rest") + R(u) I(t) $
+])
 #serif-text()[
 Considering all input currents to be uniform packets (spikes), the dirac delta function fits well into the mathematical framework
 ]
+#figure(
+kind: "eq",
+supplement: [Equation],
+caption: [Generalized leaky integrate and fire differential equation gouvering the dynamics of a neurons membrane potential],
+[
 $ tau_m (dif u)/(dif t) = -(u - u_"rest") + R(u) q delta(t) $
 ]
 ) <glif>

@@ -13,7 +13,7 @@
   (6.0, -71), (7.0, -70.5), (8.0, -70)
 )
 
-#cetz.canvas(length: 1cm, {
+#cetz.canvas(length: .6cm, {
   import cetz.draw: *
   plot.plot(
     size: (10, 8), 

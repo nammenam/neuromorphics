@@ -1,5 +1,5 @@
 #import "@preview/cetz:0.4.2"
-#show math.equation : set text(font:"TeX Gyre Schola Math", size: 10.5pt)
+// #show math.equation : set text(font:"TeX Gyre Schola Math", size: 11pt)
 // #set page(width: auto, height: auto, margin: 0.6pt)
 
 #cetz.canvas({
