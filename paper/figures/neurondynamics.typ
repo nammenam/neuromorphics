@@ -1,8 +1,6 @@
 #import "@preview/cetz:0.4.2"
 #import "@preview/cetz-plot:0.1.3": plot, chart
 
-#set text(font: "GeistMono NF", weight: "medium", size: 9pt)
-
 // --- AdEx Parameters ---
 #let C = 281.0
 #let gL = 30.0
@@ -70,13 +68,6 @@
     axis-style: "school-book", 
     name: "phase", 
     {    
-    // plot.add(
-      // fill_shape,
-      // fill: blue.lighten(90%),
-      // stroke: none,
-      // label: none,
-    // )
-
     plot.add(v_nc_pts, style: (stroke: (paint: gray, thickness: 2pt)), label: "V-Nullcline")
     plot.add(w_nc_pts, style: (stroke: (paint: gray, thickness: 2pt)), label: "w-Nullcline")
   })

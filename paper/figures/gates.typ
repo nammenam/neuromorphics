@@ -1,4 +1,3 @@
-
 #import "@preview/cetz:0.4.2"
 
 // Font and text settings as requested
@@ -10,7 +9,7 @@
   // Global styles to match your aesthetic
   set-style(
     stroke: (thickness: 1.5pt, cap: "round"),
-    mark: (fill: black, scale: 0.5)
+    mark: (fill: black, scale: 0.8)
   )
 
   let draw-gate(name, offset, logic, line-coords: none) = {
@@ -20,8 +19,8 @@
       content((0.3, 2.4), text(weight: "bold", size: 9pt, name))
       
       // 2. Draw Axes and Grid
-      line((-0.5, 0), (1.8, 0), mark: (end: "stealth"), stroke: (thickness: 1pt, paint: gray)) // X-axis
-      line((0, -0.5), (0, 1.8), mark: (end: "stealth"), stroke: (thickness: 1pt, paint: gray)) // Y-axis
+      line((-0.5, 0), (1.8, 0), mark: (end: ">", fill:black), stroke: (thickness: 1pt, paint: black)) // X-axis
+      line((0, -0.5), (0, 1.8), mark: (end: ">", fill:black), stroke: (thickness: 1pt, paint: black)) // Y-axis
       content((2, 0), $x_1$)
       content((0, 2), $x_2$)
 

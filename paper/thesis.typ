@@ -5,68 +5,16 @@
 #import "uiomasterfp/frontpage.typ": cover
 #import "uiomasterfp/frontpage.typ": colors
 #import "glossary.typ": entry-list
+#import "style.typ": style, serif-text, mono-text, box-text
 
+#show: style
 #show: make-glossary
 #show: word-count
-
-#set text(font: "Geist", size: 10pt, weight: "medium", top-edge:.68em)
-#show math.equation : set text(font:"TeX Gyre Schola Math", size: 11pt)
-#show raw : set text(font:"GeistMono NF", weight: "medium", size:9pt)
-#set list(marker: sym.bullet, indent: 1em)
-#show heading: set text(font:"Geist",weight: "bold", style:"normal")
-#show heading.where( level: 1 ): it => block(width: 100%)[
-  #set align(left + horizon); #set text(24pt)
-  #upper(it)
-  #v(.8em)
-]
-#show heading.where( level: 2 ): it => block(width: 100%)[
-  #set align(left + horizon); #set text(16pt)
-  #upper(it)
-  #v(.8em)
-]
-#show heading.where( level: 3 ): it => block(width: 100%)[
-  #set text(12pt,weight: "semibold"); #upper(it) #v(0.4em)
-]
-#show heading.where( level: 4 ): it => block(width: 100%)[
-  #set text(11pt,weight: "semibold"); #upper(it) #v(0.3em)
-]
-
-#show figure.caption: it => {
-  set align(left)
-  set par(justify: true)
-  it
-}
-
-// #set heading(numbering: "1.1 \u{00B7}")
-#set heading(numbering: "1.1 \u{2022}")
-
-#let serif-text(body) = {
-  set text(font: "Source Serif 4 18pt", size: 11pt, weight: "medium", top-edge:.68em)
-  // set text(font: "Source Serif 4 18pt", size: 11pt, weight: "medium")
-  body
-}
-
-#let mono-text(body) = {
-  set text(font: "GeistMono NF", size: 9pt, weight: "medium")
-  body
-}
-
-#let box-text(body) = {
-block(stroke:(thickness:0pt, paint:luma(0)), inset: 10pt, radius: 0pt, fill: colors.gray.light,
-  width: 100%)[#body]
-}
 
 // FRONTPAGE
 #cover()
 
 // ABSTRACT, ACKNOWLEDGEMENTS AND OUTLINE
-#set page(fill:none, margin:auto, numbering: "1")
-
-
-#set page(footer: align(center, text(size:10pt, weight: "medium", font:"Geist",
-context { counter(page).display("1") })))
-
-#set par(justify: true)
 #counter(page).update(1)
 
 #v(1.2cm)
@@ -118,39 +66,25 @@ print-glossary(
 
 = Introduction <intro>
 
-#serif-text()[
-The quest to create intelligent machines is one of humanity's most profound ambitions. The idea spans the realms of philosophy, mathematics and engineering, it traces far back to ancient civilizaitions like the greek tale of Talos---a consoious mechanical man of bronze, and is a popular concept in pop-culture. What the nature of intelligence is, how it emerges from inert matter, and how and we can reproduce it artificially is no longer confined to speculation. We are at the heart of a technological revolution that places this question at the center of our scientific and economic lives. Answering it promises not only to unlock a deeper understanding of our own minds but also to yield transformative tools---from hyper-personalized medicine and the discovery of novel materials to automated scientific discovery. It may, as some have suggested, be the last invention humans ever need to make.
+#serif-text()[ The quest to create intelligent machines is one of humanity's most profound ambitions. This idea spans the realms of philosophy, mathematics, and engineering, tracing its roots far back into antiquity. From the ancient Greek myth of Talos---a conscious mechanical man of bronze---to the automata of the Enlightenment, the dream of synthetic life has always captivated the human imagination. However, what was once the domain of storytellers and philosophers is no longer confined to speculation. We are currently at the heart of a technological revolution that places the nature of intelligence at the center of our scientific and economic lives. Answering how intelligence emerges from inert matter, and how we can reproduce it, promises not only to unlock a deeper understanding of our own minds but to yield transformative tools---from hyper-personalized medicine to automated scientific discovery. As has been famously suggested, true @ai may be the last invention humanity ever needs to make.
 
-In recent years, @ai has shown impressive results. Deep Learning, a computational approach built on multi-layered @ann, has broken one performance barrier after another. It has achieved demonstrably superhuman results in domains once thought to be the exclusive purview of human intuition, from the intricate protein folding of AlphaFold to the complex, emergent strategies of Go and the stunning fluency of large-scale language models. This wave of success has solidified #gls("ai",display:"AI's") place as a general-purpose technology, on track to reshape every corner of society.
+In recent years, the materialization of this dream has accelerated dramatically. Deep Learning, a paradigm that layers simple computational units into vast networks, has shattered performance barriers previously considered insurmountable. We have witnessed these systems achieve demonstrably superhuman proficiency in domains once thought to be the exclusive purview of human intuition. In the realm of science, models like AlphaFold have solved decades-old biological grand challenges; in strategy, reinforcement learning agents have conquered the combinatorial complexity of games like Go; and in communication, Large Language Models have demonstrated a fluency that blurs the line between statistical mimicry and genuine understanding. This wave of success has solidified @ai's status not merely as a tool, but as a general-purpose technology on track to reshape the fundamental infrastructure of society.
 
-Altough #gls("ai",display:"AI's") succes is very exciting, and for the last few years we have seen explosive growth in capabilites with no sign of stopping. Now, cracks have begun to form, beneath the surface, a fundamental and unsustainable flaw has been exposed. The triumph of modern deep learning can in large part be attributed due to the shear amount of computationinal power and data beeing used---it is built on a paradigm of brute force, and we are beginning to hit the limits of how much data and computational resources we can give these models. Wa are rapidly approaching staggering computational cost. The training of a single state-of-the-art model can consume megawatts of power, emitting a carbon footprint equivalent to the lifetime of several cars @Placeholder. Higly specialized processing units may help in reducing the energy impact but it can not change the fact that the deep learing architechture itself has some flaws. This voracious hunger for power is matched by an insatiable appetite for data. These models demand planet-scale datasets, which are increasingly difficult to source, curate, and maintain. Worse still, new evidence suggests that this brute-force approach may be yielding diminishing returns on intelligence. Despite their superhuman acuity in narrow tasks, these models often prove to_be brittle, statistically-driven correlation engines. They show a profound lack of common-sense reasoning, struggle with robust out-of-distribution generalization, and can fail in spectacularly simple, non-human ways.
+However, amidst this explosive growth, fundamental cracks have begun to form beneath the surface. The triumph of modern deep learning is built largely on a paradigm of brute force---scaling performance by simply pouring in more data and more compute. We are now rapidly approaching the physical and economic limits of this strategy. The training of a single state-of-the-art model can consume megawatts of power, emitting a carbon footprint comparable to the lifetime emissions of multiple automobiles @Placeholder. While specialized processing units offer marginal gains, they cannot fix the fact that the underlying architecture is fundamentally inefficient. This voracious hunger for power is matched by an insatiable appetite for data; models now demand planet-scale datasets which are becoming increasingly difficult to source, curate, and maintain. Worse still, new evidence suggests that this brute-force approach is yielding diminishing returns. Despite their superhuman acuity in narrow tasks, these models often prove to be brittle, statistical correlation engines. They exhibit a profound lack of common-sense reasoning, struggle with robust out-of-distribution generalization, and often fail in spectacularly simple, non-human ways.
 
-Evidence of deep learning's fundamental flaws gets clear when we compare it our own brains. Humans and other animals have brains that only need a fraction of the power the deep learing models use, for instance the human brain uses roughly 20W of power @Placeholder. The mamalian brain blows deep learing out of the water in other metrics as well, we learn very effeciently, you can be told something one or two times and remember it for the rest of your life.
+These fundamental flaws become starkly apparent when we compare artificial systems to the biological intelligence they strive to mimic. The human brain serves as a humbling existence proof that high-level intelligence does not require megawatts of energy or ocean-sized datasets. Consider the energy disparity. The human brain operates on approximately 20 watts of power---roughly equivalent to a dim lightbulb @Placeholder. Yet, with this meager energy budget, it does not merely classify static images; it manages a complex biological organism, processes a continuous flood of high-bandwidth multi-sensory data, navigates a dynamic 3D world, and engages in abstract reasoning---all in real-time. In contrast, matching just a fraction of these capabilities with deep learning requires massive GPU clusters consuming energy at the scale of a small town. The brain outperforms our best silicon by orders of magnitude in energy efficiency. The disparity in learning efficiency is equally profound. Deep learning models are notoriously "sample inefficient," requiring thousands or millions of examples to converge on a robust representation of a concept. In contrast, biological systems excel at "one-shot" or "few-shot" learning. A human child can be shown a "giraffe" once or twice and effectively recognize it for a lifetime, under varying lighting and angles. Furthermore, biological learning is continuous and plastic; we can learn new information without overwriting the old (catastrophic forgetting), a feat that remains a significant open challenge for artificial neural networks. This vast gap suggests that the inefficiency of modern AI is not merely a matter of engineering optimization, but a symptom of a deeper paradigmatic mismatch. It implies that contemporary deep learning, and the hardware it runs on, is missing or disastrously oversimplifying the fundamental principles that make biological intelligence so scalable and robust.
 
-This triad of challenges---spiraling energy costs, insatiable data demands, and limited, "un-intelligent" learning---should be a definitive wake-up call. We are building digital supercomputers to simulate intelligence rather than building efficient, intelligent machines. The very hardware we use is part of the problem. We are running brain-inspired algorithms on an architecture that is fundamentally not brain-like. Today's systems are built on the 80-year-old von Neumann architecture, a relic of serial computation now forced to handle a massively parallel problem. This design creates the infamous _memory bottleneck_ by physically separating processing and memory, forcing the system to waste the vast majority of its time and energy shuttling data between the two.
+The path forward must therefore be one of biological inspiration, not just in theory but in practice. To bridge the chasm between the efficiency of the brain and the brute force of modern AI, we must look toward a fundamentally different computational paradigm: Neuromorphic Computing. At its core, neuromorphic computing is the attempt to engineer the physical structure of a computer to mimic the biological structure of the nervous system. Unlike traditional AI, which is often a software abstraction running on unrelated hardware, neuromorphic engineering seeks to close the gap between the algorithm and the substrate. It envisions a move away from the rigid, clock-driven rhythm of standard processors toward systems that are asynchronous, parallel, and "event-driven." In this paradigm, information is not represented by continuous streams of numbers, but by discrete, sparse events---often called "spikes." Much like neurons in the brain, a neuromorphic processor remains largely dormant, consuming negligible energy until a specific event triggers activity. This "sparsity" allows the system to process information only when and where it is needed, mirroring the brain's ability to ignore the static background and focus solely on changes in the environment. This is no longer a fringe theoretical pursuit; it is a burgeoning scientific frontier. A global community of physicists, neuroscientists, and engineers is currently racing to build these "brain-chips." From large-scale industrial efforts like Intel’s Loihi and IBM’s TrueNorth to massive academic supercomputers like the SpiNNaker project in Europe, the hardware landscape is diversifying. These systems are not merely faster versions of what we have today; they represent a complete reimagining of what a computer can be---moving from a machine that strictly calculates to a machine that adapts, interacts, and learns in real-time.
 
-In stark, almost humbling contrast, the human brain---our "gold standard" of efficient intelligence---performs tasks of far greater complexity on a mere 20 watts of power. It doesn't just "think"; it simultaneously manages a complex biological system, processes a continuous flood of multi-sensory data, and navigates a dynamic world in real-time. It achieves this miracle of efficiency by being a completely different kind of computer. It has no separation between memory and processing; computation is the memory, integrated at the synaptic level. It is a massively parallel, low-power system that thrives on sparse, event-driven communication.
-
-This vast disparity proves that while our models are potent, our paradigm is profoundly inefficient. It suggests that contemporary @ann:pl, and the hardware they run on, are missing or disastrously oversimplifying the fundamental principles that make biological intelligence so scalable and robust.
-
-The path forward must therefore be one of biological inspiration, not just in theory but in practice. The next generation of @ai must mimic the brain's architectural and computational strategies more closely, and our hardware must be rebuilt to bake these computations in directly.
-
-In this thesis, we explore new approaches that, first and foremost, might solve the critical limitations of scalability and energy efficiency in artificial intelligence. But more hopefully, they may lay the foundation for systems that can move beyond statistical mimicry and unlock a more robust, generalizable, and truly cognitive AGI.
-
-This likely requires moving beyond the current mainstream of dense, synchronous ANNs. We will explore the potential of incorporating more sophisticated biological principles into @ai design. This involves investigating alternative computational paradigms inspired by the brain's own solutions: mechanisms such as the sparse, event-driven processing seen in Spiking Neural Networks @snn; the crucial role of temporal dynamics in neural coding; or the potential computational advantages of systems operating near critical states.
-
-The central challenge, and the focus of this work, lies in identifying and abstracting the truly essential biological mechanisms---distinguishing the core principles of computation from the intricate biological details that may not be necessary for an artificial implementation. Concretely, this thesis aims to
-The success of modern artificial intelligence is shadowed by an unsustainable efficiency crisis. This power wall is not an accident, but the direct consequence of a decades-long divergence between mainstream @ai and its original biological inspiration. To fully understand the solution proposed in this thesis---neuromorphic computing---we must first trace this history. This chapter tells the story of the two "schools of @ai that emerged from a single, shared ancestor.
-]
+In this thesis, we explore how this shift toward event-driven, biologically plausible computation can resolve the critical limitations of scalability, data efficiency, and energy consumption. We present novel approaches for the efficient coding of information and demonstrate how to compute with such encodings, alongside exploring learning algorithms inspired by the mechanisms of the brain. However, we must temper biological inspiration with engineering reality. While we wish to emulate the brain, we are limited by our inability to manufacture the brain's substrate—specifically, its immense 3D connectivity and density. We are bound to the planar constraints of standard CMOS manufacturing. Therefore, a pragmatic approach is required. We must make calculated abstractions to best utilize our current hardware capabilities. The central challenge, and the focus of this work, lies in identifying the functional essence of the brain—distinguishing the core principles of computation from the intricate biological details that may be evolutionary byproducts or physical constraints of wetware. Concretely, this thesis aims to:
 
 #box-text()[
-  - Explore how information-flow based on sparse events might be implemented in a network
-  - Explore learning algorithms suitable for such a network
+- Investigate Sparse Information Flow: Explore how information can be encoded and processed using sparse, asynchronous events (spikes) within a neural network.
+
+- Develop Biologically Plausible Learning: Explore and evaluate learning algorithms that are suitable for such networks, adhering to the constraints of locality and efficiency.
 ]
 
-#serif-text()[
-In the succeeding sections I will try to lay the foundations for neuromorphic engineering starting with background material covering early neroscience and developments of artificial neural networks based on simple models of the brain. In the neuroscience section we review modern neruscience literature and use concepts from that in the methodology section. 
-]
+The remainder of this thesis is organized as follows: The succeeding chapter lays the theoretical foundation, covering early neuroscience and the development of artificial neural networks based on simple models of the brain. Following this, we review relevant modern neuroscience literature, extracting key concepts that will inform the methodology. Finally, we detail the implementation of these principles in a neuromorphic context and evaluate their performance against standard benchmarks. ]
 
 #pagebreak()
 
@@ -220,7 +154,7 @@ The book's impact led to a near-total collapse in neural network funding, an era
 == The Deep Learning Path
 
 #serif-text()[
-The critique by Minsky and Papert froze funding, but it did not kill the theoretical ambition. It was generally understood that if a single perceptron could not solve the XOR problem, a network of them—a Multi-Layer Perceptron (@mlp)—could. By stacking neurons into layers, the network could theoretically warp the input space to create complex, non-linear decision boundaries. The hardware was not the issue; the problem was the learning algorithm.
+The critique by Minsky and Papert froze funding, but it did not kill the theoretical ambition. It was generally understood that if a single perceptron could not solve the XOR problem, a network of them---a Multi-Layer Perceptron (@mlp)---could. By stacking neurons into layers, the network could theoretically warp the input space to create complex, non-linear decision boundaries. The hardware was not the issue; the problem was the learning algorithm.
 
 In a single-layer perceptron, the error is obvious: if the output is wrong, the weights directly connected to that output are "to blame." But in a multi-layer network, how do you determine which neuron in the middle "hidden" layers contributed to an error at the end? This was the "Credit Assignment Problem," and it remained an insurmountable wall for over a decade.
 ]
@@ -242,7 +176,7 @@ This unlocked the ability to train deep networks. Suddenly, MLPs were no longer 
 #serif-text()[
 With the training mechanism solved, the field exploded. The combination of Backpropagation, massive datasets, and GPU hardware led to a "Cambrian Explosion" of neural architectures, each solving domains previously thought impossible for computers.
 
-The revolution began in earnest with computer vision. Convolutional Neural Networks (@cnn), such as AlexNet (2012) and later ResNet, introduced the idea of learning hierarchical features—detecting edges, then shapes, then objects—much like the human visual cortex. This allowed machines to classify images with superhuman accuracy.
+The revolution began in earnest with computer vision. Convolutional Neural Networks (@cnn), such as AlexNet (2012) and later ResNet, introduced the idea of learning hierarchical features---detecting edges, then shapes, then objects---much like the human visual cortex. This allowed machines to classify images with superhuman accuracy.
 
 Soon after, the focus shifted to sequence data. Recurrent Neural Networks (RNNs) and LSTMs gave machines a short-term memory, enabling breakthroughs in speech recognition and machine translation. However, the true paradigm shift occurred with the introduction of the Transformer architecture in 2017. By utilizing an "attention mechanism" to parallelize the processing of language, Transformers allowed for the training of massive Large Language Models (LLMs) like GPT.
 
@@ -251,7 +185,7 @@ These techniques have even transcended media generation. Deep Learning has solve
 
 === Shortcomings
 
-#serif-text()[ The "engineering path" was undeniably successful. By ignoring biological constraints, we created models that could master Go, fold proteins, and generate human-like text. However, this success was achieved through brute force. By effectively simulating neural networks on hardware that was never designed for them, we have run into a new set of fundamental walls. The very divergence that allowed Deep Learning to thrive—separating the software from the hardware—has now become its greatest liability.
+#serif-text()[ The "engineering path" was undeniably successful. By ignoring biological constraints, we created models that could master Go, fold proteins, and generate human-like text. However, this success was achieved through brute force. By effectively simulating neural networks on hardware that was never designed for them, we have run into a new set of fundamental walls. The very divergence that allowed Deep Learning to thrive---separating the software from the hardware---has now become its greatest liability.
 
 1. The Von Neumann Bottleneck
 
@@ -272,7 +206,7 @@ Finally, Backpropagation is incredibly sample-inefficient compared to biology. D
 
 The two most significant violations are:
 
-The Non-Locality of Data: In backpropagation, a synapse in the first layer changes its strength based on an error calculation that occurred at the very end of the network. In the brain, learning is widely believed to be local (Hebbian plasticity)—synapses change based only on the immediate activity of the two neurons they connect, not a global error signal.
+The Non-Locality of Data: In backpropagation, a synapse in the first layer changes its strength based on an error calculation that occurred at the very end of the network. In the brain, learning is widely believed to be local (Hebbian plasticity)---synapses change based only on the immediate activity of the two neurons they connect, not a global error signal.
 
 The Weight Transport Problem: To calculate the error gradient backward, the algorithm requires the backward pass to use the exact same synaptic weights as the forward pass. In the brain, synapses are unidirectional chemical bridges; there is no known biological mechanism that allows a neuron to "read" the strength of a downstream synapse to calculate an error derivative.
 
@@ -284,9 +218,9 @@ To break through the energy and efficiency walls, researchers are now asking a n
 #v(2em)
 == The Birth of Neuromorphic Computing
 
-#serif-text()[ While the artificial intelligence community was struggling through the AI Winter, debating the merits of symbolic logic versus connectionism, a parallel revolution was brewing in the field of hardware physics. In the late 1980s at Caltech, physicist and engineer Carver Mead—already a legend for pioneering VLSI (Very Large Scale Integration) chip design—began to question the fundamental trajectory of digital computing.
+#serif-text()[ While the artificial intelligence community was struggling through the AI Winter, debating the merits of symbolic logic versus connectionism, a parallel revolution was brewing in the field of hardware physics. In the late 1980s at Caltech, physicist and engineer Carver Mead---already a legend for pioneering VLSI (Very Large Scale Integration) chip design---began to question the fundamental trajectory of digital computing.
 
-Mead observed that while digital computers were becoming exponentially faster (following Moore's Law), they were also becoming exponentially less efficient in terms of energy per operation. He realized that the prevailing method of building computers—using transistors as rigid, high-power "on/off" switches to perform boolean logic—was incredibly wasteful compared to the biological brains they were trying to emulate.
+Mead observed that while digital computers were becoming exponentially faster (following Moore's Law), they were also becoming exponentially less efficient in terms of energy per operation. He realized that the prevailing method of building computers---using transistors as rigid, high-power "on/off" switches to perform boolean logic---was incredibly wasteful compared to the biological brains they were trying to emulate.
 
 In 1990, Mead published his seminal paper, Neuromorphic Electronic Systems, coining the term "neuromorphic" (combining neuro for nerve and morph for form). His thesis was radical: rather than writing software to simulate the equations of a neuron on a digital computer, we should build physical hardware that relies on the same laws of physics as the biological nervous system. ]
 
@@ -294,9 +228,9 @@ In 1990, Mead published his seminal paper, Neuromorphic Electronic Systems, coin
 === The Subthreshold Insight
 
 #serif-text()[
-The core insight that launched the field was a physical analogy between silicon and biology. In standard digital electronics, transistors are operated in "strong inversion." They are driven with high voltages to act as binary switches—either fully open (1) or fully closed (0). This ignores the complex physics that happens in between those states.
+The core insight that launched the field was a physical analogy between silicon and biology. In standard digital electronics, transistors are operated in "strong inversion." They are driven with high voltages to act as binary switches---either fully open (1) or fully closed (0). This ignores the complex physics that happens in between those states.
 
-Mead, however, looked at the transistor in the "subthreshold" (or weak inversion) region—the tiny trickle of current that flows when the transistor is technically "off." He discovered that in this low-power regime, the current flowing through a transistor $I_"ds"$ is an exponential function of the gate voltage $V_"gs"$
+Mead, however, looked at the transistor in the "subthreshold" (or weak inversion) region---the tiny trickle of current that flows when the transistor is technically "off." He discovered that in this low-power regime, the current flowing through a transistor $I_"ds"$ is an exponential function of the gate voltage $V_"gs"$
 $ I_"ds" prop "e" kai V_"gs" / U T $​
 Crucially, this is the exact same Boltzmann-distribution physics that governs the flow of ions through protein channels in a biological neuronal membrane.
 
@@ -310,7 +244,7 @@ This realization was profound. It meant that a single transistor, operating in i
 
 Unlike a standard camera, which takes a snapshot of the entire world frame-by-frame (creating a massive stream of redundant data), the Silicon Retina mimicked the human eye. It used analog circuits to compute spatial and temporal derivatives directly on the chip. It did not output "frames"; it output asynchronous "events" only when the light intensity changed at a specific pixel.
 
-If the retina stared at a static wall, it transmitted zero data and consumed almost zero energy. This mimicked the efficiency of biology and solved the redundancy problem inherent in digital sampling. It demonstrated that by "listening to the silicon"—by letting the physics of the device perform the computation—machines could process sensory information with a fraction of the power of a digital computer. ]
+If the retina stared at a static wall, it transmitted zero data and consumed almost zero energy. This mimicked the efficiency of biology and solved the redundancy problem inherent in digital sampling. It demonstrated that by "listening to the silicon"---by letting the physics of the device perform the computation---machines could process sensory information with a fraction of the power of a digital computer. ]
 
 === The Three Pillars of Neuromorphic Engineering
 
@@ -338,26 +272,25 @@ A lot has happened in neuroscience since the birth of the perceptron and the div
 #v(1em)
 === Spiking Neurons
 #serif-text()[
-The basic building block of the brain used to form many types of neural circutry is the neuron. It is a specialized cell, that in addition to having a cell body with many of the elemnts you typically excpect from a cell like mitocondria and nucleas, it also has extruding structures called denrites, axons and synapses. These structures allow neurons to connect to other neurons and communicate using what is called an @ap. @ap:pl are voltage potentials across the cells membrane, When a _post synaptic_ neuron 
+The basic building block of the brain used to form many types of neural circutry is the neuron. It is a specialized cell, that in addition to having a cell body with many of the elemnts you typically excpect from a cell like mitocondria and nucleas, it also has extruding structures called denrites, axons and synapses. These structures allow neurons to connect to other neurons and communicate using what is called an @ap. @ap:pl are voltage potentials across the cells membrane, When a post synaptic neuron ...  ]
 
-Action potentials are in general uniform and look the same for every neuron every time they spike,
-Graded potentials are primarily generated by sensory input
-]
+#figure(
+  include("figures/bioneuron.typ"),
+  caption: [Proposed simplifed layout of a SNN. The neurons are connected with hirearcical busses
+  that allow for the network to be configured as a _small world network_]
+)
+
+#serif-text()[ Action potentials are in general uniform and look the same for every neuron every time they spike,
+Graded potentials are primarily generated by sensory input ]
 
 #figure(include("figures/actionpotential.typ"),caption:[Neuron dynamics])
 
-#serif-text()[
-The artificial neurons used in most deep learning models (like ReLU or sigmoid units) are static. They compute a weighted sum of their inputs, apply an activation function, and output a single, continuous value (like 0.83 or 5.2). This value is assumed to represent the neuron's firing rate. Biological neurons don't work this way. They are spiking neurons, and their computation is:
-]
+#serif-text()[ The artificial neurons used in most deep learning models (like ReLU or sigmoid units) are static. They compute a weighted sum of their inputs, apply an activation function, and output a single, continuous value (like 0.83 or 5.2). This value is assumed to represent the neuron's firing rate. Biological neurons don't work this way. They are spiking neurons, and their computation is: ]
 #box-text()[
 - Temporal: They integrate inputs over time. A neuron's internal state (its membrane potential) rises and falls based on when inputs arrive.
 - Event-Driven: They do not communicate with continuous values. They communicate using discrete, all-or-nothing electrical pulses called action potentials, or "spikes." A neuron only fires a spike when its internal potential crosses a specific threshold. 
-- Efficient: Because they are event-driven, they are sparse. A neuron spends most of its time silent, only consuming energy when it receives or sends a spike.
-]
-#serif-text()[
-In this model, information is not just in how many spikes there are (a rate code), but when they occur (a temporal code). A spike arriving a few milliseconds earlier or later can completely change the computational outcome.
-]
-
+- Efficient: Because they are event-driven, they are sparse. A neuron spends most of its time silent, only consuming energy when it receives or sends a spike. ]
+#serif-text()[ In this model, information is not just in how many spikes there are (a rate code), but when they occur (a temporal code). A spike arriving a few milliseconds earlier or later can completely change the computational outcome. ]
 
 #v(1em)
 === Generalized Leaky Integrate And Fire
@@ -605,10 +538,9 @@ Both rate codes and temportal codes is most likely also combined with population
 
 #serif-text()[
 For rate coding phase is a non issue as we can find the instantanious firing rate at any phase, for time to first spike encoding we need a reference signal. If the reference signal starts at time t0 we have started the phase and if the pattern does not match up with the reference signal we could miss it. Evidence suggests that brain waves could play the role of a global reference signal. This is the fundamental trade off between the two.
-
 A learning scheme where inputs have to occur in the same episode repeatedly two inputs that happen at the same time yields a stronger response. If the pattern is random then they would sometimes occur in the same episode and sometimes not. Two strong responses should occur in the same time frame. 
 
-If the post neuron fires then we should strengthen the weights
+If the post neuron fires then we should strengthen the weights]
 
 #figure(
   include("figures/spiketrain.typ"),
@@ -616,7 +548,7 @@ If the post neuron fires then we should strengthen the weights
   that allow for the network to be configured as a _small world network_]
 )
 
-Footnote digression for longer patterns
+#serif-text()[ Footnote digression for longer patterns
 Longer patterns require a latched state such as neurons entering repeated firing like a state machine
 
 An important point is to declare whether a mechanism is bio plausible. An engineer might not care wether or not a mechanism is used by the brain and is crucial to the brains function. An engineer might only care about if the mechanics works and is effective for the system that is created in the engineers vision. An engineer might just use the brain as an inspiration. Evolution althoug achieved remarkable feats is not guaranteed to foster up the most optimal solution, only good enough to survive to the next generation. However discussing wether or not a mechanism is bio plausible is still useful for understanding our own brain. And creating bio plausible artificial systems can contribute to more than one field.

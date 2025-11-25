@@ -1,8 +1,6 @@
 #import "@preview/cetz:0.4.2"
 #import "@preview/cetz-plot:0.1.3": plot, chart
 
-#set text(font: "GeistMono NF", weight: "medium", size: 9pt)
-
 // --- Data Preparation ---
 #let data = (
   (0.0, -70), (0.5, -70.2), (1.0, -69.8), (1.5, -70),
@@ -15,24 +13,34 @@
 
 #cetz.canvas(length: .6cm, {
   import cetz.draw: *
-  plot.plot(
-    size: (10, 8), 
-    x-tick-step: 10, 
-    y-tick-step: 50, 
-    axis-style: "school-book", 
+
+    set-style(axes: (
+      stroke: (thickness: 1pt, paint: black),
+      x: (mark: (end: ">", fill:black, size:1pt)),
+      y: (mark: (end: ">", fill:black, size:1pt)),
+      tick: (stroke: black + 1pt),
+    ))
+    plot.plot(
+    size: (12, 5), 
+    x-tick-step: 1, 
+    y-tick-step: 20,
+    y-min: -100,
+    x-format: v => text(str(v)),
+    y-format: v => text(str(v)),
+    axis-style: "left", 
     name: "phase", 
     {    
-    plot.add(data, style: (stroke: (paint: gray, thickness: 2pt)), label: "potential")
+    plot.add(
+      data,
+      style: (stroke: (paint: gray, thickness: 2pt)),
+      label: "potential"
+    )
   })
   // 1. Title and Annotations (Relative to Canvas)
-  content((5, 5.5), text(size: 11pt, weight: "bold", "Action Potential Recording"))
 
-  content((1.5, 5), text(fill: gray, size: 9pt, "Depolarization"))
-  content((3.5, 3), text(fill: gray, size: 9pt, "Repolarization"))
-  content((5.8, 1), text(fill: gray, size: 9pt, "Hyperpolarization"))
   
-  line((3.6, 2.0), (3.6, 2.6), mark: (end: ">"), stroke: (thickness: 1pt))
-  content((3.6, 1.8), text(size: 9pt, "Peak (+40mV)"))
+  line((3.4, 6.2), (3.4, 5.2), mark: (end: ">"), stroke: (thickness: 1pt))
+  content((3.4, 6.5), text(size: 9pt, "Peak (+40mV)"))
 
   // 2. The Lilaq Diagram
   // Placed at the center of the previous coordinate system

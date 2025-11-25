@@ -1,6 +1,4 @@
 #import "@preview/cetz:0.4.2"
-#show math.equation : set text(font:"TeX Gyre Schola Math", size: 10.5pt)
-#set text(font: "GeistMono NF", weight: "medium", size: 9pt)
 // #set text(font: "Geist", weight: "medium", size: 9pt)
 
 #cetz.canvas(length: .6cm, {
