@@ -1,6 +1,6 @@
 #let style(it) = {
-  set text(font: "Geist", size: 10pt, weight: "medium", top-edge:.68em)
-  show math.equation : set text(font:"TeX Gyre Schola Math", size: 11pt)
+  set text(font: "Geist", size: 11pt, weight: "medium", top-edge:.7em)
+  show math.equation : set text(font:"TeX Gyre Schola Math", size: 12pt)
   show raw : set text(font:"GeistMono NF", weight: "medium", size:9pt)
   set list(marker: sym.bullet, indent: 1em)
   show heading: set text(font:"Geist",weight: "bold", style:"normal")
@@ -35,13 +35,13 @@
 }
 
 #let serif-text(body) = {
-  set text(font: "Source Serif 4 18pt", size: 11pt, weight: "medium", top-edge:.68em)
+  set text(font: "Source Serif 4 18pt", size: 12pt, weight: "medium", top-edge:.7em)
   // set text(font: "Source Serif 4 18pt", size: 11pt, weight: "medium")
   body
 }
 
 #let mono-text(body) = {
-  set text(font: "GeistMono NF", size: 9pt, weight: "medium")
+  set text(font: "GeistMono NF", size: 10pt, weight: "medium")
   body
 }
 
