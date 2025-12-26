@@ -1,8 +1,8 @@
 #let style(it) = {
   set text(font: "Geist", size: 11pt, weight: "regular", top-edge:.7em)
   // show math.equation : set text(font:"New Computer Modern Math", size: 12pt, weight: "medium")
-  show math.equation : set text(font:"STIX Two Math", size: 12pt, weight: "medium")
-  // show math.equation : set text(font:"TeX Gyre Schola Math", size: 12pt, weight: "medium")
+  // show math.equation : set text(font:"STIX Two Math", size: 12pt, weight: "medium")
+  show math.equation : set text(font:"Latin Modern Math", size: 12pt, weight: "medium")
   show raw : set text(font:"GeistMono NF", weight: "medium", size:10pt)
   set list(marker: sym.bullet, indent: 1em)
   show heading: set text(font:"Geist",weight: "bold", style:"normal")

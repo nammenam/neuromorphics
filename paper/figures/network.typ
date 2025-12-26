@@ -1,7 +1,7 @@
 #import "@preview/cetz:0.4.2"
 // #set text(font: "Geist", weight: "medium", size: 9pt)
 
-#cetz.canvas(length: .6cm, {
+#cetz.canvas(length: .7cm, {
   import cetz.draw: *
   set-style(
     stroke:(thickness:2pt)

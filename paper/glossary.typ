@@ -24,6 +24,30 @@
     description: "",
   ),
   (
+    key: "llm",
+    short: "LLM",
+    long: "Large Language Model",
+    description: "",
+  ),
+  (
+    key: "gpt",
+    short: "GPT",
+    long: "Generative Pre-trained Transformer",
+    description: "",
+  ),
+  (
+    key: "rnn",
+    short: "RNN",
+    long: "Recurrent Neural Network",
+    description: "",
+  ),
+  (
+    key: "lstm",
+    short: "LSTM",
+    long: "Long Short-Term Memory",
+    description: "",
+  ),
+  (
     key: "xor",
     short: "XOR",
     long: "eXclusive OR",
@@ -33,6 +57,24 @@
     key: "cnn",
     short: "CNN",
     long: "Convolutional Neural Network",
+    description: "",
+  ),
+  (
+    key: "cpu",
+    short: "CPU",
+    long: "Central Processing Unit",
+    description: "",
+  ),
+  (
+    key: "gpu",
+    short: "GPU",
+    long: "Graphics Processing Unit",
+    description: "",
+  ),
+  (
+    key: "cmos",
+    short: "CMOS",
+    long: "Complementary Metal-Oxide-Semiconductor",
     description: "",
   ),
   (

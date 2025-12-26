@@ -48,7 +48,7 @@
 
 #v(.5em)
 #text(size: 9pt, weight: "medium")[
-Wordcount: #total-words
+#h(1fr) Wordcount: #total-words
 ]
 
 #pagebreak()
@@ -66,40 +66,38 @@ print-glossary(
 
 = Introduction <intro>
 
-#serif-text()[ The development of intelligent machines represents a significant objective in modern science and engineering. While the concept has historical roots in philosophy and early automata, the field has transitioned from speculative theory to practical application. Currently, artificial intelligence is central to technological and economic development. Understanding the mechanisms of intelligence and reproducing them in synthetic systems offers the potential for improved analysis of biological minds and the creation of tools for applications ranging from personalized medicine to automated scientific discovery. Some have argued that general-purpose @ai could act as a terminal invention for humanity @Placeholder.
+#serif-text()[ The development of intelligent machines is a significant objective in modern science and engineering. While the concept has historical roots in philosophy and early automata, the field has transitioned from speculative theory to practical application. Currently, artificial intelligence is central to technological and economic development. Understanding the mechanisms of intelligence and reproducing them in synthetic systems offers the potential for improved analysis of biological minds and the creation of tools for applications ranging from personalized medicine to automated scientific discovery.
 
-In recent years, progress toward this goal has increased. Deep Learning, which utilizes multilayered neural networks, has exceeded previous performance benchmarks. These systems have demonstrated high proficiency in tasks previously limited to human capability. For example, AlphaFold has addressed complex problems in protein folding @Placeholder, reinforcement learning agents have managed the complexity of games such as Go @Placeholder, and Large Language Models have shown capabilities in text generation that approach human fluency. Consequently, @ai is increasingly viewed as a general-purpose technology that may influence societal infrastructure.
+In recent years, great strides has been made towards this goal. Deep Learning, which utilizes multilayered neural networks, has exceeded previous performance benchmarks. These systems have demonstrated high proficiency in tasks previously limited to human capability. For example, AlphaFold has addressed complex problems in protein folding @Placeholder, reinforcement learning agents have mastered the complexity of games such as Go @Placeholder, and Large Language Models have shown capabilities in text generation that approach human fluency. Consequently, @ai is increasingly viewed as a general-purpose technology that may influence societal infrastructure.
 
-However, despite these advances, there are significant limitations to the current approach. The success of modern deep learning relies heavily on scaling, which involves increasing data volume and computational power. This strategy is approaching physical and economic boundaries. Training state-of-the-art models consumes substantial energy and results in a large carbon footprint @Placeholder. Although specialized hardware provides some efficiency, the underlying architecture remains computationally expensive. Furthermore, the requirement for massive datasets presents challenges in sourcing and curation. Additionally, evidence suggests that this scaling approach yields diminishing returns. Models often function as statistical correlation engines; they lack common-sense reasoning, struggle with out-of-distribution generalization, and are prone to brittle failure modes.
+However, despite these advances, there are significant limitations to the current approach. The success of modern deep learning relies heavily on scaling, which involves increasing data volume and computational power. This strategy is approaching physical and economic boundaries. Training state-of-the-art models consumes substantial energy and results in a large carbon footprint @Placeholder. Although specialized hardware allows for more efficient computations, the underlying architecture and algorithms imposes an intrinsic limit on scalability independent of the underlying hardware. Furthermore, the requirement for massive datasets presents challenges in sourcing and curation. Additionally, evidence suggests that this scaling approach yields diminishing returns. Models often function as statistical correlation engines; they lack common-sense reasoning, struggle with out-of-distribution generalization, and are prone to brittle failure modes @Placeholder.
 
-These limitations are evident when comparing artificial systems to biological intelligence. The human brain demonstrates that high-level intelligence is possible without massive energy consumption or dataset sizes. The brain operates on approximately 20 watts @Placeholder. With this limited energy budget, it manages biological functions, processes real-time multi-sensory data, and performs abstract reasoning. In contrast, deep learning models require GPU clusters with significantly higher power requirements to match a fraction of these capabilities. There is also a discrepancy in learning efficiency. Deep learning models are sample-inefficient, often requiring vast numbers of examples to learn a representation. Biological systems, however, are capable of "one-shot" or "few-shot" learning and can acquire new information without catastrophic forgetting. This suggests the inefficiency of current @ai is a paradigmatic issue rather than just an engineering problem.
+These limitations are evident when comparing artificial systems to biological intelligence. The human brain demonstrates that high-level intelligence is possible without massive energy consumption or dataset sizes. The brain operates on approximately 20 watts @Placeholder. With this limited energy budget, it manages biological functions, processes real-time multi-sensory data, and performs abstract reasoning. In contrast, deep learning models require @gpu clusters with significantly higher power requirements to match a fraction of these capabilities. There is also a discrepancy in learning efficiency. Deep learning models are sample-inefficient, often requiring vast numbers of examples to learn a representation. Biological systems, however, are capable of "one-shot" or "few-shot" learning and can acquire new information without catastrophic forgetting. This suggests the inefficiency of current @ai is a paradigmatic issue rather than just an engineering problem.
 
-The proposed direction for addressing these issues involves biological inspiration in hardware design, specifically Neuromorphic Computing. This field attempts to engineer computer architectures that mimic the biological structure of the nervous system. Unlike traditional @ai, which runs as software on general-purpose hardware, neuromorphic engineering aims to align the algorithm with the physical substrate. It moves away from clock-driven processing toward asynchronous, event-driven systems. In this paradigm, information is encoded as sparse, discrete events or "spikes." Similar to biological neurons, a neuromorphic processor consumes minimal energy when inactive, processing information only when triggered. This approach is being pursued by both industrial groups, such as Intel’s Loihi @Placeholder, and academic projects like SpiNNaker @Placeholder. These systems represent a shift from calculation-based machines to those capable of real-time adaptation.
+The proposed direction for addressing these issues involves biological inspiration in both hardware and algorithm design, specifically Neuromorphic Computing. This field attempts to engineer computer architectures that mimic the biological structure of the nervous system. Unlike traditional @ai, which runs as software on general-purpose hardware, neuromorphic engineering aims to align the algorithm with the physical substrate. It moves away from clock-driven processing toward asynchronous, event-driven systems. In this paradigm, information is encoded as sparse, discrete events or "spikes." Similar to biological neurons, a neuromorphic processor consumes minimal energy when inactive, processing information only when triggered. This approach is being pursued by both industrial groups, such as Intel’s Loihi @Placeholder, and academic projects like SpiNNaker @Placeholder. These systems represent a shift from calculation-based machines to those capable of real-time adaptation.
 
-Although neuromorphic systems achieve optimal performance on cross-stack optimized platforms---where the algorithm is embedded directly into the hardware---there is remaining utility in executing neuromorphic algorithms on traditional von Neumann architectures. In this thesis, we explore biologically inspired algorithms deployed on traditional CPU and GPU hardware. We examine how event-driven, biologically plausible computation can address limitations in scalability, data efficiency, and energy consumption, even when simulated on standard processors. We present approaches for efficient information coding and learning algorithms inspired by neural mechanisms. However, biological inspiration is constrained by engineering realities. We cannot strictly replicate the brain's 3D connectivity due to the planar limitations of CMOS manufacturing. Therefore, a pragmatic approach is necessary. We must identify and abstract the functional principles of the brain, separating core computational mechanisms from biological details that may be evolutionary artifacts. Concretely, this thesis aims to: ]
+Although neuromorphic systems achieve optimal performance on co-designed platforms---where the algorithm is embedded directly into the hardware---there is significant value in executing neuromorphic algorithms on traditional von Neumann architectures. In this thesis, we explore biologically inspired algorithms deployed on traditional @cpu and @gpu hardware. We examine how event-driven, biologically plausible computation can address limitations in scalability, data efficiency, and energy consumption, even when simulated on standard processors. We present approaches for efficient information coding and learning algorithms inspired by neural mechanisms. However, biological inspiration is constrained by engineering realities. We cannot strictly replicate the brain's 3D connectivity due to the planar limitations of @cmos manufacturing. Therefore, a pragmatic approach is necessary. We must identify and abstract the functional principles of the brain, separating core computational mechanisms from biological details that may be evolutionary artifacts. Concretely, this thesis aims to: ]
 
 #box-text()[
-- Investigate Sparse Information Flow: Explore how information can be encoded and processed using sparse, asynchronous events (spikes) within a neural network.
+- *Investigate Sparse Information Flow*: Explore how information can be encoded and processed using sparse, asynchronous events (spikes) within a neural network.
 
-- Develop Biologically Plausible Learning: Explore and evaluate learning algorithms that are suitable for such networks, adhering to the constraints of locality and efficiency.
+- *Develop Biologically Inspired Learning*: Explore and evaluate learning algorithms that are suitable for such networks, adhering to the constraints of locality and efficiency.
 ]
 
-#serif-text()[ The remainder of this thesis is organized as follows: The succeeding chapter lays the theoretical foundation, covering early neuroscience and the development of artificial neural networks based on simple models of the brain. Following this, we review relevant modern neuroscience literature, extracting key concepts that will inform the methodology. Finally, we detail the implementation of these principles in a neuromorphic context and evaluate their performance against standard benchmarks. ]
+#serif-text()[ The succeeding chapter lays the historical and theoretical foundation, covering early neuroscience and the development of artificial neural networks based on simple models of the brain. Following this, we review relevant modern neuroscience literature, extracting key concepts that will inform the methodology. We also provide consise overview on machine learning concepts and frameworks. Finally, we detail the implementation of these principles in a neuromorphic context and evaluate their performance against standard benchmarks. ]
 
 #pagebreak()
 
 = Background <background>
 
+#serif-text()[ This section outlines the historical and theoretical evolution of @ai, reviewing key concepts in modern neuroscience that motivate the methodology used in this thesis.
 
-#serif-text()[ The aim of this section is to shed light on the history and developments of @ai, we will also go trough key concepts in modern neuroscience that will be important to understand the motivation for the methods used in this thesis.
-
-We will begin at that shared origin point, a time when @ai research and and neuroscience were one and the same. We will then follow a diverging path that leads to modern deep learning and understand why it has little in common with modern neurscience but also why it is so powerful but also so inefficient. Finally, we will explore the neuromorphic path, the modern neuroscience it is built upon. We will end this section with a review of similar frameworks and methods---showcasing their strenghs and weaknesses and how we can improve opon them. ]
-
+We begin at a shared origin point, a time when @ai research and neuroscience were intertwined. We then trace the diverging path that led to modern Deep Learning, examining why it has drifted from biological plausibility. Subsequently, we explore the "neuromorphic path". In @biologicalprinciples, we detail the specific physical principles and neuroscientific insights upon which the neuromorphic methods in this thesis is built. In @mltechnicalities, we contrast the architectural mechanics of deep learning and neuromorphic systems, specifically addressing why the former is computationally powerful yet energetically inefficient. We conclude with a review of existing frameworks, identifying their strengths and weaknesses to contextualize the contributions of this work. ]
 
 #v(2em)
 == History & Developments
 
-#serif-text()[ Historically, the understanding of neural tissue was dominated by the reticular theory, which posited that the brain consisted of a continuous, fused network. This paradigm was fundamentally challenged by the work of Santiago Ramón y Cajal. Through the application of novel staining techniques, Cajal established the neuron doctrine, demonstrating that the nervous system is composed of discrete, individual cells @Placeholder. Subsequent analysis using electron microscopy has provided irrefutable validation of this discrete cellular structure.
+#serif-text()[ Historically, the understanding of neural tissue was dominated by the reticular theory, which claimed that the brain consisted of a continuous, fused network of nerve fibers. This paradigm was fundamentally challenged by the work of Santiago Ramón y Cajal. Through the application of novel staining techniques, Cajal established the neuron doctrine, demonstrating that the nervous system is composed of discrete, individual cells @Placeholder. Building on these findings, Heinrich Wilhelm Gottfried Von Waldeyer-Hartz proposed the "Neuron Doctrine" and coined the term "neurons" to describe these dicrete cells. Subsequent analysis using electron microscopy has provided irrefutable validation of this discrete cellular structure.
 
 The conceptualization of the brain as a collection of discrete units facilitated the development of mathematical models describing neural function. In 1943, Warren McCulloch and Walter Pitts published A Logical Calculus of the Ideas Immanent in Nervous Activity, introducing the first formal model of the neuron.
 
@@ -128,80 +126,78 @@ In 1949, Donald Hebb addressed the critical issue of plasticity in his work The 
 
 #figure(include("figures/perceptron.typ"),caption:[The perceptron model. Inputs $x_i$ are multiplied by weights $w_i$ and summed. If the linear combination $sum x_i w_i$ exceeds the bias $b$, the neuron activates. ])
 
-#serif-text()[ Consequently, the Perceptron was capable of converging on a solution for any problem where the data was linearly separable. This success generated significant enthusiasm, with contemporary reports suggesting that such machines would soon mimic human consciousness @Placeholder. However, these expectations were tempered by theoretical limitations. In 1969, Marvin Minsky and Seymour Papert published Perceptrons, a rigorous mathematical analysis of the architecture. They demonstrated that a single-layer perceptron is fundamentally a linear classifier. While capable of learning operations like AND or OR, it is mathematically incapable of solving the XOR (Exclusive OR) problem. In the XOR case, the classes cannot be separated by a single hyperplane. This proof highlighted a severe boundary on the utility of single-layer networks for complex, non-linear tasks. ]
+#serif-text()[ Consequently, the Perceptron was capable of converging on a solution for any problem where the data was linearly separable. This success generated significant enthusiasm, with contemporary reports suggesting that such machines would soon mimic human consciousness @Placeholder.
+
+These expectations were abruptly tempered by theoretical limitations. In 1969, Marvin Minsky and Seymour Papert published Perceptrons, a rigorous mathematical analysis of the architecture. They demonstrated that a single-layer perceptron is fundamentally a linear classifier. While capable of learning operations like AND or OR, it is mathematically incapable of solving the XOR (Exclusive OR) problem. In the XOR case, the classes cannot be separated by a single hyperplane. This proof highlighted a severe boundary on the utility of single-layer networks for complex, non-linear tasks. ]
 
 #figure(include("figures/gates.typ"),caption:[The XOR problem. Unlike AND/OR, the data points for XOR cannot be separated by a single linear boundary.])
 
-#serif-text()[ The publication of Perceptrons coincided with a significant reduction in neural network research funding, a period retrospectively termed the "First AI Winter." It is worth noting that Minsky and Papert acknowledged that a @mlp, a network stacking multiple layers of neurons, could theoretically solve the XOR problem by creating complex, non-linear decision boundaries. However, a critical algorithmic gap remained: the "credit assignment problem." While researchers knew that hidden layers could represent complex features, there was no known method to propagate error signals back through the layers to adjust the weights of hidden neurons effectively. Rosenblatt’s rule was mathematically valid only for the output layer. The field remained stagnant until a method for training multi-layer networks could be formalized. ]
+#serif-text()[ The publication of Perceptrons coincided with a significant reduction in neural network research funding, a period retrospectively termed the "First AI Winter". It is worth noting that Minsky and Papert acknowledged that a @mlp, a network stacking multiple layers of neurons, could theoretically solve the XOR problem by creating complex, non-linear decision boundaries.
+
+However, a critical algorithmic gap remained: the "credit assignment problem". While researchers knew that hidden layers could represent complex features, there was no known method to propagate error signals back through the layers to adjust the weights of hidden neurons effectively. Rosenblatt’s rule was mathematically valid only for the output layer. The field remained stagnant until a method for training multi-layer networks could be formalized. ]
 
 #v(1em)
-=== The Deep Learning Path
+=== Deep Learning
 
-#serif-text()[ The critique presented by Minsky and Papert precipitated a contraction in funding; however, theoretical inquiry persisted. It was widely hypothesized that the limitations of the single perceptron could be overcome by a Multi-Layer Perceptron (@mlp). By organizing neurons into hierarchical layers, the network could theoretically perform successive non-linear transformations on the input space, enabling the formation of complex decision boundaries. The primary impediment was not the architecture itself, but the absence of a viable learning algorithm.
+#serif-text()[ The critique presented by Minsky and Papert precipitated a contraction in funding; despite this, theoretical inquiry persisted. It was widely hypothesized that the limitations of the single perceptron could be overcome by a @mlp. By organizing neurons into hierarchical layers, the network could theoretically perform successive non-linear transformations on the input space, enabling the formation of complex decision boundaries. The primary impediment was not the architecture itself, but the absence of a viable learning algorithm.
 
 In a single-layer perceptron, error attribution is immediate: if the output deviates from the target, the error is directly derived from the weights of the output layer. However, in a multi-layer architecture, quantifying the contribution of a specific neuron within the "hidden" layers to the final output error presents a significant challenge. This is formally known as the Credit Assignment Problem @Placeholder, and it remained the central theoretical obstacle for over a decade. ]
 
-#figure(include("figures/network.typ"),caption:[A Multi-Layer Perceptron (MLP). By inserting "hidden layers" between input and output, the network can approximate non-linear functions such as XOR. The historical challenge lay in deriving a method to train these intermediate layers.])
+#figure(include("figures/network.typ"),caption:[A @mlp. By inserting "hidden layers" between input and output, the network can approximate non-linear functions such as XOR. The historical challenge lay in deriving a method to train these intermediate layers.])
 
-#v(1em)
+#serif-text()[ The solution to this theoretical impasse was popularized in 1986 by Rumelhart, Hinton, and Williams in their seminal paper _Learning representations by back-propagating errors_ @Placeholder. They demonstrated that the Chain Rule of calculus could be applied recursively to propagate the error signal from the output layer backwards through the hidden layers. This algorithm, known as Backpropagation, allowed the network to calculate the gradient of the loss function with respect to every weight in the system. Effectively, it provided a mathematical method to tell each hidden neuron exactly how much it contributed to the total error, finally solving the credit assignment problem.
+
+Unlike Hebbian plasticity, which is local and biological, Backpropagation relies on global error signals and precise backward data flow—mechanisms effectively absent in organic tissue. Consequently, the field of @ann effectively decoupled from neuroscience. It transitioned into a branch of engineering and applied mathematics, prioritizing statistical optimization over biological realism. Paradoxically, it was this abandonment of biological fidelity that enabled the rapid scaling and performance breakthroughs that followed. ]
+
+#pagebreak()
 #mini-header()[Achievements]
 
-#serif-text()[ With the training mechanism solved, the field exploded. The combination of Backpropagation, massive datasets, and GPU hardware led to a "Cambrian Explosion" of neural architectures, each solving domains previously thought impossible for computers.
+#serif-text()[ With the training mechanism solved, the field exploded. The combination of Backpropagation, massive datasets, and @gpu hardware led to a "Cambrian Explosion" of neural architectures, each solving domains previously thought impossible for computers.
 
-The revolution began in earnest with computer vision. Convolutional Neural Networks (@cnn), such as AlexNet (2012) @Placeholder and later ResNet @Placeholder, introduced the idea of learning hierarchical features---detecting edges, then shapes, then objects---much like the human visual cortex. This allowed machines to classify images with superhuman accuracy.
+The revolution began in earnest with computer vision. @cnn:pl, such as AlexNet (2012) @Placeholder and later ResNet @Placeholder, introduced the idea of learning hierarchical features---detecting edges, then shapes, then objects---much like the human visual cortex. This allowed machines to classify images with superhuman accuracy.
 
-Soon after, the focus shifted to sequence data. Recurrent Neural Networks (RNNs) and LSTMs gave machines a short-term memory, enabling breakthroughs in speech recognition and machine translation. However, the true paradigm shift occurred with the introduction of the Transformer architecture in 2017. By utilizing an "attention mechanism" to parallelize the processing of language, Transformers allowed for the training of massive Large Language Models (LLMs) like GPT.
+Soon after, the focus shifted to sequence data. @rnn:pl and @lstm architectures gave machines a short-term memory, enabling breakthroughs in speech recognition and machine translation. However, the true paradigm shift occurred with the introduction of the Transformer architecture in 2017. By utilizing an "attention mechanism" to parallelize the processing of language, Transformers allowed for the training of massive @llm:pl like the @gpt.
 
-These techniques have even transcended media generation. Deep Learning has solved fundamental scientific problems; notably, DeepMind's AlphaFold utilized these architectures to predict the 3D structure of proteins from their amino acid sequences, a 50-year-old grand challenge in biology. ]
+These techniques have even transcended media generation. Deep Learning has solved fundamental scientific problems; notably, DeepMind's AlphaFold utilized these architectures to predict the 3D structure of proteins from their amino acid sequences, a 50-year-old grand challenge in biology @Placeholder. ]
 
 #v(1em)
 #mini-header()[Shortcomings]
 
-_these claims will be justified in section 2.3_
+#serif-text()[ Deep learning has achieved substantial success across various domains. However, this performance relies heavily on computational scaling. The underlying algorithms, while originally inspired by biological principles, have diverged significantly to prioritize mathematical optimization on standard hardware. By simulating neural networks on architectures not designed for them—using algorithms developed to address the specific constraints of the @mlp rather than the broader goal of efficient intelligence—this approach faces fundamental barriers that cannot be overcome merely by increasing hardware resources.
 
-#serif-text()[ The "engineering path" was undeniably successful. By ignoring biological constraints, we created models that could master Go, fold proteins, and generate human-like text. However, this success was achieved through brute force. By effectively simulating neural networks on hardware that was never designed for them, we have run into a new set of fundamental walls. The very divergence that allowed Deep Learning to thrive---separating the software from the hardware---has now become its greatest liability.
+A primary limitation stems from the underlying computer architecture. Modern systems rely on the Von Neumann architecture, which physically separates the processing unit from the memory. Deep neural networks, which are defined by large matrices of synaptic weights, require constant data transfer between these components. For every token generated or inference step performed, billions of weight parameters must be fetched from memory, processed, and written back. This creates a memory bottleneck where system performance is limited not by processing speed, but by the available bandwidth to memory @Placeholder.
 
-- Memory bottleneck
+Concurrently, the computational cost of training state-of-the-art models is growing exponentially. Deep learning relies on dense matrix multiplications, where the number of operations scales quadratically with the network size. As models grow to encompass trillions of parameters to achieve marginal gains in performance, the hardware requirements become economically and physically unsustainable. This reliance on brute-force scaling yields diminishing returns, suggesting that the current architectural paradigm is approaching an efficiency plateau.
 
-The brain is a "compute-in-memory" architecture; synapses store memory and perform processing in the exact same physical location. Modern computers, however, are built on the Von Neumann architecture, which physically separates the Processing Unit (CPU/GPU) from the Memory (RAM). For Deep Learning, this is catastrophic. A neural network is essentially a massive collection of weights (memory) that must be multiplied by inputs (compute). To run a modern LLM, the hardware must constantly shuttle billions of weights back and forth between the memory chips and the processor cores for every single token generated.
+This architectural mismatch manifests acutely in energy consumption. In modern CMOS technology, the energy cost of moving data significantly exceeds the cost of processing it. Retrieving a single byte of data from off-chip DRAM consumes approximately three orders of magnitude more energy than performing a floating-point operation on that data @Placeholder. As highlighted in the introduction, this discrepancy has led to the proliferation of "Megawatt Models." In stark contrast, the human brain operates on approximately 20 watts. By co-locating memory and computation, biological systems manage complex multimodal processing with an energy budget comparable to a dim lightbulb.
 
-- Energy usage
+Furthermore, backpropagation-based learning exhibits low sample efficiency compared to biological systems. Deep learning models often require millions of examples to establish robust representations, whereas biological agents demonstrate "one-shot" or "few-shot" learning capabilities. Additionally, the resulting models function as "black boxes." While empirically effective, their distributed internal representations are often opaque, making it difficult to trace the causal logic behind specific decisions or failures.
 
-The bottleneck is not just about speed; it is about energy. In modern silicon, the act of moving data is far more expensive than processing it. Fetching a single byte of data from off-chip memory consumes roughly 1,000 times more energy than performing a floating-point operation on that data. This has led to the era of "Megawatt Models." While the human brain operates on ≈20 watts (roughly the power of a dim lightbulb), our artificial equivalents require entire power plants.
+These limitations can be traced to the deviation from biological constraints. To solve the training problem, mainstream AI adopted mechanisms that are biologically implausible. Backpropagation relies on a global error signal and requires the backward pass to use the exact same synaptic weights as the forward pass (the "weight transport problem"). In biological tissue, synapses are unidirectional, and there is no known mechanism for a neuron to access the weight of a downstream synapse to calculate a gradient.
 
-- Data inefficiency and opacity
-
-Finally, Backpropagation is incredibly sample-inefficient compared to biology. Deep Learning models often require millions of examples to learn concepts that a human child can grasp from a single observation ("one-shot learning"). Furthermore, the resulting models are opaque "Black Boxes." We know that they work, but due to the distributed nature of their representations, we often cannot explain how or why specific decisions are made. Backpropagation is also depentend on a gobal error signal, training and inference are two separate operations to the network and information has to flow forwards and backwards for each training run. Every neuron has to be syncronized and need to know everything about every other neuron in order for the algorithm to work
-
-This brings us to the root cause of these shortcomings. While the Perceptron was born from a desire to mimic the brain, the success of Backpropagation drove the field toward mathematical pragmatism and away from biological realism. To solve the training problem, mainstream AI accepted mechanisms that are fundamentally impossible in biological tissue. In backpropagation, a synapse in the first layer changes its strength based on an error calculation that occurred at the very end of the network. In the brain, learning is widely believed to be local (Hebbian plasticity)---synapses change based only on the immediate activity of the two neurons they connect, not a global error signal. To calculate the error gradient backward, the algorithm requires the backward pass to use the exact same synaptic weights as the forward pass. In the brain, synapses are unidirectional chemical bridges; there is no known biological mechanism that allows a neuron to "read" the strength of a downstream synapse to calculate an error derivative.
-
-This divergence created a paradox: we achieved Artificial Intelligence, but at the cost of efficiency and explainability. We built software that behaves somewhat like a brain, but forced it to run on hardware that functions nothing like one.
-
-To break through the energy and efficiency walls, researchers are now asking a new question: What if we stop forcing neural networks into the Von Neumann architecture? What if, instead of ignoring the biological constraints that Minsky and Papert critiqued, we embraced them? This line of thinking points toward a return to the original inspiration: Neuromorphic Computing. ]
+While a detailed technical analysis of these inefficiencies is presented in @mltechnicalities, the broader implication is clear: we have achieved artificial intelligence at the cost of efficiency and explainability. This realization has renewed interest in alternative architectures that align more closely with biological principles. Although the majority of research has focused on deep learning, a parallel subset of the field has continued to investigate systems that mimic the physical operation of the nervous system. ]
 
 #v(1em)
-=== The Neuromorphic Path
+=== Birth Of Neuromorphic
 
-#serif-text()[ While the artificial intelligence community was struggling through the AI Winter, debating the merits of symbolic logic versus connectionism, a parallel revolution was brewing in the field of hardware physics. In the late 1980s at Caltech, physicist and engineer Carver Mead---already a legend for pioneering VLSI (Very Large Scale Integration) chip design---began to question the fundamental trajectory of digital computing.
+#serif-text()[ While the artificial intelligence community debated symbolic logic versus connectionism during the "AI Winter," significant developments were occurring in hardware physics. In the late 1980s at Caltech, physicist Carver Mead—a pioneer of VLSI (Very Large Scale Integration) design—began to question the trajectory of digital computing.
 
-Mead observed that while digital computers were becoming exponentially faster (following Moore's Law), they were also becoming exponentially less efficient in terms of energy per operation. He realized that the prevailing method of building computers---using transistors as rigid, high-power "on/off" switches to perform boolean logic---was incredibly wasteful compared to the biological brains they were trying to emulate.
+Mead observed that while digital computers were becoming exponentially faster, they were also becoming less efficient in terms of energy per operation. He noted that using transistors as rigid, high-power switches to perform boolean logic was energetically wasteful compared to the biological systems they aimed to emulate.
 
-In 1990, Mead published his seminal paper, Neuromorphic Electronic Systems, coining the term "neuromorphic" (combining neuro for nerve and morph for form). His thesis was radical: rather than writing software to simulate the equations of a neuron on a digital computer, we should build physical hardware that relies on the same laws of physics as the biological nervous system.
+In 1990, Mead published his seminal paper, _Neuromorphic Electronic Systems_ @Placeholder, coining the term "neuromorphic" to describe hardware that mimics the biological structure of the nervous system. His thesis proposed that rather than simulating neural equations via software on digital computers, engineers should construct physical hardware that exploits the same physical laws as the biological nervous system.
 
-The core insight that launched the field was a physical analogy between silicon and biology. In standard digital electronics, transistors are operated in "strong inversion." They are driven with high voltages to act as binary switches---either fully open (1) or fully closed (0). This ignores the complex physics that happens in between those states.
+The foundational insight of the field was the physical analogy between silicon physics and ion-channel physics. In standard digital electronics, transistors are operated in "strong inversion," driven by high voltages to act as binary switches. Mead realized that a single transistor, operating in its "subthreshold" region, follows the same exponential Boltzmann statistics that govern the flow of ions through biological channels.
 
-This realization was profound. It meant that a single transistor, operating in its natural subthreshold state, could physically compute the same exponential, non-linear functions that biological neurons use, but at a distinct speed advantage and with microscopic power consumption. We did not need thousands of logic gates to simulate a synapse; a synapse could be implemented by a single transistor.
+This realization implied that a single transistor could physically compute the non-linear functions used by biological neurons, but with significantly higher speed and lower power consumption. Consequently, synaptic functions could be implemented by single transistors rather than complex arrangements of logic gates.
 
-To prove this concept, Mead and his doctoral student Misha Mahowald developed the Silicon Retina in 1991. It was the first true neuromorphic system.
+To demonstrate this concept, Mead and his doctoral student Misha Mahowald developed the *Silicon Retina* in 1991 @Placeholder. Unlike a standard camera, which captures full frames at fixed intervals (generating redundant data), the Silicon Retina operated asynchronously. It utilized analog circuits to compute spatial and temporal derivatives directly on-chip, outputting discrete "events" only when local light intensity changed.
 
-Unlike a standard camera, which takes a snapshot of the entire world frame-by-frame (creating a massive stream of redundant data), the Silicon Retina mimicked the human eye. It used analog circuits to compute spatial and temporal derivatives directly on the chip. It did not output "frames"; it output asynchronous "events" only when the light intensity changed at a specific pixel.
+This event-driven approach solved the redundancy problem inherent in frame-based sampling. If the scene remained static, the system transmitted no data and consumed negligible energy. This demonstrated that by aligning the hardware physics with the computational task, sensory information could be processed with a fraction of the power required by conventional digital systems.
 
-If the retina stared at a static wall, it transmitted zero data and consumed almost zero energy. This mimicked the efficiency of biology and solved the redundancy problem inherent in digital sampling. It demonstrated that by "listening to the silicon"---by letting the physics of the device perform the computation---machines could process sensory information with a fraction of the power of a digital computer.
+Since the inception of neuromorphic computing, neuroscience has also advanced significantly. While Mead’s early work was based on the physical intuition of the transistor, modern neuromorphic engineering now incorporates a richer understanding of neuronal dynamics, synaptic plasticity, and network architecture. To advance the field, we must combine these foundational hardware insights with the principles of modern mechanistic neuroscience. ]
 
-Since the invention of neuromorphic computing, the field of neuroscience has undergone its own revolution. While Mead provided the physical intuition—that silicon physics could emulate ion channel physics—he was working with a limited map of the brain's circuitry. We now possess a much richer understanding of neuronal behavior, synaptic plasticity, and brain mechanics.
-
-To build better neuromorphic systems, we must look beyond the transistor and examine the biological machinery it intends to emulate. The fundamental ideas from Mead can now be refined by the specific architectural principles of modern mechanistic neuroscience. ]
-
+// Will discuss why it is more inneficent and how it can be fixed in @mltechnicalities
+ 
 #pagebreak()
 
 == Biological Principles <biologicalprinciples>
@@ -409,7 +405,7 @@ Population Coding is a "Scale" of Representation: Population coding refers to th
 - Population Temporal Coding: The meaning is derived from the synchronization or precise relative timing of spikes among the neurons in the population. ]
 
 #v(1em)
-=== Neural Circuits & Dynamics
+=== Neural Networks & Dynamics
 
 #serif-text()[ By now we have coverd the neuron behaviour on its own. The neuron on its own is not very usefull and needs to connect to other neurons to form functional circuits. In the brain we find distinct regions with specific network configurations that form circuits that do specific tasks
 
@@ -430,7 +426,10 @@ In neuromorphic engineering, WTA circuits are crucial. They provide a mechanism 
 #v(1em)
 #mini-header()[Attractor Dynamics]
 
-#serif-text()[ When recurrent circuits interact with inhibition, stable patterns of activity called Attractors emerge. These are specific states toward which the system naturally evolves, acting as the neural basis for memory and spatial orientation.
+
+#serif-text()[Longer patterns require a latched state such as neurons entering repeated firing like a state machine
+Some neurons have other properties like bursting modes or continuous firing once the threshold has been reached.
+Inhibition should make a neuron not fire. When recurrent circuits interact with inhibition, stable patterns of activity called Attractors emerge. These are specific states toward which the system naturally evolves, acting as the neural basis for memory and spatial orientation.
 
 Point Attractors: The network settles into a specific static firing pattern. This is analogous to an energy minimum in physics and is believed to be the mechanism behind associative memory (e.g., recognizing a face from a partial clue).
 
@@ -523,7 +522,7 @@ However, when we transition from the continuous-valued, rate-coded signals typic
 
 #pagebreak()
 
-== Machine Learning Technicalities
+== Machine Learning Technicalities <mltechnicalities>
 
 #serif-text()[ In this section we go trough the techincal details behind deep learing and neuromorphic engineering
 
@@ -536,10 +535,10 @@ An important point is to declare whether a mechanism is bio plausible. An engine
 
 The Forward Pass The process begins with the forward pass, where information flows from the input layer through the hidden layers to the output. Mathematically, a deep network is a composition of non-linear functions. For a network with $L$ layers, the activation of the $l$-th layer, denoted as $bold(a)(l)$, is computed as:
 
-$ bold(z)^((l)) = bold(W)^((l)) bold(a)^((l-1)) + bold(b)^((l)) $
+$ bold(z) = bold(W) bold(a)_(l-1) + bold(b)_(l) $
 $ bold(a)^((l)) = sigma(bold(z)^((l))) $
 
-Here, $bold(W)(l)$ is the weight matrix, $bold(b)(l)$ is the bias vector, and $sigma(dot)$ is the non-linear activation function. This recursion continues until the final output $bold(hat(y))$ is produced.
+Here, $bold(W)$ is the weight matrix, $bold(b)$ is the bias vector, and $sigma(dot)$ is the non-linear activation function. This recursion continues until the final output $bold(hat(y))$ is produced.
 
 The Loss Function To evaluate the quality of this prediction, we introduce a Loss Function (or Cost Function), denoted as $cal(L)(bold(hat(y)),bold(y))$. This scalar function quantifies the divergence between the network's prediction $bold(hat(y))$ and the ground truth $bold(y)$. Common examples include Mean Squared Error (MSE) for regression or Cross-Entropy for classification. The training objective is to minimize this loss with respect to the parameters:
 
@@ -551,7 +550,7 @@ Backpropagation and Automatic Differentiation Since the parameters bold(theta) d
 
 Because the network is a nested composite function, we utilize the Chain Rule of calculus. This process is known as Backpropagation. We compute the gradients starting from the output layer and propagate them backward toward the input. For a specific weight w connecting neuron j to i in layer l, the gradient is decomposed as:
 
-$ (partial cal(L)) / (partial w_(i j)^((l))) = (partial cal(L)) / (partial a_i^((l))) dot (partial a_i^((l))) / (partial z_i^((l))) dot (partial z_i^((l))) / (partial w_(i j)^((l))) $
+$ (partial cal(L)) / (partial w_(i j)) = (partial cal(L)) / (partial a_i) dot (partial a_i) / (partial z_i) dot (partial z_i) / (partial w_(i j)) $
 
 In modern deep learning frameworks, this is implemented via Automatic Differentiation (AutoDiff). Unlike symbolic differentiation (which can lead to expression swell) or numerical differentiation (which is computationally expensive and prone to approximation errors), AutoDiff constructs a computational graph of elementary operations during the forward pass. It then traverses this graph in reverse to compute exact gradients efficiently.
 
@@ -578,6 +577,7 @@ In memory computing
 Have to be parallell
 Add von Neumann and in memory computing diagrams ]
 
+#serif-text()[In contrast to the brain which has a "compute-in-memory" architecture; synapses store memory and perform processing in the exact same physical location. Modern computers, are built on the Von Neumann architecture, which physically separates the Processing Unit (CPU/GPU) from the Memory (RAM). For Deep Learning, this is catastrophic. A neural network is essentially a massive collection of weights (memory) that must be multiplied by inputs (compute). To run a modern LLM, the hardware must constantly shuttle billions of weights back and forth between the memory chips and the processor cores for every single token generated.]
 
 #v(1em)
 === Key Concepts In Neuromorphic Engineering
@@ -649,7 +649,9 @@ This allows us to train SNNs using powerful optimizers (like Adam) and framework
 #v(1em)
 === Complex Dynamical Models
 
-#serif-text()[ Beyond these standard algorithms, there is a rich landscape of more complex theoretical models. While we will not utilize them in this specific implementation, they represent the frontier of the field:
+#serif-text()[ Neuromorphic is not just about making processors but also about building machines and models to better understand the biology
+
+Beyond these standard algorithms, there is a rich landscape of more complex theoretical models. While we will not utilize them in this specific implementation, they represent the frontier of the field:
 
 Reservoir Computing (Liquid State Machines): Using a chaotic, randomly connected "tank" of neurons to project inputs into high-dimensional space before a simple readout layer.
 
@@ -660,7 +662,46 @@ Attractor Networks: Recurrent networks (Ring or Line attractors) that maintain s
 #v(1em)
 === Neuromorphic Sensors
 
-#serif-text()[]
+#serif-text()[ 2.1. The Paradigm Shift: From Frame-Based to Event-Based Sensing
+
+Traditional sensory acquisition systems, particularly in computer vision and audio processing, have historically relied on the von Neumann architecture's separation of memory and processing, coupled with a clock-driven sampling approach. In this conventional paradigm, sensors capture the state of the entire environment at fixed temporal intervals—generating frames or samples regardless of the scene's activity. While effective for static analysis, this method generates redundant data streams that impose significant latency, bandwidth, and power consumption penalties, particularly in high-speed or sparse-signal environments.
+
+In contrast, neuromorphic engineering, a field pioneered by Carver Mead in the late 1980s, seeks to emulate the biological principles of the mammalian nervous system. Neuromorphic sensors abandon the global shutter and fixed clock in favor of asynchronous, event-driven acquisition. Information is encoded not as absolute values at a fixed rate, but as a sparse stream of "events" or "spikes" triggered only when a significant change in the physical stimulus occurs. This bio-inspired approach offers theoretical and practical advantages in terms of temporal resolution, dynamic range, and energy efficiency (pJ/event), effectively shifting the computational burden from raw data processing to sparse event management.
+
+2.2. Neuromorphic Vision Sensors (DVS)
+
+The most mature realization of this paradigm is the Dynamic Vision Sensor (DVS), often referred to as the event camera. Unlike standard Active Pixel Sensors (APS) that integrate photon counts over a fixed exposure time, each pixel in a DVS operates independently and asynchronously.
+
+The fundamental operation of a DVS pixel involves continuous monitoring of the log-intensity of the incident light. An event e is generated at time t when the change in logarithmic intensity exceeds a preset threshold θ:
+
+Δln(I)=ln(I(t))−ln(I(t−Δt))≥±θ
+
+where I(t) is the photocurrent at time t. This mechanism yields a stream of events characterized by a tuple (x,y,t,p), representing the pixel coordinates, the microsecond-resolution timestamp, and the polarity of the brightness change (ON or OFF).
+
+Recent literature highlights three key advantages of this architecture:
+
+    Temporal Resolution: Event cameras achieve effective frame rates equivalent to several kilohertz, with latencies in the microsecond range, making them ideal for high-speed robotics and ballistics tracking.
+
+    Dynamic Range (DR): Because individual pixels do not share a global exposure time, DVS pixels do not saturate easily. Modern neuromorphic sensors boast dynamic ranges exceeding 120 dB, compared to the ∼60 dB typical of standard industrial cameras, allowing robust operation in scenes with simultaneous extreme brightness and darkness.
+
+    Data Sparsity: In static scenes, a DVS generates near-zero output, drastically reducing power consumption and downstream processing requirements compared to frame-based cameras that output constant data regardless of content.
+
+2.3. Auditory and Tactile Modalities
+
+While vision sensors dominate the field, the principles of neuromorphic sensing extend to other modalities, mirroring the specialized transduction mechanisms of the biological cochlea and skin.
+
+2.3.1. Silicon Cochlea
+
+Neuromorphic auditory sensors, or "silicon cochleas," emulate the basilar membrane's hydrodynamics. Instead of performing a global Fourier Transform (FFT) on a sampled audio waveform, these sensors utilize a cascade of analog band-pass filters. Each filter channel operates independently, generating spikes when the energy in its specific frequency band exceeds a threshold. This architecture provides high-fidelity temporal information crucial for tasks such as sound source localization and separation, often achieving lower latency and power consumption than DSP-based solutions.
+2.3.2. Neuromorphic Tactile Sensing
+
+Electronic skins (e-skins) and neuromorphic tactile sensors are an emerging frontier, designed to provide robots with high-frequency feedback for manipulation tasks. Recent advances utilize triboelectric, piezoelectric, or piezoresistive materials coupled with event-based readout circuits. These sensors encode pressure, vibration, and shear force changes as asynchronous spikes, allowing for the rapid detection of slip events—a critical capability for stable grasping that mimics the fast-adapting mechanoreceptors (e.g., Meissner corpuscles) in human skin.
+
+2.4. Processing Events: Spiking Neural Networks (SNNs)
+
+The asynchronous nature of neuromorphic sensors necessitates a departure from standard Convolutional Neural Networks (CNNs), which are optimized for dense, synchronous matrix multiplications. The natural processing counterpart for event streams is the Spiking Neural Network (SNN).
+
+In an SNN, artificial neurons maintain an internal membrane potential that integrates incoming spikes over time; the neuron "fires" an output spike only when this potential crosses a threshold. This compatibility has driven the development of specialized neuromorphic hardware accelerators, such as Intel’s Loihi and SynSense’s Dynap-CNN, which support massive parallelism and local synaptic plasticity. These chips enable edge-native learning and inference with power budgets in the milliwatt range, significantly lower than standard GPU-accelerated embedded systems ]
 
 #v(1em)
 === Neuromorphic Computers
@@ -689,12 +730,16 @@ Nengo: A powerful, high-level framework that functions as a "neural compiler." N
 
 #serif-text()[ Despite this immense progress in hardware and software, a fundamental challenge remains, creating a critical research gap: the training problem.
 
-Mainstream deep learning has a powerful, universal tool: backpropagation. Neuromorphic computing does not yet have a clear equivalent. While these systems exist, they still struggle with finding an efficient, scalable, and powerful learning algorithm that is both biologically plausible and computationally effective.
+Mainstream deep learning has a powerful, universal tool: backpropagation. Neuromorphic computing does not yet have a clear equivalent. While these systems exist, they still struggle with finding an efficient, scalable, and powerful learning algorithm that is both biologically plausible and computationally effective. This gap manifests in several ways:
 
-This gap manifests in several ways:
-- Limited Supervised Learning: "Local" rules like STDP are fundamentally unsupervised. They are excellent for finding patterns and correlations but struggle with complex, task-driven "supervised" problems (e.g., "classify this audio signal into one of ten specific words").
-- The "Conversion" Compromise: A popular workaround is to first train a conventional, non-spiking ANN using backpropagation, and then "convert" its weights to an SNN for efficient inference. This method, while practical, is a compromise. It discards the rich temporal dynamics SNNs are capable of and does not represent true "neuromorphic learning."
-- The "Surrogate Gradient" Challenge: The "firing" of a spiking neuron is a non-differentiable event, which makes it incompatible with standard backpropagation. New methods, like "surrogate gradient" learning, attempt to approximate this spike event with a smooth function to enable gradient-based learning, but this is an area of intense and ongoing research.
+- Limited Supervised Learning
+"Local" rules like STDP are fundamentally unsupervised. They are excellent for finding patterns and correlations but struggle with complex, task-driven "supervised" problems (e.g., "classify this audio signal into one of ten specific words").
+
+- The Conversion Compromise
+A popular workaround is to first train a conventional, non-spiking ANN using backpropagation, and then "convert" its weights to an SNN for efficient inference. This method, while practical, is a compromise. It discards the rich temporal dynamics SNNs are capable of and does not represent true "neuromorphic learning."
+
+- The Surrogate Gradient Challenge
+The firing of a spiking neuron is a non-differentiable event, which makes it incompatible with standard backpropagation. New methods, like "surrogate gradient" learning, attempt to approximate this spike event with a smooth function to enable gradient-based learning, but this is an area of intense and ongoing research.
 
 This thesis confronts this central challenge: How to effectively and efficiently train spiking neural networks for complex, real-world temporal tasks. While hardware like Loihi provides the platform for on-chip learning, it still requires a robust and scalable algorithm. The existing approaches of ANN-to-SNN conversion or simple Hebbian rules are insufficient.
 
@@ -704,24 +749,27 @@ This thesis proposes a method to bridge this gap by... (...for example: "...deve
 
 = Method <method>
 
-#serif-text()[ This chapter details the computational framework developed to address the fundamental limitations of standard deep learning described in @background. While traditional artificial neural networks rely on continuous-valued activations and global error propagation, the approach presented here aligns with the constraints of biological substrates: sparsity, asynchrony, and locality.
+#serif-text()[ This chapter details the computational framework developed to address the fundamental limitations of standard deep learning described in @background. The approach presented here aligns with the constraints of biological substrates: sparsity, asynchrony, and locality. We propose a neuromorphic architecture designed to maximize energy efficiency and computational robustness through three core mechanisms: Temporal Information Representation: A coding scheme that translates static data into asynchronous spike latencies, replacing energy-intensive rate coding with sparse time-to-first-spike (TTFS) interactions.
 
-We propose a neuromorphic architecture designed to maximize energy efficiency and computational robustness through three core mechanisms:
+Simple well established highly parallazable integrate and fire neurons.
 
-Temporal Information Representation: A coding scheme that translates static data into asynchronous spike latencies, replacing energy-intensive rate coding with sparse time-to-first-spike (TTFS) interactions.
+Local Plasticity Algorithms: A two-stage learning process combining structural synaptogenesis for dynamic connectivity and a localized, prediction-based weight update rule for pattern recognition. Finally, we describe the custom event-driven simulation environment constructed to validate these principles, bridging the gap between theoretical biological models and practical execution on standard digital hardware.
 
-Linear-Slope Neuron Dynamics: A novel, computationally efficient integration model that utilizes linear accumulation to detect temporal order without the overhead of complex differential equations.
-
- Local Plasticity Algorithms: A two-stage learning process combining structural synaptogenesis for dynamic connectivity and a localized, prediction-based weight update rule for pattern recognition.
-
-Finally, we describe the custom event-driven simulation environment constructed to validate these principles, bridging the gap between theoretical biological models and practical execution on standard digital hardware. ]
+The methods in this thesis will be tested on visual number reckognition ]
 
 #v(2em)
 == Information Representation
 
-#serif-text()[ In @neuralcoding and @appliedneuralcodes we dicussed neural codes the choise of a neural code lays the foundation for any computing system as it is responsible for the flow of information. We have discussed a few potential encodings that are both biologically plausible and have been used in previous neuromorphic systems. The neural code plays a large role in determening the effecieny of the system.
+#serif-text()[ The choise of a coding shceme puts key constraints on the design any processing system as it lays the founation for the flow of information. In @neuralcoding and @appliedneuralcodes we dicussed several candidate neural codes that are both biologically plausible and have been used in previous neuromorphic systems. The neural code plays a large role in determening the effecieny of the system. Many neuromorphic systems use rate code as it is easy to translate values it is straight forward. any float value can be encoded as a rate code and integrate and fire neurons work well with this encoding. An IF neuron using rate code can reduce the multiply and add operations with just add operations. each spike arriving at a synapse adds its weight to the total. It is easy to see that for a rate code a higher rate input means more of that input contributing to the total sum. The main reason for why this thesis will not use a rate code is that it is relativly ineficient and slow compared to a temporal code. In a temporal code only one spike is required to establish its value in relation to other synapses, making a single event much more information dense. This is especially important for systems that do not have the connection density of a biological brain and must use shared buses that can be congested if too many spikes are present on the bus. Secondly to determine the value of a rate code you have to take an average of multiple spikes, imposing a delay. Using a TTFS encoding requires more sophisticated neuron models than a simple integrate and fire, it need more bookkeeping to keep track of the relative arival of incoming spikes.
 
-The neuron models and encoding are intertwined and cannot be developed separatly, the same goes for learing. encoding where the inputs get increasingly smaller as the treshold increases can encode order of the elements, evidence for bio-plauibility can be found from eq 1 where the R(u) is dependent on the membrane potential A neuron should have the following charecteristcs: ]
+That beeing said and as discussed in @neuralcoding combining neural codes and using the right one for the job is also an important aspect to consider, there is not a clear consenus on which code is better it is a matter of the task at hand. As we also have talked about, Combining differnt codes toghether can make for a powerful representation of information. This thesis focuses on visaul recognition and a TTFS combined with population code is the representation of choise. The popultion code will represent a distinct pattern in an image. This can be set up to detect lines and primitve shapes, deeper layers will use populations of primitve shapes to detect more complex features like circles and boxes and so on. ]
+
+
+#box-text()[
+This thesis will use TTFS combined with population coding for visual tasks, This combination is biologically plausibe as it is fast and can be set up as filters similar to how the human visual cortex is structured. 
+]
+
+#serif-text()[ A neuron should have the following charecteristcs: ]
 
 #box-text()[
   - Acuumulate spikes in some form (integrate)
@@ -737,12 +785,6 @@ The neuron models and encoding are intertwined and cannot be developed separatly
   - robust to noise
 ]
 
-#figure( include("figures/spiketrain.typ"), caption: [Proposed simplifed layout of a SNN. The neurons are connected with hirearcical busses that allow for the network to be configured as a _small world network_] )
-
-#serif-text()[ Footnote digression for longer patterns
-Longer patterns require a latched state such as neurons entering repeated firing like a state machine
-Some neurons have other properties like bursting modes or continuous firing once the threshold has been reached.
-Inhibition should make a neuron not fire ]
 
 
 Explain in detail how we encode information using neural codes using pseudo code
@@ -752,21 +794,49 @@ Rate code is simple will not use it
 Temporal codes
 
 #v(1em)
-=== Representing sensory input
+=== Converting sensory input
+
+#figure(
+kind:"algo",
+caption: [Linear intensity to dely encoding],
+supplement: [Algorithm],
+mono-text(pseudocode-list(hooks:.5em, indentation:1em, booktabs:true)[
+procedure intensity_to_delay_encoding(image, T_max=100, T_min=0): #h(1fr)
+  + normalized_image = normalize(image)
+  + spike_times = T_max - (T_max - T_min) \* normalized_image
+  + return spike_times
+]))
+
+#figure(
+kind:"algo",
+caption: [Logarithmic intensity to dely encoding],
+supplement: [Algorithm],
+mono-text(pseudocode-list(hooks:.5em, indentation:1em, booktabs:true)[
+procedure intensity_to_delay_encoding(image, T_max=100, T_min=0): #h(1fr)
+  + normalized_image = normalize(image)
+  + spike_times = T_max - (T_max - T_min) \* normalized_image
+  + return spike_times
+]))
+
+#v(1em)
+=== Representing Contrast
+
+#serif-text()[ easy with rate code
+
+need global information to normalize
+
+using ttf is difficult
+
+using negative image - still problem with absolute contrast
+
+can be done locally with speial sensors and using logarithmic intensity to delay ]
+
+#v(1em)
+=== Decoding
+
+#serif-text()[ Decoding is done in the neurons and thus the neurons need to be designed to work with the chosen encoding either at individual neuron level or population level ]
 
 ```python
-def intensity_to_delay_encoding(image, T_max=100, T_min=0):
-    normalized_image = image.astype(float) / 255.0
-    spike_times = T_max - (T_max - T_min) * normalized_image
-    # print(spike_times.shape)
-    # data = spike_times[(spike_times < 100)]
-    # print(data.shape)
-    return spike_times
-
-def negative_image_encoding(image, T_max=100, T_min=0):
-    negative_image = 255 - image
-    return intensity_to_delay_encoding(negative_image, T_max=T_max, T_min=T_min)
-
 def integrate_and_fire(excitatory, inhibitory, threshold=1.0):
     excitatory_spikes = [(t, 1) for t in excitatory.flatten() if not np.isnan(t)]
     if inhibitory is None:
@@ -788,26 +858,25 @@ def integrate_and_fire(excitatory, inhibitory, threshold=1.0):
     return firing_time
 ```
 
-#v(1em)
-=== Deeper layer representation
+#serif-text()[ How neurons use coding
 
-How neurons use coding
 We have seen that glif neuron is bio plausible and such a neuron is simple and can be realized easily on hardware the way. Using a temporal code the neuron has to differentiate between inputs in the time domain otherwise it cannot decode the information and cannot do useful work. Earlier inputs are encoded with larger values and should have a greater portion of summation going on inside the neuron.
 
 -If order matters (temporal code) the neuron must handle it
+Evidence for bio-plauibility can be found from eq 1 where the R(u) is dependent on the membrane potential 
 
 For visual tasks which is what the application this thesis focuses on 
 1. a population code is used in conjunction with a temporal code
 2. Population code is used alone (eg individual order within a population does not matter)
 
 A counter starts when the first spike arrives
-Needs a global reset or local
 
+Needs a global reset or local ]
 
 #v(1em)
 === Perceptron equivalence
 
-The perceptron equation can be obtained with a ttfs using the inverse of firing times
+#serif-text()[ The perceptron equation can be obtained with a ttfs using the inverse of firing times ]
 
 #figure( kind: "eq", supplement: [Equation], caption: [Weigthed sum], [
 $ T = sum w/t $
@@ -823,13 +892,6 @@ The problem with this decoding is for strong stimuli we would ideally make the n
 
 Another way which is also based on relative firing order of single spikes could be a passcode encoding. Such an encoding could work by having neurons only react to a sequence. It has an internal state machine of sorts and will only advance to the next state if recives the correct input in the correct order. This encoding does only care about relative order not relative timings. ]
 
-#v(1em)
-=== Representing Contrast
-
-easy with rate code
-need global information to normalize
-using ttf is difficult
-can be done locally with speial sensors and using logarithmic intensity to delay
 
 #pagebreak()
 
@@ -851,7 +913,7 @@ A second way is to have a hierarchy with bypass. So one layer detects only AB th
 A second problem is how to decode order. When do we start the decreasing timer, how fast, should it be in time or in amount of spikes, what to do with phase? The phase should correct itself. The weights need to be as presise as the timing of the spikes? Or we could make the neuron sensitivity proportional to its inverse potential and add leaking ]
 
 #figure(
-kind:"algorithm",
+kind:"algo",
 caption: [Unsupervised local learning rule for induvidual neurons. Based on STDP],
 supplement: [Algorithm],
 mono-text(pseudocode-list(hooks:.5em, indentation:1em, booktabs:true)[
@@ -865,7 +927,7 @@ mono-text(pseudocode-list(hooks:.5em, indentation:1em, booktabs:true)[
 ]))
 
 #figure(
-kind:"algorithm",
+kind:"algo",
 caption: [Growing rules for synapses],
 supplement: [Algorithm],
 mono-text(pseudocode-list(hooks:.5em, indentation:1em, booktabs:true)[
@@ -883,7 +945,31 @@ Altough many simulation and software packages exists as outlines in @simulationa
 
 #figure(include("figures/simulatorarch.typ"),caption:[Simulator architechture block diagram])
 
-#serif-text()[]
+#serif-text()[ The simulator runs an event loop
+
+Spikes are pushed to a heap
+
+The simulator can run both on CPU and GPU,
+
+When running on CPU the spikes are pushed to a heap, when running on GPU spikes are pushed to a adress event bus
+
+the algorithms presented in this thesis are highly paralizable
+
+
+It is built from the ground up using the Vulkan API
+
+
+]
+
+#pagebreak()
+
+== Metrics
+
+score - classification
+
+power
+
+FLOPS
 
 #pagebreak()
 
